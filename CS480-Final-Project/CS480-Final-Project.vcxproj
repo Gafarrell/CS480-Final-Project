@@ -22,6 +22,31 @@
     <None Include="assimp-vc143-mtd.dll" />
     <None Include="glew32.dll" />
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="camera.cpp" />
+    <ClCompile Include="engine.cpp" />
+    <ClCompile Include="graphics.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="mesh.cpp" />
+    <ClCompile Include="object.cpp" />
+    <ClCompile Include="shader.cpp" />
+    <ClCompile Include="sphere.cpp" />
+    <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="window.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="camera.h" />
+    <ClInclude Include="engine.h" />
+    <ClInclude Include="graphics.h" />
+    <ClInclude Include="graphics_headers.h" />
+    <ClInclude Include="mesh.h" />
+    <ClInclude Include="object.h" />
+    <ClInclude Include="shader.h" />
+    <ClInclude Include="sphere.h" />
+    <ClInclude Include="Texture.h" />
+    <ClInclude Include="trig_functions.h" />
+    <ClInclude Include="window.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -119,6 +144,10 @@
       <ShowProgress>LinkVerbose</ShowProgress>
       <AdditionalDependencies>assimp-vc143-mtd.lib;glfw3.lib;soil2-debug.lib;glew32.lib;opengl32.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy $(ProjectDir)\glew32.dll $(OutDir) /y /d
+xcopy $(ProjectDir)\assimp-vc143-mtd.dll $(OutDir) /y /d</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
