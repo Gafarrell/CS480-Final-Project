@@ -34,8 +34,6 @@ class Graphics
     void ComputeTransforms (double dt, std::vector<TrigFunction*> orbitFunctions, std::vector<float> speed, std::vector<float> dist,
         std::vector<float> rotSpeed, glm::vec3 rotVector, std::vector<float> scale, 
         glm::mat4& tmat, glm::mat4& rmat, glm::mat4& smat);
-    void ComputeSpaceshipOrientation(double dt, std::vector<TrigFunction*> orbitFunctions, std::vector<float> speed, std::vector<float> dist,
-        glm::mat4& rmat);
 
     stack<glm::mat4> modelStack;
 
@@ -50,6 +48,8 @@ class Graphics
     GLint m_tcAttrib;
     GLint m_hasTexture;
 
+
+    vector<Sphere*> solarSystem;
 
     Sphere* m_sphere;
     Sphere* m_sphere2;

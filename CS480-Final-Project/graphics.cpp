@@ -31,8 +31,6 @@ bool Graphics::Initialize(int width, int height)
 	}
 #endif
 
-
-
 	// Init Camera
 	m_camera = new Camera();
 	if (!m_camera->Initialize(width, height))
@@ -77,39 +75,36 @@ bool Graphics::Initialize(int width, int height)
 
 	// Starship
 	m_mesh = new Mesh(glm::vec3(2.0f, 3.0f, -5.0f), "assets\\SpaceShip-1.obj", "assets\\SpaceShip-1.png");
-	m_mesh->setAngle(vector<float>({ 5 }));
-	m_mesh->setOrbitalFunctions(std::vector<TrigFunction*>({ new None(), new Cos(), new Sin() }));
-	m_mesh->setOrbitDistance(vector<float>({ 1.85f,1.85f,1.85f }));
-	m_mesh->setRotationSpeed(vector<float>({ 0 }));
-	m_mesh->setScale(vector<float>({ 0.01f, 0.01f, 0.01f }));
-	m_mesh->setSpeed(vector<float>({ 0.35,0.35,0.35 }));
 
 	// The Sun
 	m_sphere = new Sphere(64, "assets\\2k_sun.jpg");
-	m_sphere->setAngle(vector<float>({ 5 }));
-	m_sphere->setOrbitalFunctions(std::vector<TrigFunction*>({ new None(), new None(), new None() }));
-	m_sphere->setOrbitDistance(vector<float>({ 0,0,0 }));
-	m_sphere->setRotationSpeed(vector<float>({ 0.15f }));
-	m_sphere->setScale(vector<float>({ 1,1,1 }));
-	m_sphere->setSpeed(vector<float>({ 2,2,2 }));
+	m_sphere->setAngle({ 5 });
+	m_sphere->setOrbitalFunctions({ new None(), new None(), new None() });
+	m_sphere->setOrbitDistance({ 0, 0, 0 });
+	m_sphere->setRotationSpeed({ 0.15f });
+	m_sphere->setScale({ 1, 1, 1 });
+	m_sphere->setSpeed({ 2,2,2 });
+	solarSystem.push_back(m_sphere);
 
 	// The Earth
 	m_sphere2 = new Sphere(48, "assets\\2k_earth_daymap.jpg");
-	m_sphere2->setAngle(vector<float>({ 3 }));
-	m_sphere2->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
-	m_sphere2->setOrbitDistance(vector<float>({ 2.5f,2.5f,2.5f }));
-	m_sphere2->setRotationSpeed(vector<float>({ 0.35f }));
-	m_sphere2->setScale(vector<float>({ 0.5f,0.5f,0.5f }));
-	m_sphere2->setSpeed(vector<float>({0.15f, 0.15f, 0.15f}));
-	
+	m_sphere2->setAngle({ 3 });
+	m_sphere2->setOrbitalFunctions({ new Sin(), new None(), new Cos() });
+	m_sphere2->setOrbitDistance({ 2.5f,2.5f,2.5f });
+	m_sphere2->setRotationSpeed({ 0.35f });
+	m_sphere2->setScale({ 0.5f,0.5f,0.5f });
+	m_sphere2->setSpeed({0.15f, 0.15f, 0.15f});
+	solarSystem.push_back(m_sphere2);
+
 	// The moon
 	m_sphere3 = new Sphere(48, "assets\\2k_moon.jpg");
-	m_sphere3->setAngle(vector<float>({ 0.56 }));
-	m_sphere3->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new Cos(), new Sin() }));
-	m_sphere3->setOrbitDistance(vector<float>({ 1.65,1.65,1.65 }));
-	m_sphere3->setRotationSpeed(vector<float>({ 0.5f }));
-	m_sphere3->setScale(vector<float>({ 0.15f,0.15f,0.15f }));
-	m_sphere3->setSpeed(vector<float>({ .25f,.25f,.25f }));
+	m_sphere3->setAngle({ 0.56 });
+	m_sphere3->setOrbitalFunctions({ new Sin(), new Cos(), new Sin() });
+	m_sphere3->setOrbitDistance({ 1.65,1.65,1.65 });
+	m_sphere3->setRotationSpeed({ 0.5f });
+	m_sphere3->setScale({ 0.15f,0.15f,0.15f });
+	m_sphere3->setSpeed({ .25f,.25f,.25f });
+	solarSystem.push_back(m_sphere3);
 
 	//enable depth testing
 	glEnable(GL_DEPTH_TEST);
@@ -162,23 +157,6 @@ void Graphics::HierarchicalUpdate2(double dt) {
 
 	m_sphere3->Update(modelStack.top());
 
-	modelStack.pop();
-	modelStack.pop();
-	modelStack.pop();
-
-	ComputeTransforms(totalTime, m_mesh->getOrbitalFunctions(), m_mesh->getSpeed(), m_mesh->getDistance(), m_mesh->getRotationSpeed(), glm::vec3(0, 1, 0), m_mesh->getScale(), tmat, rmat, smat);
-	ComputeSpaceshipOrientation(totalTime, m_mesh->getOrbitalFunctions(), m_mesh->getSpeed(), m_mesh->getDistance(), rmat);
-	modelStack.push(modelStack.top());
-
-	modelStack.top() *= tmat;
-	modelStack.push(modelStack.top());
-	modelStack.top() *= rmat;
-	modelStack.top() *= smat;
-
-	m_mesh->Update(modelStack.top());
-
-	modelStack.pop();
-
 	while (!modelStack.empty()) modelStack.pop();
 }
 
@@ -194,18 +172,6 @@ void Graphics::ComputeTransforms(double dt, std::vector<TrigFunction*> orbitFunc
 	smat = glm::scale(glm::vec3(scale[0], scale[1], scale[2]));
 }
 
-void Graphics::ComputeSpaceshipOrientation(double dt, std::vector<TrigFunction*> orbitFunctions, std::vector<float> speed, std::vector<float> dist,
-	glm::mat4& rmat) 
-{	
-	glm::vec3 translationVector = -glm::normalize(glm::vec3(orbitFunctions[0]->execute(speed[0] * dt) * dist[0], orbitFunctions[1]->execute(speed[1] * dt) * dist[1], orbitFunctions[2]->execute(speed[2] * dt) * dist[2]));
-
-	float x = translationVector.x, y = translationVector.y, z = translationVector.z;
-
-	//rmat = glm::rotate(glm::atan(x,z), glm::vec3(0, 1, 0));
-
-	rmat = glm::rotate(-glm::atan(y,z), glm::vec3(1, 0, 0));
-}
-
 void Graphics::Render()
 {
 	//clear the screen
@@ -219,78 +185,39 @@ void Graphics::Render()
 	glUniformMatrix4fv(m_projectionMatrix, 1, GL_FALSE, glm::value_ptr(m_camera->GetProjection()));
 	glUniformMatrix4fv(m_viewMatrix, 1, GL_FALSE, glm::value_ptr(m_camera->GetView()));
 
-	// Render the objects
-	/*if (m_cube != NULL){
-		glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(m_cube->GetModel()));
-		m_cube->Render(m_positionAttrib,m_colorAttrib);
-	}*/
+	//// Render starship
+	//if (m_mesh != NULL) {
+	//	glUniform1i(m_hasTexture, false);
+	//	glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(m_mesh->GetModel()));
+	//	if (m_mesh->hasTex) {
+	//		glActiveTexture(GL_TEXTURE0);
+	//		glBindTexture(GL_TEXTURE_2D, m_mesh->getTextureID());
+	//		GLuint sampler = m_shader->GetUniformLocation("sp");
+	//		if (sampler == INVALID_UNIFORM_LOCATION)
+	//		{
+	//			printf("Sampler Not found not found\n");
+	//		}
+	//		glUniform1i(sampler, 0);
+	//		m_mesh->Render(m_positionAttrib, m_colorAttrib, m_tcAttrib, m_hasTexture);
+	//	}
+	//}
 
+	for (int i = 0; i < solarSystem.size(); i++) {
+		Sphere* object = solarSystem[i];
 
-	if (m_mesh != NULL) {
-		glUniform1i(m_hasTexture, false);
-		glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(m_mesh->GetModel()));
-		if (m_mesh->hasTex) {
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, m_mesh->getTextureID());
-			GLuint sampler = m_shader->GetUniformLocation("sp");
-			if (sampler == INVALID_UNIFORM_LOCATION)
-			{
-				printf("Sampler Not found not found\n");
+		if (object != NULL) {
+			glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(object->GetModel()));
+			if (object->hasTex) {
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, object->getTextureID());
+				GLuint sampler = m_shader->GetUniformLocation("sp");
+				if (sampler == INVALID_UNIFORM_LOCATION)
+				{
+					printf("Sampler Not found not found\n");
+				}
+				glUniform1i(sampler, 0);
+				object->Render(m_positionAttrib, m_colorAttrib, m_tcAttrib, m_hasTexture);
 			}
-			glUniform1i(sampler, 0);
-			m_mesh->Render(m_positionAttrib, m_colorAttrib, m_tcAttrib, m_hasTexture);
-		}
-	}
-
-	/*if (m_pyramid != NULL) {
-		glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(m_pyramid->GetModel()));
-		m_pyramid->Render(m_positionAttrib, m_colorAttrib);
-	}*/
-
-	if (m_sphere != NULL) {
-		glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(m_sphere->GetModel()));
-		if (m_sphere->hasTex) {
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, m_sphere->getTextureID());
-			GLuint sampler = m_shader->GetUniformLocation("sp");
-			if (sampler == INVALID_UNIFORM_LOCATION)
-			{
-				printf("Sampler Not found not found\n");
-			}
-			glUniform1i(sampler, 0);
-			m_sphere->Render(m_positionAttrib, m_colorAttrib, m_tcAttrib, m_hasTexture);
-		}
-	}
-
-	if (m_sphere2 != NULL) {
-		glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(m_sphere2->GetModel()));
-		if (m_sphere2->hasTex) {
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, m_sphere2->getTextureID());
-			GLuint sampler = m_shader->GetUniformLocation("sp");
-			if (sampler == INVALID_UNIFORM_LOCATION)
-			{
-				printf("Sampler Not found not found\n");
-			}
-			glUniform1i(sampler, 0);
-			m_sphere2->Render(m_positionAttrib, m_colorAttrib, m_tcAttrib, m_hasTexture);
-		}
-	}
-
-
-	// Render Moon
-	if (m_sphere3 != NULL) {
-		glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(m_sphere3->GetModel()));
-		if (m_sphere3->hasTex) {
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, m_sphere3->getTextureID());
-			GLuint sampler = m_shader->GetUniformLocation("sp");
-			if (sampler == INVALID_UNIFORM_LOCATION)
-			{
-				printf("Sampler Not found not found\n");
-			}
-			glUniform1i(sampler, 0);
-			m_sphere3->Render(m_positionAttrib, m_colorAttrib, m_tcAttrib, m_hasTexture);
 		}
 	}
 

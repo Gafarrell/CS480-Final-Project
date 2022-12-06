@@ -34,6 +34,7 @@ class Camera
     double z = -16.0;
     glm::mat4 projection;
     glm::mat4 view;
+    
     int windowWidth, windowHeight;
 
     glm::vec3 speed = glm::vec3(1);

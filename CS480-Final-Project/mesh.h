@@ -23,20 +23,6 @@ public:
     bool InitBuffers();
     bool loadModelFromFile(const char* path);
 
-    std::vector<float> getAngle() { return angle; }
-    std::vector<float> getSpeed() { return speed; }
-    std::vector<float> getScale() { return scale; }
-    std::vector<float> getDistance() { return distance; }
-    std::vector<float> getRotationSpeed() { return rotationSpeed; }
-    std::vector<TrigFunction*> getOrbitalFunctions() { return orbitFunctions; }
-
-    void setScale(std::vector<float> scale) { this->scale = scale; }
-    void setAngle(std::vector<float> angle) { this->angle = angle; }
-    void setSpeed(std::vector<float> speed) { this->speed = speed; }
-    void setOrbitDistance(std::vector<float> distance) { this->distance = distance; }
-    void setRotationSpeed(std::vector<float> rotationSpeed) { this->rotationSpeed = rotationSpeed; }
-    void setOrbitalFunctions(std::vector<TrigFunction*> orbitalFunctions) { this->orbitFunctions = orbitalFunctions; }
-
     bool hasTex;
     GLuint getTextureID() { return m_texture->getTextureID(); }
 
@@ -54,12 +40,6 @@ private:
 
     GLuint vao;
 
-    std::vector<float> angle;
-    std::vector<float> speed;
-    std::vector<float> scale;
-    std::vector<float> distance;
-    std::vector<float> rotationSpeed;
-    std::vector<TrigFunction*> orbitFunctions;
 };
 
 #endif
