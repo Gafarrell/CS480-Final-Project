@@ -62,9 +62,29 @@ Mesh::~Mesh()
 	Indices.clear();
 }
 
-void Mesh::Update(glm::mat4 inmodel)
+void Mesh::Update(double dt)
 {
-	model = inmodel;
+	// Add velocity to position
+	glm::mat4 tmat = glm::translate(glm::mat4(1), (shipPosition += (speed * (float) dt)));
+
+	// Rotate ship based on mouse offset
+	horizAngle += dt * xMouseDelta;
+	vertAngle += dt * yMouseDelta;
+
+	xMouseDelta = yMouseDelta = 0;
+
+	glm::mat4 rmat = glm::rotate(glm::mat4(1), horizAngle, glm::vec3(0, 1, 0));
+	rmat *= glm::rotate(glm::mat4(1), vertAngle, glm::vec3(0, 0, 1));
+
+	glm::mat4 smat = glm::scale(glm::mat4(1), glm::vec3(uniformScale));
+
+	model *= tmat * rmat * smat;
+	
+	updateCamera();
+}
+
+void Mesh::updateCamera() {
+
 }
 
 glm::mat4 Mesh::GetModel()

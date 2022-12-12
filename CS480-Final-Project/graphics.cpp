@@ -74,7 +74,8 @@ bool Graphics::Initialize(int width, int height)
 	}
 
 	// Starship
-	m_mesh = new Mesh(glm::vec3(2.0f, 3.0f, -5.0f), "assets\\SpaceShip-1.obj", "assets\\SpaceShip-1.png");
+	m_controller = new Mesh(glm::vec3(2.0f, 3.0f, -5.0f), "assets\\SpaceShip-1.obj", "assets\\SpaceShip-1.png");
+	m_controller->setCamera(m_camera);
 
 	// The Sun
 	m_sphere = new Sphere(64, "assets\\2k_sun.jpg");
@@ -116,7 +117,9 @@ bool Graphics::Initialize(int width, int height)
 void Graphics::HierarchicalUpdate2(double dt) {
 
 	totalTime += dt;
+
 	// Update your animation for the solar system here.
+	m_controller->Update(dt);
 	m_camera->update(dt);
 
 	modelStack.push(glm::translate(glm::mat4(1), glm::vec3(0)));
@@ -133,7 +136,6 @@ void Graphics::HierarchicalUpdate2(double dt) {
 	m_sphere->Update(modelStack.top());
 
 	modelStack.pop();
-
 
 	ComputeTransforms(totalTime, m_sphere2->getOrbitalFunctions(), m_sphere2->getSpeed(), m_sphere2->getDistance(), m_sphere2->getRotationSpeed(), glm::vec3(0, 1, 0), m_sphere2->getScale(), tmat, rmat, smat);
 	modelStack.push(modelStack.top());
