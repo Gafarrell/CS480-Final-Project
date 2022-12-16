@@ -20,6 +20,8 @@ class Camera
 
     void setZoom(double zoom) { this->zoom = zoom; }
 
+    void setPerspective(glm::vec3 cameraPosition, glm::vec3 cameraFront, glm::vec3 cameraUp);
+
     void setForwardSpeed(float speed) { forwardSpeed = speed; }
     void setHorizontalSpeed(float speed) { horizSpeed = speed; }
     void setVertSpeed(float speed) { vertSpeed = speed; }

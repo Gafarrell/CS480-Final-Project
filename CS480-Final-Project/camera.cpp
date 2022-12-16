@@ -42,37 +42,19 @@ glm::mat4 Camera::GetView()
 
 void Camera::update(double dt)
 {
-	horizAngle += rotationSpeed * dt * xDelta;
-	vertAngle += rotationSpeed * dt * yDelta;
-
-	xDelta = yDelta = 0;
-
-	cameraFront = glm::vec3(
-		cos(vertAngle) * sin(horizAngle),
-		sin(vertAngle),
-		cos(vertAngle) * cos(horizAngle)
-	);
-
-	cameraUp = glm::vec3(
-		cos(vertAngle + (3.1415 / 4)) * sin(horizAngle),
-		sin(vertAngle + (3.1415 / 4)),
-		cos(vertAngle + (3.1415 / 4)) * cos(horizAngle)
-	);
-
-	projection = glm::perspective((float)glm::radians(40.f - zoom),
-		float(windowWidth) / float(windowHeight),
-		0.01f,
-		100.0f);
-
-	cameraPos += (forwardSpeed * cameraFront * (float)dt);
-	cameraPos += (vertSpeed * cameraUp * (float)dt);
-	cameraPos += glm::cross(cameraUp, cameraFront) * horizSpeed * (float) dt;
-
 	view = glm::lookAt(
 		cameraPos, // Move camera
-		cameraPos + cameraFront, // Adjust focused coordinate
+		cameraFront, // Adjust focused coordinate
 		cameraUp
 	);
+}
+
+void Camera::setPerspective(glm::vec3 cameraPosition, glm::vec3 cameraFront, glm::vec3 cameraUp) {
+	std::cout << "Camera position: " << cameraPosition.x << ", " << cameraPosition.y << ", " << cameraPosition.z << std::endl;
+	std::cout << "Looking at: " << cameraFront.x << ", " << cameraFront.y << ", " << cameraFront.z << std::endl;
+	this->cameraPos = cameraPosition;
+	this->cameraFront = cameraFront;
+	this->cameraUp = cameraUp;
 }
 
 void Camera::addSpeed(glm::vec3 s) {

@@ -25,7 +25,7 @@ class Graphics
     void HierarchicalUpdate2(double dt);
     void Render();
 
-    Camera* getCamera() { return m_camera; }
+    Mesh* getController() { return m_controller; }
 
   private:
     std::string ErrorString(GLenum error);
@@ -48,19 +48,18 @@ class Graphics
     GLint m_tcAttrib;
     GLint m_hasTexture;
 
-
     vector<Sphere*> solarSystem;
 
     Sphere* m_sphere;
     Sphere* m_sphere2;
     Sphere* m_sphere3;
 
-    Mesh* m_mesh;
+    int renderingProgram, renderingProgramCubeMap;
+    int skyBoxTexture;
 
-    double totalTime = 0;
+    Mesh* m_controller;
 
-
-
+    long double totalTime = 0;
 };
 
 #endif /* GRAPHICS_H */
