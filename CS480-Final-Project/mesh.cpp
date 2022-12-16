@@ -55,7 +55,6 @@ Mesh::Mesh(glm::vec3 pivot, const char* fname, const char* tname)
 		hasTex = false;
 }
 
-
 Mesh::~Mesh()
 {
 	Vertices.clear();
@@ -65,26 +64,47 @@ Mesh::~Mesh()
 void Mesh::Update(double dt)
 {
 	// Add velocity to position
-	glm::mat4 tmat = glm::translate(glm::mat4(1), (shipPosition += (speed * (float) dt)));
+	glm::mat4 tmat = glm::translate(glm::mat4(1), (shipPosition += (speedScalar * direction * (float) dt)));
 
 	// Rotate ship based on mouse offset
 	horizAngle += dt * xMouseDelta;
-	vertAngle += dt * yMouseDelta;
+    vertAngle -= dt * yMouseDelta;
 
 	xMouseDelta = yMouseDelta = 0;
 
+	vertAngle = glm::clamp(vertAngle, -3.1414f/2, 3.1414f/2);
+	horizAngle = horizAngle > (2*3.1415) ? horizAngle - (2*3.1415) : horizAngle < 0 ? horizAngle + (2*3.1415) : horizAngle;
+
 	glm::mat4 rmat = glm::rotate(glm::mat4(1), horizAngle, glm::vec3(0, 1, 0));
-	rmat *= glm::rotate(glm::mat4(1), vertAngle, glm::vec3(0, 0, 1));
+	rmat *= glm::rotate(glm::mat4(1), vertAngle, glm::vec3(1, 0, 0));
 
 	glm::mat4 smat = glm::scale(glm::mat4(1), glm::vec3(uniformScale));
 
-	model *= tmat * rmat * smat;
-	
+	model = tmat * rmat * smat;
+
 	updateCamera();
+	std::cout << "Ship Position: " << shipPosition.x << ", " << shipPosition.y << ", " << shipPosition.z << std::endl << std::endl;
 }
 
 void Mesh::updateCamera() {
+	glm::vec3 localBack = glm::vec3(
+		-model[2][0],
+		-model[2][1],
+		-model[2][2]
+	);
+	std::cout << "Local back: " << localBack.x << ", " << localBack.y << ", " << localBack.z << std::endl;
 
+	glm::vec3 localUp = glm::vec3(
+		model[1][0],
+		model[1][1],
+		model[1][2]
+	);
+
+	// Ship rotates along the x
+	glm::vec3 thirdPersonPositionOffset = localBack * -thirdPersonOffsets.x;
+	thirdPersonPositionOffset += localUp * thirdPersonOffsets.y;
+
+	m_camera->setPerspective(shipPosition + thirdPersonPositionOffset, shipPosition + (localUp*thirdPersonVerticalFocusOffset), glm::vec3(0, 1, 0));
 }
 
 glm::mat4 Mesh::GetModel()
@@ -215,6 +235,7 @@ bool Mesh::loadModelFromFile(const char* path) {
 		}
 		iTotalVerts += mesh->mNumVertices;
 	}
+
 	for (int i = 0; i < Vertices.size(); i++) {
 		Indices.push_back(i);
 	}

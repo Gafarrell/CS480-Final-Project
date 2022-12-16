@@ -74,7 +74,8 @@ void Engine::Run()
 
 void Engine::adjustZoom(float zoom) {
     if (m_focused)
-        m_graphics->getCamera()->addZoom(zoom);
+        cout << "Zooming." << endl;
+        //m_graphics->getController()->addZoom(zoom);
 }
 
 void Engine::ProcessInput()
@@ -82,41 +83,41 @@ void Engine::ProcessInput()
     if (glfwGetKey(m_window->getWindow(), GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(m_window->getWindow(), true);
 
+    glm::vec3 meshDirection = glm::vec3(0);
 
-    // Update camera animation here.
-    if (glfwGetKey(m_window->getWindow(), GLFW_KEY_W) != GLFW_PRESS && glfwGetKey(m_window->getWindow(), GLFW_KEY_S) != GLFW_PRESS)
-        m_graphics->getCamera()->setForwardSpeed(0);
-    if (glfwGetKey(m_window->getWindow(), GLFW_KEY_A) != GLFW_PRESS && glfwGetKey(m_window->getWindow(), GLFW_KEY_D) != GLFW_PRESS)
-        m_graphics->getCamera()->setHorizontalSpeed(0);
-    if (glfwGetKey(m_window->getWindow(), GLFW_KEY_SPACE) != GLFW_PRESS && glfwGetKey(m_window->getWindow(), GLFW_KEY_LEFT_SHIFT) != GLFW_PRESS)
-        m_graphics->getCamera()->setVertSpeed(0);
+    // Forward backward
+    if (keyPressed(GLFW_KEY_W))
+        meshDirection.z += 1;
+    if (keyPressed(GLFW_KEY_S))
+        meshDirection.z -= 1;
 
-    if (glfwGetKey(m_window->getWindow(), GLFW_KEY_W) == GLFW_PRESS)
-        m_graphics->getCamera()->setForwardSpeed(1);
-    if (glfwGetKey(m_window->getWindow(), GLFW_KEY_S) == GLFW_PRESS)
-        m_graphics->getCamera()->setForwardSpeed(-1);
-    if (glfwGetKey(m_window->getWindow(), GLFW_KEY_A) == GLFW_PRESS)
-        m_graphics->getCamera()->setHorizontalSpeed(1);
-    if (glfwGetKey(m_window->getWindow(), GLFW_KEY_D) == GLFW_PRESS)
-        m_graphics->getCamera()->setHorizontalSpeed(-1);
-    if (glfwGetKey(m_window->getWindow(), GLFW_KEY_SPACE) == GLFW_PRESS)
-        m_graphics->getCamera()->setVertSpeed(1);
-    if (glfwGetKey(m_window->getWindow(), GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-        m_graphics->getCamera()->setVertSpeed(-1);
+    // Left Right
+    if (keyPressed(GLFW_KEY_A))
+        meshDirection.x -= 1;
+    if (keyPressed(GLFW_KEY_D))
+        meshDirection.x += 1;
+    
+    // Up down
+    if (keyPressed(GLFW_KEY_SPACE))
+        meshDirection.y += 1;
+    if (keyPressed(GLFW_KEY_LEFT_SHIFT))
+        meshDirection.y -=1;
 
+    m_graphics->getController()->setDirection(meshDirection);
 
     if (m_focused) {
         double xPos, yPos;
         glfwGetCursorPos(m_window->getWindow(), &xPos, &yPos);
 
         float xDelta = (m_WINDOW_WIDTH / 2) - (float)xPos, yDelta = (m_WINDOW_HEIGHT / 2) - (float)yPos;
-        m_graphics->getCamera()->setRotateDelta(xDelta, yDelta);
+        m_graphics->getController()->setRotateDeltas(xDelta, yDelta);
 
         glfwSetCursorPos(m_window->getWindow(), m_WINDOW_WIDTH / 2, m_WINDOW_HEIGHT / 2);
     }
+}
 
-
-
+bool Engine::keyPressed(int key) {
+    return glfwGetKey(m_window->getWindow(), key) == GLFW_PRESS;
 }
 
 unsigned int Engine::getDT()
@@ -142,7 +143,6 @@ void Engine::setFocused(bool focused) {
         m_focused = true;
     }
     else {
-        m_graphics->getCamera()->setSpeed(glm::vec3(0));
         m_focused = false;
     }
 }

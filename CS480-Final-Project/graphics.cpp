@@ -85,7 +85,7 @@ bool Graphics::Initialize(int width, int height)
 	m_sphere->setRotationSpeed({ 0.15f });
 	m_sphere->setScale({ 1, 1, 1 });
 	m_sphere->setSpeed({ 2,2,2 });
-	solarSystem.push_back(m_sphere);
+	//solarSystem.push_back(m_sphere);
 
 	// The Earth
 	m_sphere2 = new Sphere(48, "assets\\2k_earth_daymap.jpg");
@@ -95,7 +95,7 @@ bool Graphics::Initialize(int width, int height)
 	m_sphere2->setRotationSpeed({ 0.35f });
 	m_sphere2->setScale({ 0.5f,0.5f,0.5f });
 	m_sphere2->setSpeed({0.15f, 0.15f, 0.15f});
-	solarSystem.push_back(m_sphere2);
+	//solarSystem.push_back(m_sphere2);
 
 	// The moon
 	m_sphere3 = new Sphere(48, "assets\\2k_moon.jpg");
@@ -105,7 +105,11 @@ bool Graphics::Initialize(int width, int height)
 	m_sphere3->setRotationSpeed({ 0.5f });
 	m_sphere3->setScale({ 0.15f,0.15f,0.15f });
 	m_sphere3->setSpeed({ .25f,.25f,.25f });
-	solarSystem.push_back(m_sphere3);
+	//solarSystem.push_back(m_sphere3);
+
+	Sphere* starBox = new Sphere(100, "assets\\galaxy.jpg");
+	starBox->setScale({ 50,50,50 });
+	solarSystem.push_back(starBox);
 
 	//enable depth testing
 	glEnable(GL_DEPTH_TEST);
@@ -159,6 +163,8 @@ void Graphics::HierarchicalUpdate2(double dt) {
 
 	m_sphere3->Update(modelStack.top());
 
+	solarSystem[0]->Update(glm::scale(glm::mat4(1), glm::vec3( 50,50,50 )));
+
 	while (!modelStack.empty()) modelStack.pop();
 }
 
@@ -187,22 +193,22 @@ void Graphics::Render()
 	glUniformMatrix4fv(m_projectionMatrix, 1, GL_FALSE, glm::value_ptr(m_camera->GetProjection()));
 	glUniformMatrix4fv(m_viewMatrix, 1, GL_FALSE, glm::value_ptr(m_camera->GetView()));
 
-	//// Render starship
-	//if (m_mesh != NULL) {
-	//	glUniform1i(m_hasTexture, false);
-	//	glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(m_mesh->GetModel()));
-	//	if (m_mesh->hasTex) {
-	//		glActiveTexture(GL_TEXTURE0);
-	//		glBindTexture(GL_TEXTURE_2D, m_mesh->getTextureID());
-	//		GLuint sampler = m_shader->GetUniformLocation("sp");
-	//		if (sampler == INVALID_UNIFORM_LOCATION)
-	//		{
-	//			printf("Sampler Not found not found\n");
-	//		}
-	//		glUniform1i(sampler, 0);
-	//		m_mesh->Render(m_positionAttrib, m_colorAttrib, m_tcAttrib, m_hasTexture);
-	//	}
-	//}
+	// Render starship
+	if (m_controller != NULL) {
+		glUniform1i(m_hasTexture, false);
+		glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(m_controller->GetModel()));
+		if (m_controller->hasTex) {
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, m_controller->getTextureID());
+			GLuint sampler = m_shader->GetUniformLocation("sp");
+			if (sampler == INVALID_UNIFORM_LOCATION)
+			{
+				printf("Sampler Not found not found\n");
+			}
+			glUniform1i(sampler, 0);
+			m_controller->Render(m_positionAttrib, m_colorAttrib, m_tcAttrib, m_hasTexture);
+		}
+	}
 
 	for (int i = 0; i < solarSystem.size(); i++) {
 		Sphere* object = solarSystem[i];

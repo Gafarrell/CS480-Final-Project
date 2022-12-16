@@ -25,9 +25,14 @@ public:
     bool loadModelFromFile(const char* path);
 
     void setTranslation(glm::vec3 translation) { this->shipPosition = translation; }
-    void addSpeed(glm::vec3 speed) { this->speed = speed; }
-    void setSpeed(glm::vec3 speed) { this->speed = speed; }
+
+    void setSpeed(float speed) { this->speedScalar = speed; }
+
+    void setDirection(glm::vec3 direction) { this->direction = direction; }
+    void setRotateDeltas(double xDelta, double yDelta) { this->xMouseDelta = xDelta; this->yMouseDelta = yDelta; }
+    
     void setCamera(Camera* camera) { this->m_camera = camera; }
+    void setUniformScale(float scale) { this->uniformScale = scale; }
 
     bool hasTex;
     GLuint getTextureID() { return m_texture->getTextureID(); }
@@ -40,17 +45,24 @@ private:
     glm::mat4 model;
     std::vector<Vertex> Vertices;
     std::vector<unsigned int> Indices;
+
     GLuint VB;
     GLuint IB;
 
     Camera* m_camera;
-    glm::vec3 shipPosition = glm::vec3(0, -10, -16);
-    glm::vec3 thirdPersonPositionOffset = glm::vec3(0, -1, -1), thirdPersonFocusOffset = glm::vec3(0,0.5f,0);
-    glm::vec3 speed;
+    
+    glm::vec3 shipPosition = glm::vec3(0, 0, 0);
+    glm::vec3 direction = glm::vec3(0, 0, 0);
+
+    glm::vec2 thirdPersonOffsets = glm::vec2(-200, 50);
+    glm::vec3 firstPersonOffset = glm::vec3(0), firstPersonFocus = glm::vec3(0);
+
+    float speedScalar = 1.f;
+    float thirdPersonVerticalFocusOffset = 25.f;
 
     float uniformScale = 0.05f;
-    float horizAngle = 0;
-    float vertAngle = -3.1415 / 4;
+    float horizAngle = 0.f;
+    float vertAngle = 0;
 
     Texture* m_texture;
 

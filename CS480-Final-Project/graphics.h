@@ -54,6 +54,9 @@ class Graphics
     Sphere* m_sphere2;
     Sphere* m_sphere3;
 
+    int renderingProgram, renderingProgramCubeMap;
+    int skyBoxTexture;
+
     Mesh* m_controller;
 
     long double totalTime = 0;

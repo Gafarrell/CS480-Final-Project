@@ -23,6 +23,7 @@ class Engine
     void setFocused(bool focused);
     void adjustZoom(float zoom);
 
+    bool keyPressed(int key);
   
   private:
     // Window related variables

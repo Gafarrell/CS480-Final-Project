@@ -44,12 +44,14 @@ void Camera::update(double dt)
 {
 	view = glm::lookAt(
 		cameraPos, // Move camera
-		cameraPos + cameraFront, // Adjust focused coordinate
+		cameraFront, // Adjust focused coordinate
 		cameraUp
 	);
 }
 
 void Camera::setPerspective(glm::vec3 cameraPosition, glm::vec3 cameraFront, glm::vec3 cameraUp) {
+	std::cout << "Camera position: " << cameraPosition.x << ", " << cameraPosition.y << ", " << cameraPosition.z << std::endl;
+	std::cout << "Looking at: " << cameraFront.x << ", " << cameraFront.y << ", " << cameraFront.z << std::endl;
 	this->cameraPos = cameraPosition;
 	this->cameraFront = cameraFront;
 	this->cameraUp = cameraUp;
