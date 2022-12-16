@@ -107,8 +107,8 @@ bool Graphics::Initialize(int width, int height)
 	m_sphere3->setSpeed({ .25f,.25f,.25f });
 	//solarSystem.push_back(m_sphere3);
 
-	Sphere* starBox = new Sphere(100, "assets\\galaxy.jpg");
-	starBox->setScale({ 50,50,50 });
+	Sphere* starBox = new Sphere(500, "assets\\galaxy.jpg");
+	starBox->setScale({ 250,250,250 });
 	solarSystem.push_back(starBox);
 
 	//enable depth testing
@@ -163,7 +163,7 @@ void Graphics::HierarchicalUpdate2(double dt) {
 
 	m_sphere3->Update(modelStack.top());
 
-	solarSystem[0]->Update(glm::scale(glm::mat4(1), glm::vec3( 50,50,50 )));
+	solarSystem[0]->Update(glm::scale(glm::mat4(1), glm::vec3( 75 )));
 
 	while (!modelStack.empty()) modelStack.pop();
 }

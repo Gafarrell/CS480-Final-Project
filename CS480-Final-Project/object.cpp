@@ -80,6 +80,7 @@ void Object::Render(GLint posAttribLoc, GLint colAttribLoc)
 
 bool Object::InitBuffers() {
 
+	glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 	// For OpenGL 3
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
