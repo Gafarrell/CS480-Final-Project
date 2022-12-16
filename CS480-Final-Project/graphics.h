@@ -37,8 +37,9 @@ class Graphics
 
     stack<glm::mat4> modelStack;
 
-    Camera *m_camera;
-    Shader *m_shader;
+    Camera* m_camera;
+    Shader* m_shader;
+    Shader* skybox_shader;
 
     GLint m_projectionMatrix;
     GLint m_viewMatrix;

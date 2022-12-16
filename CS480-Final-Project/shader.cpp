@@ -1,8 +1,9 @@
 #include "shader.h"
+#include "Utils.h"
 
-Shader::Shader()
+Shader::Shader(const char* vShaderFile, const char* fShaderFile)
 {
-  m_shaderProg = 0;
+    m_shaderProg = Utils::createShaderProgram(vShaderFile, fShaderFile);
 }
 
 Shader::~Shader()

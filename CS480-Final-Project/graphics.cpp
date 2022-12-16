@@ -40,37 +40,18 @@ bool Graphics::Initialize(int width, int height)
 	}
 
 	// Set up the shaders
-	m_shader = new Shader();
-	if (!m_shader->Initialize())
-	{
-		printf("Shader Failed to Initialize\n");
+	m_shader = new Shader("genericVertShader.glsl", "genericFragShader.glsl");
+
+	if (m_shader->getProgram() == 0) {
+		cout << "Failed to load generic shader." << endl;
 		return false;
 	}
 
-	// Add the vertex shader
-	if (!m_shader->AddShader(GL_VERTEX_SHADER))
-	{
-		printf("Vertex Shader failed to Initialize\n");
-		return false;
-	}
+	skybox_shader = new Shader("skyboxVertShader.glsl", "skyboxFragShader.glsl");
 
-	// Add the fragment shader
-	if (!m_shader->AddShader(GL_FRAGMENT_SHADER))
-	{
-		printf("Fragment Shader failed to Initialize\n");
+	if (skybox_shader->getProgram() == 0) {
+		cout << "Unable to load skybox shader." << endl;
 		return false;
-	}
-
-	// Connect the program
-	if (!m_shader->Finalize())
-	{
-		printf("Program to Finalize\n");
-		return false;
-	}
-
-	// Populate location bindings of the shader uniform/attribs
-	if (!collectShPrLocs()) {
-		printf("Some shader attribs not located!\n");
 	}
 
 	// Starship
@@ -209,6 +190,8 @@ void Graphics::Render()
 			m_controller->Render(m_positionAttrib, m_colorAttrib, m_tcAttrib, m_hasTexture);
 		}
 	}
+
+
 
 	for (int i = 0; i < solarSystem.size(); i++) {
 		Sphere* object = solarSystem[i];
