@@ -60,7 +60,7 @@ bool Graphics::Initialize(int width, int height)
 	m_controller = new Mesh(glm::vec3(2.0f, 3.0f, -5.0f), "assets\\SpaceShip-1.obj", "assets\\SpaceShip-1.png");
 	m_controller->setCamera(m_camera);
 
-	skyBox = new SkyBox("assets\\Galaxy-Cubemap", 200, 200);
+	skyBox = new SkyBox("assets\\Highres-Cubemap", 200, 200);
 	skyBox->setShader(skybox_shader);
 
 	//Sphere* starBox = new Sphere(500, "assets\\galaxy.jpg");
