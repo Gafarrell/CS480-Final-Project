@@ -8,12 +8,13 @@
 class Shader
 {
   public:
-    Shader();
+    Shader(const char* vShaderFile, const char* fShaderFile);
     ~Shader();
     bool Initialize();
     void Enable();
     bool AddShader(GLenum ShaderType);
     bool Finalize();
+    GLint getProgram() { return m_shaderProg; }
     GLint GetUniformLocation(const char* pUniformName);
     GLint GetAttribLocation(const char* pAttribName);
 

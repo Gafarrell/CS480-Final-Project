@@ -19,7 +19,7 @@ class Object
     bool InitBuffers();
     void setupVerticies();
 
-  private:
+  protected:
     glm::vec3 pivotLocation;
     glm::mat4 model;
     std::vector<Vertex> Vertices;
