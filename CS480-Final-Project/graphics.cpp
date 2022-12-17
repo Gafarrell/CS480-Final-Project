@@ -40,7 +40,7 @@ bool Graphics::Initialize(int width, int height)
 	}
 
 	// Set up the shaders
-	m_shader = new Shader("genericVertShader.glsl", "genericFragShader.glsl");
+	m_shader = new Shader("shaders\\genericVertShader.glsl", "shaders\\genericFragShader.glsl");
 
 	if (m_shader->getProgram() == 0) {
 		cout << "Failed to load generic shader." << endl;
@@ -49,7 +49,7 @@ bool Graphics::Initialize(int width, int height)
 	collectShPrLocs();
 
 
-	skybox_shader = new Shader("skyboxVertShader.glsl", "skyboxFragShader.glsl");
+	skybox_shader = new Shader("shaders\\skyboxVertShader.glsl", "shaders\\skyboxFragShader.glsl");
 
 	if (skybox_shader->getProgram() == 0) {
 		cout << "Unable to load skybox shader." << endl;

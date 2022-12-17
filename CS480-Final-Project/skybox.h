@@ -5,6 +5,7 @@
 #include "object.h"
 #include <SOIL2/SOIL2.h>
 #include "Texture.h"
+#include "shader.h"
 
 using namespace std;
 
@@ -21,6 +22,7 @@ private:
 	void Render(GLint posAttribLoc, GLint colAttribLoc, GLint tcAttribLoc);
 
 	Texture* m_texture;
+	Shader* shader;
 
 	GLint cubeMapRenderer;
 	int sectionW, sectionH;
