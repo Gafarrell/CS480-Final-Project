@@ -21,10 +21,12 @@
   <ItemGroup>
     <None Include="assimp-vc143-mtd.dll" />
     <None Include="glew32.dll" />
+    <None Include="shaders\instanceFragShader.glsl" />
     <None Include="shaders\genericFragShader.glsl" />
     <None Include="shaders\genericVertShader.glsl" />
     <None Include="shaders\skyboxFragShader.glsl" />
     <None Include="shaders\skyboxVertShader.glsl" />
+    <None Include="shaders\instanceVertShader.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="camera.cpp" />

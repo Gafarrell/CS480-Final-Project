@@ -29,6 +29,12 @@
     <None Include="shaders\skyboxVertShader.glsl">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="shaders\instanceFragShader.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shaders\instanceVertShader.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="camera.cpp">

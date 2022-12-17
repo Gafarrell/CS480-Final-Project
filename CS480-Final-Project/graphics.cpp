@@ -63,9 +63,35 @@ bool Graphics::Initialize(int width, int height)
 	skyBox = new SkyBox("assets\\Highres-Cubemap", 200, 200);
 	skyBox->setShader(skybox_shader);
 
-	//Sphere* starBox = new Sphere(500, "assets\\galaxy.jpg");
-	//starBox->setScale({ 250,250,250 });
-	//solarSystem.push_back(starBox);
+	// The Sun
+	m_sphere = new Sphere(64, "assets\\2k_sun.jpg");
+	m_sphere->setAngle(vector<float>({ 5 }));
+	m_sphere->setOrbitalFunctions(std::vector<TrigFunction*>({ new None(), new None(), new None() }));
+	m_sphere->setOrbitDistance(vector<float>({ 0,0,0 }));
+	m_sphere->setRotationSpeed(vector<float>({ 0.15f }));
+	m_sphere->setScale(vector<float>({ 1,1,1 }));
+	m_sphere->setSpeed(vector<float>({ 2,2,2 }));
+	solarSystem.push_back(m_sphere);
+
+	// The Earth
+	m_sphere2 = new Sphere(48, "assets\\2k_earth_daymap.jpg");
+	m_sphere2->setAngle(vector<float>({ 3 }));
+	m_sphere2->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
+	m_sphere2->setOrbitDistance(vector<float>({ 2.5f,2.5f,2.5f }));
+	m_sphere2->setRotationSpeed(vector<float>({ 0.35f }));
+	m_sphere2->setScale(vector<float>({ 0.5f,0.5f,0.5f }));
+	m_sphere2->setSpeed(vector<float>({ 0.15f, 0.15f, 0.15f }));
+	solarSystem.push_back(m_sphere2);
+
+	// The moon
+	m_sphere3 = new Sphere(48, "assets\\2k_moon.jpg");
+	m_sphere3->setAngle(vector<float>({ 0.56 }));
+	m_sphere3->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new Cos(), new Sin() }));
+	m_sphere3->setOrbitDistance(vector<float>({ 1.65,1.65,1.65 }));
+	m_sphere3->setRotationSpeed(vector<float>({ 0.5f }));
+	m_sphere3->setScale(vector<float>({ 0.15f,0.15f,0.15f }));
+	m_sphere3->setSpeed(vector<float>({ .25f,.25f,.25f }));
+	solarSystem.push_back(m_sphere3);
 
 	//enable depth testing
 	glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
@@ -77,11 +103,50 @@ bool Graphics::Initialize(int width, int height)
 
 void Graphics::HierarchicalUpdate2(double dt) {
 
+
 	totalTime += dt;
 
 	// Update your animation for the solar system here.
 	m_controller->Update(dt);
 	m_camera->update(dt);
+
+	modelStack.push(glm::translate(glm::mat4(1), glm::vec3(0)));
+
+	glm::mat4 tmat, rmat, smat;
+
+	ComputeTransforms(totalTime, m_sphere->getOrbitalFunctions(), m_sphere->getSpeed(), m_sphere->getDistance(), m_sphere->getRotationSpeed(), glm::vec3(0, 1, 0), m_sphere->getScale(), tmat, rmat, smat);
+	modelStack.push(modelStack.top());
+
+	modelStack.top() *= tmat;
+	modelStack.push(modelStack.top());
+	modelStack.top() *= rmat * smat;
+
+	m_sphere->Update(modelStack.top());
+
+	modelStack.pop();
+
+
+	ComputeTransforms(totalTime, m_sphere2->getOrbitalFunctions(), m_sphere2->getSpeed(), m_sphere2->getDistance(), m_sphere2->getRotationSpeed(), glm::vec3(0, 1, 0), m_sphere2->getScale(), tmat, rmat, smat);
+	modelStack.push(modelStack.top());
+
+	modelStack.top() *= tmat;
+	modelStack.push(modelStack.top());
+	modelStack.top() *= rmat * smat;
+
+	m_sphere2->Update(modelStack.top());
+
+	modelStack.pop();
+
+
+	ComputeTransforms(totalTime, m_sphere3->getOrbitalFunctions(), m_sphere3->getSpeed(), m_sphere3->getDistance(), m_sphere3->getRotationSpeed(), glm::vec3(0, 1, 0), m_sphere3->getScale(), tmat, rmat, smat);
+	modelStack.push(modelStack.top());
+
+	modelStack.top() *= tmat;
+	modelStack.push(modelStack.top());
+	modelStack.top() *= rmat;
+	modelStack.top() *= smat;
+
+	m_sphere3->Update(modelStack.top());
 
 	while (!modelStack.empty()) modelStack.pop();
 }
@@ -103,7 +168,6 @@ void Graphics::Render()
 	////clear the screen
 	glClearColor(0.5, 0.2, 0.2, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 
 	skybox_shader->Enable();
 
