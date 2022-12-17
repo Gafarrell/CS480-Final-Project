@@ -68,6 +68,7 @@ class Graphics
     Sphere* m_pluto;
     Sphere* m_haumea;
     Sphere* m_eris;
+    Sphere* m_halcomet;
 
     int renderingProgram, renderingProgramCubeMap;
     int skyBoxTexture;

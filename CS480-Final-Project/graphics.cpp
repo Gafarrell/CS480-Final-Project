@@ -78,7 +78,7 @@ bool Graphics::Initialize(int width, int height)
 	m_mercury->setAngle(vector<float>({ 3 }));
 	m_mercury->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
 	m_mercury->setOrbitDistance(vector<float>({ 2.0f,2.0f,2.0f }));
-	m_mercury->setRotationSpeed(vector<float>({ 0.35f }));
+	m_mercury->setRotationSpeed(vector<float>({ 0.06f }));
 	m_mercury->setScale(vector<float>({ 0.1f,0.1f,0.1f }));
 	m_mercury->setSpeed(vector<float>({ 0.35f, 0.35f, 0.35f }));
 	solarSystem.push_back(m_mercury);
@@ -88,7 +88,7 @@ bool Graphics::Initialize(int width, int height)
 	m_venus->setAngle(vector<float>({ 3 }));
 	m_venus->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
 	m_venus->setOrbitDistance(vector<float>({ 4.0f,4.0f,4.0f }));
-	m_venus->setRotationSpeed(vector<float>({ 0.35f }));
+	m_venus->setRotationSpeed(vector<float>({ 0.03f }));
 	m_venus->setScale(vector<float>({ 0.25f,0.25f,0.25f }));
 	m_venus->setSpeed(vector<float>({ 0.25f, 0.25f, 0.25f }));
 	solarSystem.push_back(m_venus);
@@ -139,7 +139,7 @@ bool Graphics::Initialize(int width, int height)
 	m_jupiter->setAngle(vector<float>({ 3 }));
 	m_jupiter->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
 	m_jupiter->setOrbitDistance(vector<float>({ 12.0f,12.0f,12.0f }));
-	m_jupiter->setRotationSpeed(vector<float>({ 0.35f }));
+	m_jupiter->setRotationSpeed(vector<float>({ 0.9f }));
 	m_jupiter->setScale(vector<float>({ 0.5f,0.5f,0.5f }));
 	m_jupiter->setSpeed(vector<float>({ 0.06f, 0.06f, 0.06f }));
 	solarSystem.push_back(m_jupiter);
@@ -149,7 +149,7 @@ bool Graphics::Initialize(int width, int height)
 	m_saturn->setAngle(vector<float>({ 3 }));
 	m_saturn->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
 	m_saturn->setOrbitDistance(vector<float>({ 14.0f,14.0f,14.0f }));
-	m_saturn->setRotationSpeed(vector<float>({ 0.35f }));
+	m_saturn->setRotationSpeed(vector<float>({ 0.82f }));
 	m_saturn->setScale(vector<float>({ 0.4f,0.4f,0.4f }));
 	m_saturn->setSpeed(vector<float>({ 0.05f, 0.05f, 0.05f }));
 	solarSystem.push_back(m_saturn);
@@ -159,7 +159,7 @@ bool Graphics::Initialize(int width, int height)
 	m_uranus->setAngle(vector<float>({ 3 }));
 	m_uranus->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
 	m_uranus->setOrbitDistance(vector<float>({ 16.0f,16.0f,16.0f }));
-	m_uranus->setRotationSpeed(vector<float>({ 0.35f }));
+	m_uranus->setRotationSpeed(vector<float>({ 0.6f }));
 	m_uranus->setScale(vector<float>({ 0.3f,0.3f,0.3f }));
 	m_uranus->setSpeed(vector<float>({ 0.03f, 0.03f, 0.03f }));
 	solarSystem.push_back(m_uranus);
@@ -169,7 +169,7 @@ bool Graphics::Initialize(int width, int height)
 	m_neptune->setAngle(vector<float>({ 3 }));
 	m_neptune->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
 	m_neptune->setOrbitDistance(vector<float>({ 18.0f,18.0f,18.0f }));
-	m_neptune->setRotationSpeed(vector<float>({ 0.35f }));
+	m_neptune->setRotationSpeed(vector<float>({ 0.5f }));
 	m_neptune->setScale(vector<float>({ 0.3f,0.3f,0.3f }));
 	m_neptune->setSpeed(vector<float>({ 0.02f, 0.02f, 0.02f }));
 	solarSystem.push_back(m_neptune);
@@ -203,6 +203,16 @@ bool Graphics::Initialize(int width, int height)
 	m_eris->setScale(vector<float>({ 0.05f,0.05f,0.05f }));
 	m_eris->setSpeed(vector<float>({ 0.006f, 0.006f, 0.006f }));
 	solarSystem.push_back(m_eris);
+
+	// Haley's Comet
+	m_halcomet = new Sphere(48, "assets\\Neptune.jpg");
+	m_halcomet->setAngle(vector<float>({ 3 }));
+	m_halcomet->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
+	m_halcomet->setOrbitDistance(vector<float>({ 26.0f,26.0f,26.0f }));
+	m_halcomet->setRotationSpeed(vector<float>({ 0.35f }));
+	m_halcomet->setScale(vector<float>({ 0.05f,0.05f,0.05f }));
+	m_halcomet->setSpeed(vector<float>({ 0.006f, 0.006f, 0.006f }));
+	solarSystem.push_back(m_halcomet);
 
 
 	//enable depth testing
@@ -404,6 +414,19 @@ void Graphics::HierarchicalUpdate2(double dt) {
 	modelStack.top() *= rmat * smat;
 
 	m_eris->Update(modelStack.top());
+
+	modelStack.pop();
+	modelStack.pop();
+
+	//Haley's Comet transform
+	ComputeTransforms(totalTime, m_halcomet->getOrbitalFunctions(), m_halcomet->getSpeed(), m_halcomet->getDistance(), m_halcomet->getRotationSpeed(), glm::vec3(0, 1, 0), m_halcomet->getScale(), tmat, rmat, smat);
+	modelStack.push(modelStack.top());
+
+	modelStack.top() *= tmat;
+	modelStack.push(modelStack.top());
+	modelStack.top() *= rmat * smat;
+
+	m_halcomet->Update(modelStack.top());
 
 	modelStack.pop();
 	modelStack.pop();
