@@ -11,8 +11,8 @@ Engine::Engine(const char* name, int width, int height)
 {
     if (engine == nullptr) engine = this;
   m_WINDOW_NAME = name;
-  m_WINDOW_WIDTH = width;
-  m_WINDOW_HEIGHT = height;
+  m_WINDOW_WIDTH = width*2;
+  m_WINDOW_HEIGHT = height*1.5;
 
 }
 
