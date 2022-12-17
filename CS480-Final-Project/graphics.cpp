@@ -64,34 +64,146 @@ bool Graphics::Initialize(int width, int height)
 	skyBox->setShader(skybox_shader);
 
 	// The Sun
-	m_sphere = new Sphere(64, "assets\\2k_sun.jpg");
-	m_sphere->setAngle(vector<float>({ 5 }));
-	m_sphere->setOrbitalFunctions(std::vector<TrigFunction*>({ new None(), new None(), new None() }));
-	m_sphere->setOrbitDistance(vector<float>({ 0,0,0 }));
-	m_sphere->setRotationSpeed(vector<float>({ 0.15f }));
-	m_sphere->setScale(vector<float>({ 1,1,1 }));
-	m_sphere->setSpeed(vector<float>({ 2,2,2 }));
-	solarSystem.push_back(m_sphere);
+	m_sun = new Sphere(64, "assets\\2k_sun.jpg");
+	m_sun->setAngle(vector<float>({ 5 }));
+	m_sun->setOrbitalFunctions(std::vector<TrigFunction*>({ new None(), new None(), new None() }));
+	m_sun->setOrbitDistance(vector<float>({ 0,0,0 }));
+	m_sun->setRotationSpeed(vector<float>({ 0.15f }));
+	m_sun->setScale(vector<float>({ 1,1,1 }));
+	m_sun->setSpeed(vector<float>({ 2,2,2 }));
+	solarSystem.push_back(m_sun);
+
+	// Mercury
+	m_mercury = new Sphere(48, "assets\\Mercury.jpg");
+	m_mercury->setAngle(vector<float>({ 3 }));
+	m_mercury->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
+	m_mercury->setOrbitDistance(vector<float>({ 1.0f,1.0f,1.0f }));
+	m_mercury->setRotationSpeed(vector<float>({ 0.35f }));
+	m_mercury->setScale(vector<float>({ 0.5f,0.5f,0.5f }));
+	m_mercury->setSpeed(vector<float>({ 0.15f, 0.15f, 0.15f }));
+	solarSystem.push_back(m_mercury);
+
+	// Venus
+	m_venus = new Sphere(48, "assets\\Venus.jpg");
+	m_venus->setAngle(vector<float>({ 3 }));
+	m_venus->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
+	m_venus->setOrbitDistance(vector<float>({ 2.0f,2.0f,2.0f }));
+	m_venus->setRotationSpeed(vector<float>({ 0.35f }));
+	m_venus->setScale(vector<float>({ 0.5f,0.5f,0.5f }));
+	m_venus->setSpeed(vector<float>({ 0.15f, 0.15f, 0.15f }));
+	solarSystem.push_back(m_venus);
+
 
 	// The Earth
-	m_sphere2 = new Sphere(48, "assets\\2k_earth_daymap.jpg");
-	m_sphere2->setAngle(vector<float>({ 3 }));
-	m_sphere2->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
-	m_sphere2->setOrbitDistance(vector<float>({ 2.5f,2.5f,2.5f }));
-	m_sphere2->setRotationSpeed(vector<float>({ 0.35f }));
-	m_sphere2->setScale(vector<float>({ 0.5f,0.5f,0.5f }));
-	m_sphere2->setSpeed(vector<float>({ 0.15f, 0.15f, 0.15f }));
-	solarSystem.push_back(m_sphere2);
+	m_earth = new Sphere(48, "assets\\2k_earth_daymap.jpg");
+	m_earth->setAngle(vector<float>({ 3 }));
+	m_earth->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
+	m_earth->setOrbitDistance(vector<float>({ 3.0f,3.0f,3.0f }));
+	m_earth->setRotationSpeed(vector<float>({ 0.35f }));
+	m_earth->setScale(vector<float>({ 0.5f,0.5f,0.5f }));
+	m_earth->setSpeed(vector<float>({ 0.15f, 0.15f, 0.15f }));
+	solarSystem.push_back(m_earth);
 
 	// The moon
-	m_sphere3 = new Sphere(48, "assets\\2k_moon.jpg");
-	m_sphere3->setAngle(vector<float>({ 0.56 }));
-	m_sphere3->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new Cos(), new Sin() }));
-	m_sphere3->setOrbitDistance(vector<float>({ 1.65,1.65,1.65 }));
-	m_sphere3->setRotationSpeed(vector<float>({ 0.5f }));
-	m_sphere3->setScale(vector<float>({ 0.15f,0.15f,0.15f }));
-	m_sphere3->setSpeed(vector<float>({ .25f,.25f,.25f }));
-	solarSystem.push_back(m_sphere3);
+	m_moon = new Sphere(48, "assets\\2k_moon.jpg");
+	m_moon->setAngle(vector<float>({ 0.56 }));
+	m_moon->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new Cos(), new Sin() }));
+	m_moon->setOrbitDistance(vector<float>({ 1.65,1.65,1.65 }));
+	m_moon->setRotationSpeed(vector<float>({ 0.5f }));
+	m_moon->setScale(vector<float>({ 0.15f,0.15f,0.15f }));
+	m_moon->setSpeed(vector<float>({ .25f,.25f,.25f }));
+	solarSystem.push_back(m_moon);
+
+	// Mars
+	m_mars = new Sphere(48, "assets\\Mars.jpg");
+	m_mars->setAngle(vector<float>({ 3 }));
+	m_mars->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
+	m_mars->setOrbitDistance(vector<float>({ 4.0f,4.0f }));
+	m_mars->setRotationSpeed(vector<float>({ 0.35f }));
+	m_mars->setScale(vector<float>({ 0.5f,0.5f,0.5f }));
+	m_mars->setSpeed(vector<float>({ 0.15f, 0.15f, 0.15f }));
+	solarSystem.push_back(m_mars);
+
+	// Ceres
+	m_ceres = new Sphere(48, "assets\\Ceres.jpg");
+	m_ceres->setAngle(vector<float>({ 3 }));
+	m_ceres->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
+	m_ceres->setOrbitDistance(vector<float>({ 5.0f,5.0f,5.0f }));
+	m_ceres->setRotationSpeed(vector<float>({ 0.35f }));
+	m_ceres->setScale(vector<float>({ 0.5f,0.5f,0.5f }));
+	m_ceres->setSpeed(vector<float>({ 0.15f, 0.15f, 0.15f }));
+	solarSystem.push_back(m_ceres);
+
+	// Jupiter
+	m_jupiter = new Sphere(48, "assets\\Jupiter.jpg");
+	m_jupiter->setAngle(vector<float>({ 3 }));
+	m_jupiter->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
+	m_jupiter->setOrbitDistance(vector<float>({ 6.0f,6.0f,6.0f }));
+	m_jupiter->setRotationSpeed(vector<float>({ 0.35f }));
+	m_jupiter->setScale(vector<float>({ 0.5f,0.5f,0.5f }));
+	m_jupiter->setSpeed(vector<float>({ 0.15f, 0.15f, 0.15f }));
+	solarSystem.push_back(m_jupiter);
+
+	// Saturn
+	m_saturn = new Sphere(48, "assets\\Saturn.jpg");
+	m_saturn->setAngle(vector<float>({ 3 }));
+	m_saturn->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
+	m_saturn->setOrbitDistance(vector<float>({ 7.0f,7.0f,7.0f }));
+	m_saturn->setRotationSpeed(vector<float>({ 0.35f }));
+	m_saturn->setScale(vector<float>({ 0.5f,0.5f,0.5f }));
+	m_saturn->setSpeed(vector<float>({ 0.15f, 0.15f, 0.15f }));
+	solarSystem.push_back(m_saturn);
+
+	// Uranus
+	m_uranus = new Sphere(48, "assets\\Uranus.jpg");
+	m_uranus->setAngle(vector<float>({ 3 }));
+	m_uranus->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
+	m_uranus->setOrbitDistance(vector<float>({ 8.0f,8.0f,8.0f }));
+	m_uranus->setRotationSpeed(vector<float>({ 0.35f }));
+	m_uranus->setScale(vector<float>({ 0.5f,0.5f,0.5f }));
+	m_uranus->setSpeed(vector<float>({ 0.15f, 0.15f, 0.15f }));
+	solarSystem.push_back(m_uranus);
+
+	// Neptune
+	m_neptune = new Sphere(48, "assets\\Neptune.jpg");
+	m_neptune->setAngle(vector<float>({ 3 }));
+	m_neptune->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
+	m_neptune->setOrbitDistance(vector<float>({ 9.0f,9.0f,9.0f }));
+	m_neptune->setRotationSpeed(vector<float>({ 0.35f }));
+	m_neptune->setScale(vector<float>({ 0.5f,0.5f,0.5f }));
+	m_neptune->setSpeed(vector<float>({ 0.15f, 0.15f, 0.15f }));
+	solarSystem.push_back(m_neptune);
+
+	// Pluto
+	m_pluto = new Sphere(48, "assets\\Mercury.jpg");
+	m_pluto->setAngle(vector<float>({ 3 }));
+	m_pluto->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
+	m_pluto->setOrbitDistance(vector<float>({ 10.0f,10.0f,10.0f }));
+	m_pluto->setRotationSpeed(vector<float>({ 0.35f }));
+	m_pluto->setScale(vector<float>({ 0.5f,0.5f,0.5f }));
+	m_pluto->setSpeed(vector<float>({ 0.15f, 0.15f, 0.15f }));
+	solarSystem.push_back(m_pluto);
+
+	// Haumea
+	m_haumea = new Sphere(48, "assets\\Haumea.jpg");
+	m_haumea->setAngle(vector<float>({ 3 }));
+	m_haumea->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
+	m_haumea->setOrbitDistance(vector<float>({ 11.0f,11.0f,11.0f }));
+	m_haumea->setRotationSpeed(vector<float>({ 0.35f }));
+	m_haumea->setScale(vector<float>({ 0.5f,0.5f,0.5f }));
+	m_haumea->setSpeed(vector<float>({ 0.15f, 0.15f, 0.15f }));
+	solarSystem.push_back(m_haumea);
+
+	// Eris
+	m_eris = new Sphere(48, "assets\\Eris.jpg");
+	m_eris->setAngle(vector<float>({ 3 }));
+	m_eris->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
+	m_eris->setOrbitDistance(vector<float>({ 12.0f,12.0f,12.0f }));
+	m_eris->setRotationSpeed(vector<float>({ 0.35f }));
+	m_eris->setScale(vector<float>({ 0.5f,0.5f,0.5f }));
+	m_eris->setSpeed(vector<float>({ 0.15f, 0.15f, 0.15f }));
+	solarSystem.push_back(m_eris);
+
 
 	//enable depth testing
 	glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
@@ -114,31 +226,31 @@ void Graphics::HierarchicalUpdate2(double dt) {
 
 	glm::mat4 tmat, rmat, smat;
 
-	ComputeTransforms(totalTime, m_sphere->getOrbitalFunctions(), m_sphere->getSpeed(), m_sphere->getDistance(), m_sphere->getRotationSpeed(), glm::vec3(0, 1, 0), m_sphere->getScale(), tmat, rmat, smat);
+	ComputeTransforms(totalTime, m_sun->getOrbitalFunctions(), m_sun->getSpeed(), m_sun->getDistance(), m_sun->getRotationSpeed(), glm::vec3(0, 1, 0), m_sun->getScale(), tmat, rmat, smat);
 	modelStack.push(modelStack.top());
 
 	modelStack.top() *= tmat;
 	modelStack.push(modelStack.top());
 	modelStack.top() *= rmat * smat;
 
-	m_sphere->Update(modelStack.top());
+	m_sun->Update(modelStack.top());
 
 	modelStack.pop();
 
 
-	ComputeTransforms(totalTime, m_sphere2->getOrbitalFunctions(), m_sphere2->getSpeed(), m_sphere2->getDistance(), m_sphere2->getRotationSpeed(), glm::vec3(0, 1, 0), m_sphere2->getScale(), tmat, rmat, smat);
+	ComputeTransforms(totalTime, m_earth->getOrbitalFunctions(), m_earth->getSpeed(), m_earth->getDistance(), m_earth->getRotationSpeed(), glm::vec3(0, 1, 0), m_earth->getScale(), tmat, rmat, smat);
 	modelStack.push(modelStack.top());
 
 	modelStack.top() *= tmat;
 	modelStack.push(modelStack.top());
 	modelStack.top() *= rmat * smat;
 
-	m_sphere2->Update(modelStack.top());
+	m_earth->Update(modelStack.top());
 
 	modelStack.pop();
 
 
-	ComputeTransforms(totalTime, m_sphere3->getOrbitalFunctions(), m_sphere3->getSpeed(), m_sphere3->getDistance(), m_sphere3->getRotationSpeed(), glm::vec3(0, 1, 0), m_sphere3->getScale(), tmat, rmat, smat);
+	ComputeTransforms(totalTime, m_moon->getOrbitalFunctions(), m_moon->getSpeed(), m_moon->getDistance(), m_moon->getRotationSpeed(), glm::vec3(0, 1, 0), m_moon->getScale(), tmat, rmat, smat);
 	modelStack.push(modelStack.top());
 
 	modelStack.top() *= tmat;
@@ -146,7 +258,7 @@ void Graphics::HierarchicalUpdate2(double dt) {
 	modelStack.top() *= rmat;
 	modelStack.top() *= smat;
 
-	m_sphere3->Update(modelStack.top());
+	m_moon->Update(modelStack.top());
 
 	while (!modelStack.empty()) modelStack.pop();
 }
