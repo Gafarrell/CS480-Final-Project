@@ -51,7 +51,7 @@ private:
 
     Camera* m_camera;
     
-    glm::vec3 shipPosition = glm::vec3(0, 0, 0);
+    glm::vec3 shipPosition = glm::vec3(0, 5,-10);
     glm::vec3 direction = glm::vec3(0, 0, 0);
 
     glm::vec2 thirdPersonOffsets = glm::vec2(-200, 50);
