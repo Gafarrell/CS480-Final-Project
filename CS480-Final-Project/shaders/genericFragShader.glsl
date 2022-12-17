@@ -14,4 +14,4 @@ void main(void)
         frag_color = texture(sp, tc);
     else 
         frag_color = vec4(color.rgb, 1);
-} 
+}
