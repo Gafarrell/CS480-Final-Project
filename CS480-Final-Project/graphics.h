@@ -11,6 +11,7 @@ using namespace std;
 #include "object.h"
 #include "sphere.h"
 #include "mesh.h"
+#include "skybox.h"
 
 #define numVBOs 2;
 #define numIBs 2;
@@ -48,6 +49,8 @@ class Graphics
     GLint m_colorAttrib;
     GLint m_tcAttrib;
     GLint m_hasTexture;
+
+    SkyBox* skyBox;
 
     vector<Sphere*> solarSystem;
 

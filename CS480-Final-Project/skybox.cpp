@@ -4,23 +4,25 @@ SkyBox::SkyBox(const char* dirName, int w, int h) {
 	sectionW = w / 4;
 	sectionH = h / 3;
 
-	loadCubemap(dirName);
+	cubeMap = loadCubemap(dirName);
+	setupVerticies();
+	InitBuffers();
 }
 
 unsigned int SkyBox::loadCubemap(const char* dirName) {
-	return -1;
+	return Utils::loadCubeMap(dirName);
 }
 
 void SkyBox::setupVerticies() {
 	Vertices = {
-	  {{1.0f, -1.0f, -1.0f}, {0.0f, 0.0f, 0.0f}, {1.,0.}},
-	  {{1.0f, -1.0f, 1.0f}, {1.0f, 0.0f, 0.0f}, {1.,0.}},
-	  {{-1.0f, -1.0f, 1.0f}, {0.0f, 1.0f, 0.0f}, {1.,0.}},
-	  {{-1.0f, -1.0f, -1.0f}, {0.0f, 0.0f, 1.0f}, {1.,0.}},
-	  {{1.0f, 1.0f, -1.0f}, {1.0f, 1.0f, 0.0f}, {1.,0.}},
-	  {{1.0f, 1.0f, 1.0f}, {1.0f, 0.0f, 1.0f}, {1.,0.}},
-	  {{-1.0f, 1.0f, 1.0f}, {0.0f, 1.0f, 1.0f}, {1.,0.}},
-	  {{-1.0f, 1.0f, -1.0f}, {1.0f, 1.0f, 1.0f}, {1.,0.}}
+  {{1.0f, -1.0f, -1.0f}, {0.0f, 0.0f, 0.0f}, {1.,0.}},
+  {{1.0f, -1.0f, 1.0f}, {1.0f, 0.0f, 0.0f}, {1.,0.}},
+  {{-1.0f, -1.0f, 1.0f}, {0.0f, 1.0f, 0.0f}, {1.,0.}},
+  {{-1.0f, -1.0f, -1.0f}, {0.0f, 0.0f, 1.0f}, {1.,0.}},
+  {{1.0f, 1.0f, -1.0f}, {1.0f, 1.0f, 0.0f}, {1.,0.}},
+  {{1.0f, 1.0f, 1.0f}, {1.0f, 0.0f, 1.0f}, {1.,0.}},
+  {{-1.0f, 1.0f, 1.0f}, {0.0f, 1.0f, 1.0f}, {1.,0.}},
+  {{-1.0f, 1.0f, -1.0f}, {1.0f, 1.0f, 1.0f}, {1.,0.}}
 	};
 
 	Indices = {
@@ -45,8 +47,18 @@ void SkyBox::setupVerticies() {
 	}
 }
 
+
+bool SkyBox::InitShader() {
+	m_position = shader->GetUniformLocation("v_matrix");
+	m_projection = shader->GetUniformLocation("p_matrix");
+	return true;
+}
+
+
+
 bool SkyBox::InitBuffers() 
 {
+
 	glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 
 	// For OpenGL 3
@@ -55,43 +67,27 @@ bool SkyBox::InitBuffers()
 
 	glGenBuffers(1, &VB);
 	glBindBuffer(GL_ARRAY_BUFFER, VB);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * Vertices.size(), &Vertices[0], GL_STATIC_DRAW);
-
-	glGenBuffers(1, &IB);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IB);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * Indices.size(), &Indices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertexPositions), cubeVertexPositions, GL_STATIC_DRAW);
 
 	return true;
 }
 
-void SkyBox::Render(GLint posAttribLoc, GLint colAttribLoc, GLint tcAttribLoc)
+void SkyBox::Render(glm::mat4 vMat, glm::mat4 pMat)
 {
-	glUseProgram(cubeMapRenderer);
+	glUniformMatrix4fv(m_position, 1, GL_FALSE, glm::value_ptr(vMat));
+	glUniformMatrix4fv(m_projection, 1, GL_FALSE, glm::value_ptr(pMat));
 
-	// Enable vertex attibute arrays for each vertex attrib
-	glEnableVertexAttribArray(posAttribLoc);
-	glEnableVertexAttribArray(colAttribLoc);
-
-	// Bind your VBO
+	GLint positionLoc = shader->GetAttribLocation("position");
 	glBindBuffer(GL_ARRAY_BUFFER, VB);
+	glVertexAttribPointer(positionLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(positionLoc);
 
-	// Set vertex attribute pointers to the load correct data
-	glVertexAttribPointer(posAttribLoc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
-	glVertexAttribPointer(colAttribLoc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
-
-	// Bind your Element Array
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IB);
-
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, cubeMap);
 
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CCW);
 	glDisable(GL_DEPTH_TEST);
-	// Render
-	glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
-
-	// Disable vertex arrays
-	glDisableVertexAttribArray(posAttribLoc);
-	glDisableVertexAttribArray(colAttribLoc);
-
+	glDrawArrays(GL_TRIANGLES, 0, 36);
 	glEnable(GL_DEPTH_TEST);
 }

@@ -60,11 +60,15 @@ bool Graphics::Initialize(int width, int height)
 	m_controller = new Mesh(glm::vec3(2.0f, 3.0f, -5.0f), "assets\\SpaceShip-1.obj", "assets\\SpaceShip-1.png");
 	m_controller->setCamera(m_camera);
 
-	Sphere* starBox = new Sphere(500, "assets\\galaxy.jpg");
-	starBox->setScale({ 250,250,250 });
-	solarSystem.push_back(starBox);
+	skyBox = new SkyBox("assets\\Galaxy-Cubemap", 200, 200);
+	skyBox->setShader(skybox_shader);
+
+	//Sphere* starBox = new Sphere(500, "assets\\galaxy.jpg");
+	//starBox->setScale({ 250,250,250 });
+	//solarSystem.push_back(starBox);
 
 	//enable depth testing
+	glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 
@@ -96,11 +100,16 @@ void Graphics::ComputeTransforms(double dt, std::vector<TrigFunction*> orbitFunc
 
 void Graphics::Render()
 {
-	//clear the screen
+	////clear the screen
 	glClearColor(0.5, 0.2, 0.2, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	// Start the correct program
+
+	skybox_shader->Enable();
+
+	skyBox->Render(m_camera->GetView(), m_camera->GetProjection());
+
+	// Start the generic shader program
 	m_shader->Enable();
 
 	// Send in the projection and view to the shader (stay the same while camera intrinsic(perspective) and extrinsic (view) parameters are the same
@@ -127,7 +136,7 @@ void Graphics::Render()
 
 	// Rendering algorithm for solar system.
 	// Implementing later.
-	/*for (int i = 0; i < solarSystem.size(); i++) {
+	for (int i = 0; i < solarSystem.size(); i++) {
 		Sphere* object = solarSystem[i];
 
 		if (object != NULL) {
@@ -144,7 +153,7 @@ void Graphics::Render()
 				object->Render(m_positionAttrib, m_colorAttrib, m_tcAttrib, m_hasTexture);
 			}
 		}
-	}*/
+	}
 
 	// Get any errors from OpenGL
 	auto error = glGetError();

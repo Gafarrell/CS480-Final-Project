@@ -17,6 +17,18 @@
   <ItemGroup>
     <None Include="assimp-vc143-mtd.dll" />
     <None Include="glew32.dll" />
+    <None Include="shaders\genericFragShader.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shaders\genericVertShader.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shaders\skyboxFragShader.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shaders\skyboxVertShader.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="camera.cpp">
