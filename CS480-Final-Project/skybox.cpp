@@ -64,7 +64,7 @@ bool SkyBox::InitBuffers()
 	return true;
 }
 
-void SkyBox::Render(GLint posAttribLoc, GLint colAttribLoc)
+void SkyBox::Render(GLint posAttribLoc, GLint colAttribLoc, GLint tcAttribLoc)
 {
 	glUseProgram(cubeMapRenderer);
 

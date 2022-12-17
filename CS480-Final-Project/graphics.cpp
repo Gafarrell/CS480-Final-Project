@@ -46,6 +46,8 @@ bool Graphics::Initialize(int width, int height)
 		cout << "Failed to load generic shader." << endl;
 		return false;
 	}
+	collectShPrLocs();
+
 
 	skybox_shader = new Shader("skyboxVertShader.glsl", "skyboxFragShader.glsl");
 
@@ -57,36 +59,6 @@ bool Graphics::Initialize(int width, int height)
 	// Starship
 	m_controller = new Mesh(glm::vec3(2.0f, 3.0f, -5.0f), "assets\\SpaceShip-1.obj", "assets\\SpaceShip-1.png");
 	m_controller->setCamera(m_camera);
-
-	// The Sun
-	m_sphere = new Sphere(64, "assets\\2k_sun.jpg");
-	m_sphere->setAngle({ 5 });
-	m_sphere->setOrbitalFunctions({ new None(), new None(), new None() });
-	m_sphere->setOrbitDistance({ 0, 0, 0 });
-	m_sphere->setRotationSpeed({ 0.15f });
-	m_sphere->setScale({ 1, 1, 1 });
-	m_sphere->setSpeed({ 2,2,2 });
-	//solarSystem.push_back(m_sphere);
-
-	// The Earth
-	m_sphere2 = new Sphere(48, "assets\\2k_earth_daymap.jpg");
-	m_sphere2->setAngle({ 3 });
-	m_sphere2->setOrbitalFunctions({ new Sin(), new None(), new Cos() });
-	m_sphere2->setOrbitDistance({ 2.5f,2.5f,2.5f });
-	m_sphere2->setRotationSpeed({ 0.35f });
-	m_sphere2->setScale({ 0.5f,0.5f,0.5f });
-	m_sphere2->setSpeed({0.15f, 0.15f, 0.15f});
-	//solarSystem.push_back(m_sphere2);
-
-	// The moon
-	m_sphere3 = new Sphere(48, "assets\\2k_moon.jpg");
-	m_sphere3->setAngle({ 0.56 });
-	m_sphere3->setOrbitalFunctions({ new Sin(), new Cos(), new Sin() });
-	m_sphere3->setOrbitDistance({ 1.65,1.65,1.65 });
-	m_sphere3->setRotationSpeed({ 0.5f });
-	m_sphere3->setScale({ 0.15f,0.15f,0.15f });
-	m_sphere3->setSpeed({ .25f,.25f,.25f });
-	//solarSystem.push_back(m_sphere3);
 
 	Sphere* starBox = new Sphere(500, "assets\\galaxy.jpg");
 	starBox->setScale({ 250,250,250 });
@@ -106,45 +78,6 @@ void Graphics::HierarchicalUpdate2(double dt) {
 	// Update your animation for the solar system here.
 	m_controller->Update(dt);
 	m_camera->update(dt);
-
-	modelStack.push(glm::translate(glm::mat4(1), glm::vec3(0)));
-
-	glm::mat4 tmat, rmat, smat;
-
-	ComputeTransforms(totalTime, m_sphere->getOrbitalFunctions(), m_sphere->getSpeed(), m_sphere->getDistance(), m_sphere->getRotationSpeed(), glm::vec3(0, 1, 0), m_sphere->getScale(), tmat, rmat, smat);
-	modelStack.push(modelStack.top());
-
-	modelStack.top() *= tmat;
-	modelStack.push(modelStack.top());
-	modelStack.top() *= rmat * smat;
-
-	m_sphere->Update(modelStack.top());
-
-	modelStack.pop();
-
-	ComputeTransforms(totalTime, m_sphere2->getOrbitalFunctions(), m_sphere2->getSpeed(), m_sphere2->getDistance(), m_sphere2->getRotationSpeed(), glm::vec3(0, 1, 0), m_sphere2->getScale(), tmat, rmat, smat);
-	modelStack.push(modelStack.top());
-
-	modelStack.top() *= tmat;
-	modelStack.push(modelStack.top());
-	modelStack.top() *= rmat * smat;
-
-	m_sphere2->Update(modelStack.top());
-
-	modelStack.pop();
-
-
-	ComputeTransforms(totalTime, m_sphere3->getOrbitalFunctions(), m_sphere3->getSpeed(), m_sphere3->getDistance(), m_sphere3->getRotationSpeed(), glm::vec3(0, 1, 0), m_sphere3->getScale(), tmat, rmat, smat);
-	modelStack.push(modelStack.top());
-
-	modelStack.top() *= tmat;
-	modelStack.push(modelStack.top());
-	modelStack.top() *= rmat; 
-	modelStack.top() *= smat;
-
-	m_sphere3->Update(modelStack.top());
-
-	solarSystem[0]->Update(glm::scale(glm::mat4(1), glm::vec3( 75 )));
 
 	while (!modelStack.empty()) modelStack.pop();
 }
@@ -192,8 +125,9 @@ void Graphics::Render()
 	}
 
 
-
-	for (int i = 0; i < solarSystem.size(); i++) {
+	// Rendering algorithm for solar system.
+	// Implementing later.
+	/*for (int i = 0; i < solarSystem.size(); i++) {
 		Sphere* object = solarSystem[i];
 
 		if (object != NULL) {
@@ -210,7 +144,7 @@ void Graphics::Render()
 				object->Render(m_positionAttrib, m_colorAttrib, m_tcAttrib, m_hasTexture);
 			}
 		}
-	}
+	}*/
 
 	// Get any errors from OpenGL
 	auto error = glGetError();

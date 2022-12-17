@@ -18,7 +18,7 @@ public:
 private:
 	void setupVerticies();
 	bool InitBuffers();
-	void Render(GLint posAttribLoc, GLint colAttribLoc);
+	void Render(GLint posAttribLoc, GLint colAttribLoc, GLint tcAttribLoc);
 
 	Texture* m_texture;
 
