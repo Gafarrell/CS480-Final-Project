@@ -12,6 +12,7 @@ public:
 
 	bool loadModelFromFile(const char* path);
 	void enableShader() { instance_shader->Enable(); }
+	void Update(double totalTime);
 
 	void setRadius(float radius) { this->radius = radius; }
 	void setOffset(float offset) { this->offset = offset; }
@@ -19,6 +20,7 @@ public:
 private:
 	int asteroidCount;
 	glm::mat4 *models;
+	glm::mat4 originPoint;
 	std::vector<Vertex> Vertices;
 	std::vector<unsigned int> Indices;
 
@@ -33,7 +35,8 @@ private:
 	GLuint VB, IB, MB, vao;
 	GLint posAttrib, colAttrib, tcAttrib;
 
-	float radius = 5.0f;
-	float offset = 2.5f;
+	float radius = 15.0f;
+	float offset = 0.5f;
+	float rotationSpeed = 0.005f;
 };
 

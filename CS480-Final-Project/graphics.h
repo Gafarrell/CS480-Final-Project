@@ -74,6 +74,7 @@ class Graphics
     Sphere* m_halcomet;
 
     AsteroidInstancer* m_asteroids;
+    AsteroidInstancer* m_outer_asteroids;
 
     int renderingProgram, renderingProgramCubeMap;
     int skyBoxTexture;

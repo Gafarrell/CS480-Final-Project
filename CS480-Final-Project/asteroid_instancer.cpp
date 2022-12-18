@@ -34,6 +34,10 @@ bool AsteroidInstancer::InitBuffers() {
 	return true;
 }
 
+void AsteroidInstancer::Update(double dt) {
+	originPoint = glm::rotate(originPoint, (float) dt * 0.005f, glm::vec3(0, 1, 0));
+}
+
 bool AsteroidInstancer::loadModelFromFile(const char* path) {
 	Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate);
@@ -61,9 +65,9 @@ bool AsteroidInstancer::loadModelFromFile(const char* path) {
 						mesh->mVertices[face.mIndices[k]].z),
 
 					// Color vector
-					glm::vec3(mesh->mVertices[face.mIndices[k]].x,
-						mesh->mVertices[face.mIndices[k]].y,
-						mesh->mVertices[face.mIndices[k]].z),
+					glm::vec3(mesh->mNormals[face.mIndices[k]].x,
+						mesh->mNormals[face.mIndices[k]].y,
+						mesh->mNormals[face.mIndices[k]].z),
 
 					glm::vec2(mesh->mTextureCoords[0][face.mIndices[k]].x,
 						mesh->mTextureCoords[0][face.mIndices[k]].y)
@@ -81,6 +85,7 @@ bool AsteroidInstancer::loadModelFromFile(const char* path) {
 }
 
 void AsteroidInstancer::generateModels() {
+	originPoint = glm::translate(glm::mat4(1), glm::vec3(0));
 	srand(glfwGetTime());
 	for (int i = 0; i < asteroidCount; i++) {
 		glm::mat4 model = glm::mat4(1);
@@ -95,8 +100,8 @@ void AsteroidInstancer::generateModels() {
 		float z = cos(angle) * radius + displacement;
 		model = glm::translate(model, glm::vec3(x, y, z));
 
-		// 2. scale: scale between 0.05 and 0.25f
-		float scale = 0.0005; // ((rand() % 20) / 1000) + 0.005;
+		// 2. scale: scale between 0.0005 and 0.000025f
+		float scale = 0.00005f + ((rand() % 10)/1000000);
 		model = glm::scale(model, glm::vec3(scale));
 
 		// 3. rotation: add random rotation around a (semi)randomly picked rotation axis vector
@@ -114,7 +119,7 @@ void AsteroidInstancer::getShaderLocs() {
 
 	m_view = instance_shader->GetUniformLocation("viewMatrix");
 	m_proj = instance_shader->GetUniformLocation("projectionMatrix");
-	m_model = instance_shader->GetUniformLocation("modelMatrix");
+	m_model = instance_shader->GetUniformLocation("originMatrix");
 
 	timeFactor = instance_shader->GetUniformLocation("tf");
 }
@@ -123,6 +128,7 @@ void AsteroidInstancer::Render(double totalTime, glm::mat4 cameraView, glm::mat4
 
 	glUniformMatrix4fv(m_view, 1, GL_FALSE, glm::value_ptr(cameraView));
 	glUniformMatrix4fv(m_proj, 1, GL_FALSE, glm::value_ptr(cameraProjection));
+	glUniformMatrix4fv(m_model, 1, GL_FALSE, glm::value_ptr(originPoint));
 
 	glUniform1f(timeFactor, (float) totalTime);
 

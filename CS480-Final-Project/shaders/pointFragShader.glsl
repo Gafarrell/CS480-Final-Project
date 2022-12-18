@@ -1,6 +1,6 @@
 #version 460
  
- out vec4 FragColor;
+out vec4 FragColor;
 
 uniform vec4 lightColor;
 
