@@ -468,7 +468,6 @@ void Graphics::Render()
 	// Start the generic shader program
 	m_shader->Enable();
 
-
 	// Send in the projection and view to the shader (stay the same while camera intrinsic(perspective) and extrinsic (view) parameters are the same
 	glUniformMatrix4fv(m_projectionMatrix, 1, GL_FALSE, glm::value_ptr(m_camera->GetProjection()));
 	glUniformMatrix4fv(m_viewMatrix, 1, GL_FALSE, glm::value_ptr(m_camera->GetView()));
@@ -476,7 +475,7 @@ void Graphics::Render()
 	//get sun color
 	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	//get sun pos
-	glm::vec3 lightPos = glm::vec3(100.0f, 100.0f, 100.0f);
+	glm::vec3 lightPos = glm::vec3(0);
 
 	m_shader->Enable();
 
@@ -504,7 +503,6 @@ void Graphics::Render()
 
 		}
 	}
-
 
 	// Rendering algorithm for solar system.
 	// Implementing later.

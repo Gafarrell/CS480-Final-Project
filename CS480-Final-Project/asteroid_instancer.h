@@ -37,5 +37,6 @@ private:
 
 	float radius = 15.0f;
 	float offset = 0.5f;
+	float rotationSpeed = 0.005f;
 };
 
