@@ -55,7 +55,7 @@ GLint Shader::GetAttribLocation(const char* pAttribName)
     GLuint Location = glGetAttribLocation(m_shaderProg, pAttribName);
 
     if (Location == -1) {
-        fprintf(stderr, "Warning! Unable to get the location of attribute '%s'\n", pAttribName);
+        printf("Warning! Unable to get the location of attribute '%s'\n", pAttribName);
     }
 
     return Location;

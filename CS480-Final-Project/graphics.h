@@ -12,6 +12,7 @@ using namespace std;
 #include "sphere.h"
 #include "mesh.h"
 #include "skybox.h"
+#include "asteroid_instancer.h"
 
 #define numVBOs 2;
 #define numIBs 2;
@@ -41,6 +42,7 @@ class Graphics
     Camera* m_camera;
     Shader* m_shader;
     Shader* skybox_shader;
+    Shader* instance_shader;
 
     GLint m_projectionMatrix;
     GLint m_viewMatrix;
@@ -69,6 +71,8 @@ class Graphics
     Sphere* m_haumea;
     Sphere* m_eris;
     Sphere* m_halcomet;
+
+    AsteroidInstancer* m_asteroids;
 
     int renderingProgram, renderingProgramCubeMap;
     int skyBoxTexture;

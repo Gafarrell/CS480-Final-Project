@@ -74,7 +74,7 @@ bool SkyBox::InitBuffers()
 
 void SkyBox::Render(glm::mat4 vMat, glm::mat4 pMat)
 {
-	vMat *= glm::translate(glm::mat4(1), glm::vec3(0, 0, 0));
+	vMat *= glm::translate(glm::mat4(1), -glm::vec3(vMat[3][0], vMat[3][1], vMat[3][2]));
 	glUniformMatrix4fv(m_position, 1, GL_FALSE, glm::value_ptr(vMat));
 	glUniformMatrix4fv(m_projection, 1, GL_FALSE, glm::value_ptr(pMat));
 

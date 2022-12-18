@@ -41,7 +41,7 @@ string Utils::readShaderFile(const char *filePath)
 	{
 		throw "Unable to open file.";
 	}
-	string line = "";
+	string line("");
 	while (!fileStream.eof()) 
 	{
 		getline(fileStream, line);
