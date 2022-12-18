@@ -49,6 +49,7 @@ class Graphics
     GLint m_modelMatrix;
     GLint m_positionAttrib;
     GLint m_colorAttrib;
+    GLint m_normalAttrib;
     GLint m_tcAttrib;
     GLint m_hasTexture;
 

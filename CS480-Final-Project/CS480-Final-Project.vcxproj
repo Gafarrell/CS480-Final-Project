@@ -51,6 +51,7 @@
     <ClInclude Include="graphics_headers.h" />
     <ClInclude Include="mesh.h" />
     <ClInclude Include="object.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="skybox.h" />
     <ClInclude Include="sphere.h" />
@@ -58,6 +59,13 @@
     <ClInclude Include="trig_functions.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="window.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="CS480-Final-Project.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="shaders\pointFragShader.txt" />
+    <Text Include="shaders\pointVertShader.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

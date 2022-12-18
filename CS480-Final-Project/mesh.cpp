@@ -139,7 +139,7 @@ void Mesh::Render(GLint posAttribLoc, GLint colAttribLoc)
 	glDisableVertexAttribArray(colAttribLoc);
 }
 
-void Mesh::Render(GLint posAttribLoc, GLint colAttribLoc, GLint tcAttribLoc, GLint hasTextureLoc)
+void Mesh::Render(GLint posAttribLoc, GLint colAttribLoc, GLint normalAttribLoc, GLint tcAttribLoc, GLint hasTextureLoc)
 {
 	glBindVertexArray(vao);
 
@@ -149,12 +149,15 @@ void Mesh::Render(GLint posAttribLoc, GLint colAttribLoc, GLint tcAttribLoc, GLi
 	// Enable vertex attibute arrays for each vertex attrib
 	glEnableVertexAttribArray(posAttribLoc);
 	glEnableVertexAttribArray(colAttribLoc);
+	glEnableVertexAttribArray(normalAttribLoc);
 	glEnableVertexAttribArray(tcAttribLoc);
 
 	// Set vertex attribute pointers to the load correct data
 	glVertexAttribPointer(posAttribLoc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
-	glVertexAttribPointer(colAttribLoc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
-	glVertexAttribPointer(tcAttribLoc, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texcoord));
+	glVertexAttribPointer(colAttribLoc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(glm::vec3)));
+	//change the offset
+	glVertexAttribPointer(tcAttribLoc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(glm::vec3) + sizeof(glm::vec2)));
+	glVertexAttribPointer(normalAttribLoc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(2 * sizeof(glm::vec3) + sizeof(glm::vec2)));
 
 	// If has texture, set up texture unit(s) Update here to activate and assign texture unit
 	if (m_texture != NULL) {
@@ -173,6 +176,7 @@ void Mesh::Render(GLint posAttribLoc, GLint colAttribLoc, GLint tcAttribLoc, GLi
 	// Disable vertex arrays
 	glDisableVertexAttribArray(posAttribLoc);
 	glDisableVertexAttribArray(colAttribLoc);
+	glDisableVertexAttribArray(normalAttribLoc);
 	glDisableVertexAttribArray(tcAttribLoc);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -188,6 +192,7 @@ bool Mesh::InitBuffers() {
 	glGenBuffers(1, &VB);
 	glBindBuffer(GL_ARRAY_BUFFER, VB);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * Vertices.size(), &Vertices[0], GL_STATIC_DRAW);
+
 
 	glGenBuffers(1, &IB);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IB);
@@ -221,6 +226,8 @@ bool Mesh::loadModelFromFile(const char* path) {
 					glm::vec3(mesh->mVertices[face.mIndices[k]].x,
 						mesh->mVertices[face.mIndices[k]].y,
 						mesh->mVertices[face.mIndices[k]].z),
+
+
 
 					// Color vector
 					glm::vec3(mesh->mVertices[face.mIndices[k]].x,

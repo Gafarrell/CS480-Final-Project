@@ -10,7 +10,7 @@ public:
 
 
     void Render(GLint positionAttribLoc, GLint colorAttribLoc);
-    void Render(GLint positionAttribLoc, GLint colorAttribLoc, GLint tcAttribLoc, GLint hasTex);
+    void Render(GLint positionAttribLoc, GLint colorAttribLoc, GLint normalAttribLoc, GLint tcAttribLoc, GLint hasTex);
 
     glm::mat4 GetModel() { return model; }
     void Update(glm::mat4 matModel);
@@ -50,6 +50,8 @@ private:
     std::vector<unsigned int> Indices;
     GLuint VB;
     GLuint IB;
+    GLuint TB;
+    GLuint NB;
     Texture* m_texture;
 
     GLuint vao;

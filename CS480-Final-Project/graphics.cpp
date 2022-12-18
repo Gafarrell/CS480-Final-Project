@@ -56,6 +56,7 @@ bool Graphics::Initialize(int width, int height)
 		return false;
 	}
 
+
 	// Starship
 	m_controller = new Mesh(glm::vec3(2.0f, 3.0f, -5.0f), "assets\\SpaceShip-1.obj", "assets\\SpaceShip-1.png");
 	m_controller->setCamera(m_camera);
@@ -420,7 +421,7 @@ void Graphics::HierarchicalUpdate2(double dt) {
 	modelStack.pop();
 	modelStack.pop();
 
-	//Haley's Comet transform
+	//Halley's Comet transform
 	ComputeTransforms(totalTime, m_halcomet->getOrbitalFunctions(), m_halcomet->getSpeed(), m_halcomet->getDistance(), m_halcomet->getRotationSpeed(), glm::vec3(0, 1, 0), m_halcomet->getScale(), tmat, rmat, smat);
 	modelStack.push(modelStack.top());
 
@@ -465,9 +466,18 @@ void Graphics::Render()
 	// Start the generic shader program
 	m_shader->Enable();
 
+
 	// Send in the projection and view to the shader (stay the same while camera intrinsic(perspective) and extrinsic (view) parameters are the same
 	glUniformMatrix4fv(m_projectionMatrix, 1, GL_FALSE, glm::value_ptr(m_camera->GetProjection()));
 	glUniformMatrix4fv(m_viewMatrix, 1, GL_FALSE, glm::value_ptr(m_camera->GetView()));
+
+	//get sun color
+	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	//get sun pos
+	glm::vec3 lightPos = glm::vec3(100.0f, 100.0f, 100.0f);
+
+	m_shader->Enable();
+
 
 	// Render starship
 	if (m_controller != NULL) {
@@ -481,15 +491,22 @@ void Graphics::Render()
 			{
 				printf("Sampler Not found not found\n");
 			}
+
+			glUniformMatrix3fv(glGetUniformLocation(m_shader->getProgram(), "normMatrix"), 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(glm::mat3(m_camera->GetProjection() * m_controller->GetModel())))));
+			glUniformMatrix4fv(glGetUniformLocation(m_shader->getProgram(), "modelMatrix"), 1, GL_FALSE, glm::value_ptr(m_controller->GetModel()));
+			glUniform4f(glGetUniformLocation(m_shader->getProgram(), "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
+			glUniform3f(glGetUniformLocation(m_shader->getProgram(), "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+
 			glUniform1i(sampler, 0);
-			m_controller->Render(m_positionAttrib, m_colorAttrib, m_tcAttrib, m_hasTexture);
+			m_controller->Render(m_positionAttrib, m_colorAttrib, m_normalAttrib, m_tcAttrib, m_hasTexture);
+
 		}
 	}
 
 
 	// Rendering algorithm for solar system.
 	// Implementing later.
-	/*for (int i = 0; i < solarSystem.size(); i++) {
+	for (int i = 0; i < solarSystem.size(); i++) {
 		Sphere* object = solarSystem[i];
 
 		if (object != NULL) {
@@ -502,11 +519,18 @@ void Graphics::Render()
 				{
 					printf("Sampler Not found not found\n");
 				}
+
+				glUniformMatrix3fv(glGetUniformLocation(m_shader->getProgram(), "normMatrix"), 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(glm::mat3(m_camera->GetProjection() * object->GetModel())))));
+				glUniformMatrix4fv(glGetUniformLocation(m_shader->getProgram(), "modelMatrix"), 1, GL_FALSE, glm::value_ptr(object->GetModel()));
+				glUniform4f(glGetUniformLocation(m_shader->getProgram(), "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
+				glUniform3f(glGetUniformLocation(m_shader->getProgram(), "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+
 				glUniform1i(sampler, 0);
-				object->Render(m_positionAttrib, m_colorAttrib, m_tcAttrib, m_hasTexture);
+				object->Render(m_positionAttrib, m_colorAttrib, m_normalAttrib, m_tcAttrib, m_hasTexture);
+				
 			}
 		}
-	}*/
+	}
 
 	// Get any errors from OpenGL
 	auto error = glGetError();
@@ -557,6 +581,14 @@ bool Graphics::collectShPrLocs() {
 	if (m_colorAttrib == -1)
 	{
 		printf("v_color attribute not found\n");
+		anyProblem = false;
+	}
+
+	// Locate the normal vertex attribute
+	m_normalAttrib = m_shader->GetAttribLocation("v_normal");
+	if (m_normalAttrib == -1)
+	{
+		printf("v_normal attribute not found\n");
 		anyProblem = false;
 	}
 
