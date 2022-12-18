@@ -5,12 +5,10 @@ uniform sampler2D sp;
 in vec3 color; 
 in vec2 tc;
 in vec3 Normal;
-in vec3 crntPos;
 in vec3 varPos;
 
 uniform vec4 lightColor;
 uniform vec3 lightPos;
-uniform vec3 camPos;
 
 uniform bool hasTexture;
 
@@ -26,7 +24,7 @@ void main(void)
 
 	float specularLight = 0.50f;
 	vec3 viewDirection = normalize(-varPos);
-	vec3 reflectionDirection = reflect(-lightDirection, normal);
+	vec3 reflectionDirection = normalize(reflect(-lightDirection, normal));
 
     float cosTheta = dot(lightDirection, normal);
     float cosPhi = dot(reflectionDirection, viewDirection);

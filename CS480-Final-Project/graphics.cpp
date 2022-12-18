@@ -464,6 +464,7 @@ void Graphics::Render()
 	// Send in the projection and view to the shader (stay the same while camera intrinsic(perspective) and extrinsic (view) parameters are the same
 	glUniformMatrix4fv(m_projectionMatrix, 1, GL_FALSE, glm::value_ptr(m_camera->GetProjection()));
 	glUniformMatrix4fv(m_viewMatrix, 1, GL_FALSE, glm::value_ptr(m_camera->GetView()));
+
 	//get sun color
 	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	//get sun pos
@@ -485,8 +486,7 @@ void Graphics::Render()
 				printf("Sampler Not found not found\n");
 			}
 
-			glUniformMatrix3fv(glGetUniformLocation(m_shader->getProgram(), "normMatrix"), 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(glm::mat3(m_camera->GetView() * m_controller->GetModel())))));
-			glUniform3f(glGetUniformLocation(m_shader->getProgram(), "camPos"), m_camera->getPosition().x, m_camera->getPosition().y, m_camera->getPosition().z);
+			glUniformMatrix3fv(glGetUniformLocation(m_shader->getProgram(), "normMatrix"), 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(glm::mat3(m_camera->GetProjection() * m_controller->GetModel())))));
 			glUniformMatrix4fv(glGetUniformLocation(m_shader->getProgram(), "modelMatrix"), 1, GL_FALSE, glm::value_ptr(m_controller->GetModel()));
 			glUniform4f(glGetUniformLocation(m_shader->getProgram(), "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
 			glUniform3f(glGetUniformLocation(m_shader->getProgram(), "lightPos"), lightPos.x, lightPos.y, lightPos.z);
@@ -514,8 +514,7 @@ void Graphics::Render()
 					printf("Sampler Not found not found\n");
 				}
 
-				glUniformMatrix3fv(glGetUniformLocation(m_shader->getProgram(), "normMatrix"), 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(glm::mat3(m_camera->GetView() * object->GetModel())))));
-				glUniform3f(glGetUniformLocation(m_shader->getProgram(), "camPos"), m_camera->getPosition().x, m_camera->getPosition().y, m_camera->getPosition().z);
+				glUniformMatrix3fv(glGetUniformLocation(m_shader->getProgram(), "normMatrix"), 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(glm::mat3(m_camera->GetProjection() * object->GetModel())))));
 				glUniformMatrix4fv(glGetUniformLocation(m_shader->getProgram(), "modelMatrix"), 1, GL_FALSE, glm::value_ptr(object->GetModel()));
 				glUniform4f(glGetUniformLocation(m_shader->getProgram(), "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
 				glUniform3f(glGetUniformLocation(m_shader->getProgram(), "lightPos"), lightPos.x, lightPos.y, lightPos.z);
