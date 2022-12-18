@@ -33,18 +33,22 @@ Sphere::Sphere(int prec, const char* fname) { // prec is precision, or number of
 }
 
 
-void Sphere::Render(GLint positionAttribLoc, GLint colorAttribLoc)
+void Sphere::Render(GLint positionAttribLoc, GLint colorAttribLoc, GLint normalAttribLoc)
 {
     glBindVertexArray(vao);
     // Enable Vertext Attributes
     glEnableVertexAttribArray(positionAttribLoc);
     glEnableVertexAttribArray(colorAttribLoc);
+    glEnableVertexAttribArray(normalAttribLoc);
 
     // Bind your VBO buffer(s) and then setup vertex attribute pointers
     glBindBuffer(GL_ARRAY_BUFFER, VB);
     glVertexAttribPointer(positionAttribLoc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
     glVertexAttribPointer(colorAttribLoc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
- 
+    //this needs to have a bigger offset
+    glVertexAttribPointer(normalAttribLoc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
+
+
     // Bind your index buffer
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IB);
 
@@ -54,14 +58,16 @@ void Sphere::Render(GLint positionAttribLoc, GLint colorAttribLoc)
     // Disable Vertex Attribuates
     glDisableVertexAttribArray(positionAttribLoc);
     glDisableVertexAttribArray(colorAttribLoc);
+    glDisableVertexAttribArray(normalAttribLoc);
 }
 
-void Sphere::Render(GLint posAttribLoc, GLint colAttribLoc, GLint tcAttribLoc, GLint hasTextureLoc)
+void Sphere::Render(GLint posAttribLoc, GLint colAttribLoc, GLint normalAttribLoc, GLint tcAttribLoc, GLint hasTextureLoc)
 {
     glBindVertexArray(vao);
     // Enable vertex attibute arrays for each vertex attrib
     glEnableVertexAttribArray(posAttribLoc);
     glEnableVertexAttribArray(colAttribLoc);
+    glEnableVertexAttribArray(normalAttribLoc);
     glEnableVertexAttribArray(tcAttribLoc);
 
     // Bind your VBO
@@ -69,7 +75,9 @@ void Sphere::Render(GLint posAttribLoc, GLint colAttribLoc, GLint tcAttribLoc, G
 
     // Set vertex attribute pointers to the load correct data. Update here to load the correct attributes.
     glVertexAttribPointer(posAttribLoc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
-    glVertexAttribPointer(colAttribLoc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
+    glVertexAttribPointer(colAttribLoc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, vertex));
+    //change size of offset
+    glVertexAttribPointer(normalAttribLoc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
     glVertexAttribPointer(tcAttribLoc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texcoord));
 
     // If has texture, set up texture unit(s): update here for texture rendering
@@ -89,6 +97,7 @@ void Sphere::Render(GLint posAttribLoc, GLint colAttribLoc, GLint tcAttribLoc, G
     // Disable vertex arrays
     glDisableVertexAttribArray(posAttribLoc);
     glDisableVertexAttribArray(colAttribLoc);
+    glDisableVertexAttribArray(normalAttribLoc);
     glDisableVertexAttribArray(tcAttribLoc);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }

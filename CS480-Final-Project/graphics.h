@@ -41,13 +41,14 @@ class Graphics
     Camera* m_camera;
     Shader* m_shader;
     Shader* skybox_shader;
-    Shader* pointLight_shader;
+    Shader* light_shader;
 
     GLint m_projectionMatrix;
     GLint m_viewMatrix;
     GLint m_modelMatrix;
     GLint m_positionAttrib;
     GLint m_colorAttrib;
+    GLint m_normalAttrib;
     GLint m_tcAttrib;
     GLint m_hasTexture;
 

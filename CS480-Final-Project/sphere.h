@@ -9,8 +9,8 @@ public:
     Sphere();
 
 
-    void Render(GLint positionAttribLoc, GLint colorAttribLoc);
-    void Render(GLint positionAttribLoc, GLint colorAttribLoc, GLint tcAttribLoc, GLint hasTex);
+    void Render(GLint positionAttribLoc, GLint colorAttribLoc, GLint normalAttribLoc);
+    void Render(GLint positionAttribLoc, GLint colorAttribLoc, GLint normalAttribLoc, GLint tcAttribLoc, GLint hasTex);
 
     glm::mat4 GetModel() { return model; }
     void Update(glm::mat4 matModel);

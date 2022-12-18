@@ -56,13 +56,11 @@ bool Graphics::Initialize(int width, int height)
 		return false;
 	}
 
-
-    /*pointLight_shader = new Shader("shaders\\pointVertShader.txt", "shaders\\pointFragShader.txt");
-
-    if (pointLight_shader->getProgram() == 0) {
-        cout << "Unable to load point light shader." << endl;
-        return false;
-    }*/
+	light_shader = new Shader("shaders\\genericVertShader.glsl", "shaders\\genericFragShader.glsl");
+	if (light_shader->getProgram() == 0) {
+		cout << "Unable to load skybox shader." << endl;
+		return false;
+	}
 
 
 	// Starship
@@ -467,12 +465,25 @@ void Graphics::Render()
 
 	// Start the generic shader program
 	m_shader->Enable();
-   //pointLight_shader->Enable();
 
 
 	// Send in the projection and view to the shader (stay the same while camera intrinsic(perspective) and extrinsic (view) parameters are the same
 	glUniformMatrix4fv(m_projectionMatrix, 1, GL_FALSE, glm::value_ptr(m_camera->GetProjection()));
 	glUniformMatrix4fv(m_viewMatrix, 1, GL_FALSE, glm::value_ptr(m_camera->GetView()));
+
+	//get sun color
+	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	//get sun pos
+	glm::vec3 lightPos = glm::vec3(0.0f, 0.0f, 0.0f);
+	//get sum model 
+	glm::mat4 lightModel = m_sun->GetModel();
+
+	light_shader->Enable();
+	glUniformMatrix4fv(glGetUniformLocation(light_shader->getProgram(), "modelMatrix"), 1, GL_FALSE, glm::value_ptr(lightModel));
+	glUniform4f(glGetUniformLocation(light_shader->getProgram(), "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
+	m_sun->Render(m_positionAttrib, m_colorAttrib, m_normalAttrib, m_tcAttrib, m_hasTexture);
+	
+
 
 	// Render starship
 	if (m_controller != NULL) {
@@ -486,8 +497,14 @@ void Graphics::Render()
 			{
 				printf("Sampler Not found not found\n");
 			}
+
+			m_shader->Enable();
+			glUniformMatrix4fv(glGetUniformLocation(m_shader->getProgram(), "modelMatrix"), 1, GL_FALSE, glm::value_ptr(m_controller->GetModel()));
+			glUniform4f(glGetUniformLocation(m_shader->getProgram(), "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
+			glUniform3f(glGetUniformLocation(m_shader->getProgram(), "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+
 			glUniform1i(sampler, 0);
-			m_controller->Render(m_positionAttrib, m_colorAttrib, m_tcAttrib, m_hasTexture);
+			m_controller->Render(m_positionAttrib, m_colorAttrib, m_normalAttrib, m_tcAttrib, m_hasTexture);
 		}
 	}
 
@@ -507,8 +524,14 @@ void Graphics::Render()
 				{
 					printf("Sampler Not found not found\n");
 				}
+
+				/*m_shader->Enable();
+				glUniformMatrix4fv(glGetUniformLocation(m_shader->getProgram(), "modelMatrix"), 1, GL_FALSE, glm::value_ptr(m_controller->GetModel()));
+				glUniform4f(glGetUniformLocation(m_shader->getProgram(), "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
+				glUniform3f(glGetUniformLocation(m_shader->getProgram(), "lightPos"), lightPos.x, lightPos.y, lightPos.z);*/
+
 				glUniform1i(sampler, 0);
-				object->Render(m_positionAttrib, m_colorAttrib, m_tcAttrib, m_hasTexture);
+				object->Render(m_positionAttrib, m_colorAttrib, m_normalAttrib, m_tcAttrib, m_hasTexture);
 			}
 		}
 	}
@@ -562,6 +585,14 @@ bool Graphics::collectShPrLocs() {
 	if (m_colorAttrib == -1)
 	{
 		printf("v_color attribute not found\n");
+		anyProblem = false;
+	}
+
+	// Locate the normal vertex attribute
+	m_normalAttrib = m_shader->GetAttribLocation("aNormal");
+	if (m_normalAttrib == -1)
+	{
+		printf("aNormal attribute not found\n");
 		anyProblem = false;
 	}
 
