@@ -9,20 +9,22 @@ out vec3 color;
 out vec2 tc;
 out vec3 Normal;
 out vec3 crntPos;
+out vec3 varPos;
 
 uniform mat4 projectionMatrix; 
 uniform mat4 viewMatrix; 
 uniform mat4 modelMatrix; 
+uniform mat3 normMatrix;
 uniform bool hasTC;        
 uniform sampler2D sp; 
 
 void main(void) 
 { 
     crntPos = vec3(modelMatrix * vec4(v_position, 1.0f));
-
-    vec4 v = vec4(crntPos, 1.0); 
-    gl_Position = (projectionMatrix * viewMatrix) * v; 
+    varPos = (viewMatrix * modelMatrix * vec4(v_position,1)).xyz;
+    vec4 v = vec4(v_position, 1.0); 
+    gl_Position = (projectionMatrix * viewMatrix * modelMatrix) * v; 
     color = v_color; 
     tc = v_tc;
-    Normal = aNormal;
+    Normal = normMatrix * aNormal;
 } 
