@@ -4,7 +4,6 @@ uniform sampler2D sp;
 
 in vec3 color; 
 in vec2 tc;
-
 in vec3 Normal;
 in vec3 crntPos;
 
@@ -18,10 +17,10 @@ out vec4 frag_color;
 
 void main(void) 
 { 
-	float ambient = 0.20f;
+	float ambient = 0.05f;
 
     vec3 normal = normalize(Normal);
-    vec3 lightDirection = normalize(lightPos - crntPos);
+    vec3 lightDirection = normalize(lightPos-crntPos);
     float diffuse = max(dot(normal, lightDirection),0.0f);
 
 	float specularLight = 0.50f;

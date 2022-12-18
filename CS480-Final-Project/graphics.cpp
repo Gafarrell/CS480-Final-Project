@@ -56,12 +56,6 @@ bool Graphics::Initialize(int width, int height)
 		return false;
 	}
 
-	light_shader = new Shader("shaders\\pointVertShader.txt", "shaders\\pointFragShader.txt");
-	if (light_shader->getProgram() == 0) {
-		cout << "Unable to load skybox shader." << endl;
-		return false;
-	}
-
 
 	// Starship
 	m_controller = new Mesh(glm::vec3(2.0f, 3.0f, -5.0f), "assets\\SpaceShip-1.obj", "assets\\SpaceShip-1.png");
@@ -474,19 +468,9 @@ void Graphics::Render()
 	//get sun color
 	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	//get sun pos
-	glm::vec3 lightPos = glm::vec3(100.0f, 10.0f, 100.0f);
-	//get sum model 
-	glm::mat4 lightModel = glm::mat4(1.0f);
-	lightModel = glm::translate(lightModel, lightPos);
+	glm::vec3 lightPos = glm::vec3(100.0f, 100.0f, 100.0f);
 
-	light_shader->Enable();
-	glUniformMatrix4fv(glGetUniformLocation(light_shader->getProgram(), "model"), 1, GL_FALSE, glm::value_ptr(lightModel));
-	glUniform4f(glGetUniformLocation(light_shader->getProgram(), "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
-	glm::mat4 camMatrix = m_camera->GetProjection() * m_camera->GetView();
-	glUniformMatrix4fv(glGetUniformLocation(light_shader->getProgram(), "camMatrix"), 1, GL_FALSE, glm::value_ptr(camMatrix));
 	m_shader->Enable();
-	glUniform3f(glGetUniformLocation(m_shader->getProgram(), "camPos"), m_camera->getPosition().x, m_camera->getPosition().y, m_camera->getPosition().z);
-	glUniformMatrix4fv(glGetUniformLocation(m_shader->getProgram(), "camMatrix"), 1, GL_FALSE, glm::value_ptr(camMatrix));
 
 
 	// Render starship
@@ -502,6 +486,7 @@ void Graphics::Render()
 				printf("Sampler Not found not found\n");
 			}
 
+			glUniform3f(glGetUniformLocation(m_shader->getProgram(), "camPos"), m_camera->getPosition().x, m_camera->getPosition().y, m_camera->getPosition().z);
 			glUniformMatrix4fv(glGetUniformLocation(m_shader->getProgram(), "modelMatrix"), 1, GL_FALSE, glm::value_ptr(m_controller->GetModel()));
 			glUniform4f(glGetUniformLocation(m_shader->getProgram(), "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
 			glUniform3f(glGetUniformLocation(m_shader->getProgram(), "lightPos"), lightPos.x, lightPos.y, lightPos.z);
@@ -529,8 +514,7 @@ void Graphics::Render()
 					printf("Sampler Not found not found\n");
 				}
 
-				//m_shader->Enable();
-
+				glUniform3f(glGetUniformLocation(m_shader->getProgram(), "camPos"), m_camera->getPosition().x, m_camera->getPosition().y, m_camera->getPosition().z);
 				glUniformMatrix4fv(glGetUniformLocation(m_shader->getProgram(), "modelMatrix"), 1, GL_FALSE, glm::value_ptr(object->GetModel()));
 				glUniform4f(glGetUniformLocation(m_shader->getProgram(), "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
 				glUniform3f(glGetUniformLocation(m_shader->getProgram(), "lightPos"), lightPos.x, lightPos.y, lightPos.z);
@@ -542,9 +526,6 @@ void Graphics::Render()
 		}
 	}
 	
-	
-	//m_sun->Render(m_positionAttrib, m_colorAttrib, m_normalAttrib, m_tcAttrib, m_hasTexture);
-
 	// Get any errors from OpenGL
 	auto error = glGetError();
 	if (error != GL_NO_ERROR)
