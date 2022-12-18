@@ -32,32 +32,6 @@ Sphere::Sphere(int prec, const char* fname) { // prec is precision, or number of
         hasTex = false;
 }
 
-void Sphere::Render() {
-    glBindVertexArray(vao);
-
-    // Bind your VBO
-    glBindBuffer(GL_ARRAY_BUFFER, VB);
-
-    // Enable vertex attibute arrays for each vertex attrib
-    glEnableVertexAttribArray(0);
-
-
-    // Set vertex attribute pointers to the load correct data
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
-
-
-    // Bind your Element Array
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IB);
-
-    // Render
-    glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
-
-    // Disable vertex arrays
-    glDisableVertexAttribArray(0);
-
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-}
 
 void Sphere::Render(GLint positionAttribLoc, GLint colorAttribLoc, GLint normalAttribLoc)
 {

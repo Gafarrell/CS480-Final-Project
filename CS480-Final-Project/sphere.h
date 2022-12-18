@@ -9,7 +9,6 @@ public:
     Sphere();
 
 
-    void Render();
     void Render(GLint positionAttribLoc, GLint colorAttribLoc, GLint normalAttribLoc);
     void Render(GLint positionAttribLoc, GLint colorAttribLoc, GLint normalAttribLoc, GLint tcAttribLoc, GLint hasTex);
 

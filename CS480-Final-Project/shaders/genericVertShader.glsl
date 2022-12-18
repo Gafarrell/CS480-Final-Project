@@ -16,10 +16,9 @@ uniform mat4 modelMatrix;
 uniform bool hasTC;        
 uniform sampler2D sp; 
 
-
 void main(void) 
 { 
-    crntPos = vec3(modelMatrix *vec4(v_position, 1.0f));
+    crntPos = vec3(modelMatrix * vec4(v_position, 1.0f));
 
     vec4 v = vec4(crntPos, 1.0); 
     gl_Position = (projectionMatrix * viewMatrix) * v; 
