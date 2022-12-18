@@ -23,7 +23,7 @@ void main(void)
     crntPos = vec3(modelMatrix *vec4(v_position, 1.0f));
 
     vec4 v = vec4(crntPos, 1.0); 
-    gl_Position = (projectionMatrix * viewMatrix * modelMatrix) * v; 
+    gl_Position = (projectionMatrix * viewMatrix) * v; 
     color = v_color; 
     tc = v_tc;
     Normal = aNormal;

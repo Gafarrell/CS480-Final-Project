@@ -142,7 +142,32 @@ void Mesh::Render(GLint posAttribLoc, GLint colAttribLoc, GLint normalAttribLoc)
 	glDisableVertexAttribArray(colAttribLoc);
 	glDisableVertexAttribArray(normalAttribLoc);
 }
+void Mesh::Render() {
+	glBindVertexArray(vao);
 
+	// Bind your VBO
+	glBindBuffer(GL_ARRAY_BUFFER, VB);
+
+	// Enable vertex attibute arrays for each vertex attrib
+	glEnableVertexAttribArray(0);
+
+
+	// Set vertex attribute pointers to the load correct data
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
+
+
+	// Bind your Element Array
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IB);
+
+	// Render
+	glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
+
+	// Disable vertex arrays
+	glDisableVertexAttribArray(0);
+
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
 void Mesh::Render(GLint posAttribLoc, GLint colAttribLoc, GLint normalAttribLoc, GLint tcAttribLoc, GLint hasTextureLoc)
 {
 	glBindVertexArray(vao);
@@ -158,10 +183,10 @@ void Mesh::Render(GLint posAttribLoc, GLint colAttribLoc, GLint normalAttribLoc,
 
 	// Set vertex attribute pointers to the load correct data
 	glVertexAttribPointer(posAttribLoc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
-	glVertexAttribPointer(colAttribLoc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
+	glVertexAttribPointer(colAttribLoc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(glm::vec3)));
 	//change the offset
-	glVertexAttribPointer(normalAttribLoc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
-	glVertexAttribPointer(tcAttribLoc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texcoord));
+	glVertexAttribPointer(tcAttribLoc, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(glm::vec3) + sizeof(glm::vec2)));
+	glVertexAttribPointer(normalAttribLoc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(2 * sizeof(glm::vec3) + sizeof(glm::vec2)));
 
 	// If has texture, set up texture unit(s) Update here to activate and assign texture unit
 	if (m_texture != NULL) {

@@ -16,6 +16,7 @@ public:
 
     ~Mesh();
     void Update(double dt);
+    void Render();
     void Render(GLint posAttrib, GLint colAttrib, GLint normalAttribLoc);
     void Render(GLint positionAttribLoc, GLint colorAttribLoc, GLint normalAttribLoc, GLint tcAttribLoc, GLint hasTex);
 
