@@ -61,6 +61,7 @@ bool Graphics::Initialize(int width, int height)
 	m_controller = new Mesh(glm::vec3(2.0f, 3.0f, -5.0f), "assets\\SpaceShip-1.obj", "assets\\SpaceShip-1.png");
 	m_controller->setCamera(m_camera);
 
+
 	skyBox = new SkyBox("assets\\Highres-Cubemap", 200, 200);
 	skyBox->setShader(skybox_shader);
 
@@ -215,6 +216,7 @@ bool Graphics::Initialize(int width, int height)
 	m_halcomet->setSpeed(vector<float>({ 0.006f, 0.006f, 0.006f }));
 	solarSystem.push_back(m_halcomet);
 
+	m_asteroids = new AsteroidInstancer("shaders\\instanceVertShader.glsl", "shaders\\instanceFragShader.glsl", "assets\\asteroid.obj", "assets\\asteroid.jpg", 500);
 
 	//enable depth testing
 	glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
@@ -457,6 +459,10 @@ void Graphics::Render()
 
 	skyBox->Render(m_camera->GetView(), m_camera->GetProjection());
 
+	m_asteroids->enableShader();
+
+	m_asteroids->Render(totalTime, m_camera->GetView(), m_camera->GetProjection());
+
 	// Start the generic shader program
 	m_shader->Enable();
 
@@ -525,7 +531,7 @@ void Graphics::Render()
 			}
 		}
 	}
-	
+
 	// Get any errors from OpenGL
 	auto error = glGetError();
 	if (error != GL_NO_ERROR)

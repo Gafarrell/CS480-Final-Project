@@ -51,7 +51,7 @@ private:
 
     Camera* m_camera;
     
-    glm::vec3 shipPosition = glm::vec3(0, 5,-10);
+    glm::vec3 shipPosition = glm::vec3(0, -0.25,-1);
     glm::vec3 direction = glm::vec3(0, 0, 0);
 
     glm::vec2 thirdPersonOffsets = glm::vec2(-200, 50);
@@ -60,7 +60,7 @@ private:
     float speedScalar = 1.f;
     float thirdPersonVerticalFocusOffset = 25.f;
 
-    float uniformScale = 0.05f;
+    float uniformScale = 0.005f;
     float horizAngle = 0.f;
     float vertAngle = 0;
 

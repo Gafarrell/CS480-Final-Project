@@ -1,5 +1,3 @@
-
-
 #include "engine.h"
 #include "glm/ext.hpp"
 
@@ -15,7 +13,6 @@ Engine::Engine(const char* name, int width, int height)
   m_WINDOW_HEIGHT = height*1.5;
 
 }
-
 
 Engine::~Engine()
 {
@@ -42,7 +39,6 @@ bool Engine::Initialize()
     printf("The graphics failed to initialize.\n");
     return false;
   }
-
 
   glfwSetWindowFocusCallback(m_window->getWindow(), windowFocusCallback);
   glfwSetInputMode(m_window->getWindow(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
