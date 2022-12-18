@@ -216,7 +216,7 @@ bool Graphics::Initialize(int width, int height)
 	m_halcomet->setSpeed(vector<float>({ 0.006f, 0.006f, 0.006f }));
 	solarSystem.push_back(m_halcomet);
 
-	m_asteroids = new AsteroidInstancer("shaders\\instanceVertShader.glsl", "shaders\\instanceFragShader.glsl", "assets\\asteroid.obj", "assets\\asteroid.jpg", 500);
+	m_asteroids = new AsteroidInstancer("shaders\\instanceVertShader.glsl", "shaders\\instanceFragShader.glsl", "assets\\asteroid.obj", "assets\\asteroid.jpg", 700);
 
 	//enable depth testing
 	glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
@@ -433,6 +433,8 @@ void Graphics::HierarchicalUpdate2(double dt) {
 
 	modelStack.pop();
 	modelStack.pop();
+
+	m_asteroids->Update(dt);
 
 	while (!modelStack.empty()) modelStack.pop();
 }

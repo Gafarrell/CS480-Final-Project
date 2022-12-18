@@ -18,7 +18,7 @@ out vec4 varyingColor;
 void main(void)
 {
 	vec4 v = vec4(v_position, 1.0);
-	gl_Position = (projectionMatrix * viewMatrix * instanceMatrix) * v;
+	gl_Position = (projectionMatrix * viewMatrix * originMatrix * instanceMatrix) * v;
 
 	varyingColor = texture(sp, v_tc);
 }
