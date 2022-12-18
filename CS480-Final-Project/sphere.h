@@ -9,7 +9,7 @@ public:
     Sphere();
 
 
-    void Render(GLint positionAttribLoc, GLint colorAttribLoc, GLint normalAttribLoc);
+    void Render(GLint positionAttribLoc, GLint colorAttribLoc);
     void Render(GLint positionAttribLoc, GLint colorAttribLoc, GLint normalAttribLoc, GLint tcAttribLoc, GLint hasTex);
 
     glm::mat4 GetModel() { return model; }
@@ -50,6 +50,8 @@ private:
     std::vector<unsigned int> Indices;
     GLuint VB;
     GLuint IB;
+    GLuint TB;
+    GLuint NB;
     Texture* m_texture;
 
     GLuint vao;

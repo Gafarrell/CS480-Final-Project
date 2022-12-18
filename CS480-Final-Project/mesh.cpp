@@ -112,7 +112,7 @@ glm::mat4 Mesh::GetModel()
 	return model;
 }
 
-void Mesh::Render(GLint posAttribLoc, GLint colAttribLoc, GLint normalAttribLoc)
+void Mesh::Render(GLint posAttribLoc, GLint colAttribLoc)
 {
 
 	glBindVertexArray(vao);
@@ -120,7 +120,7 @@ void Mesh::Render(GLint posAttribLoc, GLint colAttribLoc, GLint normalAttribLoc)
 	// Enable vertex attibute arrays for each vertex attrib
 	glEnableVertexAttribArray(posAttribLoc);
 	glEnableVertexAttribArray(colAttribLoc);
-	glEnableVertexAttribArray(normalAttribLoc);
+	//glEnableVertexAttribArray(normalAttribLoc);
 
 	// Bind your VBO
 	glBindBuffer(GL_ARRAY_BUFFER, VB);
@@ -129,7 +129,7 @@ void Mesh::Render(GLint posAttribLoc, GLint colAttribLoc, GLint normalAttribLoc)
 	glVertexAttribPointer(posAttribLoc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
 	glVertexAttribPointer(colAttribLoc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
 	//change offset
-	glVertexAttribPointer(normalAttribLoc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
+	//glVertexAttribPointer(normalAttribLoc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
 
 	// Bind your Element Array
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IB);
@@ -140,7 +140,7 @@ void Mesh::Render(GLint posAttribLoc, GLint colAttribLoc, GLint normalAttribLoc)
 	// Disable vertex arrays
 	glDisableVertexAttribArray(posAttribLoc);
 	glDisableVertexAttribArray(colAttribLoc);
-	glDisableVertexAttribArray(normalAttribLoc);
+	//glDisableVertexAttribArray(normalAttribLoc);
 }
 
 void Mesh::Render(GLint posAttribLoc, GLint colAttribLoc, GLint normalAttribLoc, GLint tcAttribLoc, GLint hasTextureLoc)
@@ -160,7 +160,7 @@ void Mesh::Render(GLint posAttribLoc, GLint colAttribLoc, GLint normalAttribLoc,
 	glVertexAttribPointer(posAttribLoc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
 	glVertexAttribPointer(colAttribLoc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(glm::vec3)));
 	//change the offset
-	glVertexAttribPointer(tcAttribLoc, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(glm::vec3) + sizeof(glm::vec2)));
+	glVertexAttribPointer(tcAttribLoc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(glm::vec3) + sizeof(glm::vec2)));
 	glVertexAttribPointer(normalAttribLoc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(2 * sizeof(glm::vec3) + sizeof(glm::vec2)));
 
 	// If has texture, set up texture unit(s) Update here to activate and assign texture unit

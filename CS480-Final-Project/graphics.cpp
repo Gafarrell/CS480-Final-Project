@@ -579,10 +579,10 @@ bool Graphics::collectShPrLocs() {
 	}
 
 	// Locate the normal vertex attribute
-	m_normalAttrib = m_shader->GetAttribLocation("aNormal");
+	m_normalAttrib = m_shader->GetAttribLocation("v_normal");
 	if (m_normalAttrib == -1)
 	{
-		printf("aNormal attribute not found\n");
+		printf("v_normal attribute not found\n");
 		anyProblem = false;
 	}
 

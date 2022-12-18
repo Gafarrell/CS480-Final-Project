@@ -16,7 +16,7 @@ public:
 
     ~Mesh();
     void Update(double dt);
-    void Render(GLint posAttrib, GLint colAttrib, GLint normalAttribLoc);
+    void Render(GLint posAttrib, GLint colAttrib);
     void Render(GLint positionAttribLoc, GLint colorAttribLoc, GLint normalAttribLoc, GLint tcAttribLoc, GLint hasTex);
 
     glm::mat4 GetModel();

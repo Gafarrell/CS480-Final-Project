@@ -2,11 +2,10 @@
 
 uniform sampler2D sp; 
 
-in vec3 color; 
+in vec3 color;
 in vec2 tc;
 in vec3 Normal;
 in vec3 varPos;
-
 uniform vec4 lightColor;
 uniform vec3 lightPos;
 
@@ -33,8 +32,7 @@ void main(void)
 	float specAmount = pow(max(0.0, cosPhi), 8);
 	float specular = specAmount * specularLight;
 
-    if(hasTexture)
-        frag_color = texture(sp, tc) * lightColor * (diffuse + ambient + specular);
-    else 
-        frag_color = vec4(color.rgb, 1);
+    
+    frag_color = texture(sp, tc) * lightColor * (diffuse + ambient + specular);
+    
 }

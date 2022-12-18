@@ -3,7 +3,7 @@
 layout (location = 0) in vec3 v_position; 
 layout (location = 1) in vec3 v_color; 
 layout (location = 2) in vec2 v_tc;  
-layout(location = 3) in vec3 aNormal;
+layout (location = 3) in vec3 v_normal;
     
 out vec3 color; 
 out vec2 tc;
@@ -24,5 +24,5 @@ void main(void)
     gl_Position = (projectionMatrix * viewMatrix * modelMatrix) * v; 
     color = v_color; 
     tc = v_tc;
-    Normal = normMatrix * aNormal;
+    Normal = normMatrix * v_normal;
 } 
