@@ -468,7 +468,7 @@ void Graphics::Render()
 	//get sun color
 	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	//get sun pos
-	glm::vec3 lightPos = glm::vec3(100.0f, 100.0f, 100.0f);
+	glm::vec3 lightPos = glm::vec3(0.0f, 0.0f, 0.0f);
 
 	m_shader->Enable();
 
