@@ -32,7 +32,9 @@ void main(void)
 	float specAmount = pow(max(0.0, cosPhi), 8);
 	float specular = specAmount * specularLight;
 
+    if(hasTexture)
+    frag_color = texture(sp, tc) *lightColor * (diffuse + ambient + specular);
     
-    frag_color = texture(sp, tc) * lightColor * (diffuse + ambient + specular);
-    
+    else
+    frag_color = vec4(color.rgb,1);
 }
