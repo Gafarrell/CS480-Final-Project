@@ -41,6 +41,7 @@ class Graphics
     Camera* m_camera;
     Shader* m_shader;
     Shader* skybox_shader;
+    Shader* pointLight_shader;
 
     GLint m_projectionMatrix;
     GLint m_viewMatrix;

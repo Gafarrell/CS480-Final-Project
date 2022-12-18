@@ -59,6 +59,7 @@ void Engine::Run()
 
   double lastTimeStamp = 0;
 
+
   while (!glfwWindowShouldClose(m_window->getWindow()))
   {
       double dt = glfwGetTime() - lastTimeStamp;

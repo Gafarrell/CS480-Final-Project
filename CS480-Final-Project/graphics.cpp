@@ -56,6 +56,15 @@ bool Graphics::Initialize(int width, int height)
 		return false;
 	}
 
+
+    /*pointLight_shader = new Shader("shaders\\pointVertShader.txt", "shaders\\pointFragShader.txt");
+
+    if (pointLight_shader->getProgram() == 0) {
+        cout << "Unable to load point light shader." << endl;
+        return false;
+    }*/
+
+
 	// Starship
 	m_controller = new Mesh(glm::vec3(2.0f, 3.0f, -5.0f), "assets\\SpaceShip-1.obj", "assets\\SpaceShip-1.png");
 	m_controller->setCamera(m_camera);
@@ -418,7 +427,7 @@ void Graphics::HierarchicalUpdate2(double dt) {
 	modelStack.pop();
 	modelStack.pop();
 
-	//Haley's Comet transform
+	//Halley's Comet transform
 	ComputeTransforms(totalTime, m_halcomet->getOrbitalFunctions(), m_halcomet->getSpeed(), m_halcomet->getDistance(), m_halcomet->getRotationSpeed(), glm::vec3(0, 1, 0), m_halcomet->getScale(), tmat, rmat, smat);
 	modelStack.push(modelStack.top());
 
@@ -458,6 +467,8 @@ void Graphics::Render()
 
 	// Start the generic shader program
 	m_shader->Enable();
+   //pointLight_shader->Enable();
+
 
 	// Send in the projection and view to the shader (stay the same while camera intrinsic(perspective) and extrinsic (view) parameters are the same
 	glUniformMatrix4fv(m_projectionMatrix, 1, GL_FALSE, glm::value_ptr(m_camera->GetProjection()));
