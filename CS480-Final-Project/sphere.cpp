@@ -61,26 +61,24 @@ void Sphere::Render(GLint positionAttribLoc, GLint colorAttribLoc)
 
 void Sphere::Render(GLint posAttribLoc, GLint colAttribLoc, GLint normalAttribLoc, GLint tcAttribLoc, GLint hasTextureLoc)
 {
+    //Bind VAO
     glBindVertexArray(vao);
     // Enable vertex attibute arrays for each vertex attrib
 
+    //Set vertex attributes
     glBindBuffer(GL_ARRAY_BUFFER, VB);
     glEnableVertexAttribArray(posAttribLoc);
-    //glEnableVertexAttribArray(colAttribLoc);
     glVertexAttribPointer(posAttribLoc, 3, GL_FLOAT, GL_FALSE, sizeof(vertices[0]), 0);
-    //glVertexAttribPointer(colAttribLoc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),(void*)sizeof(normals[0]));
 
+    //Set texture attributes
     glBindBuffer(GL_ARRAY_BUFFER, TB);
     glEnableVertexAttribArray(tcAttribLoc);
     glVertexAttribPointer(tcAttribLoc, 2, GL_FLOAT, GL_FALSE, sizeof(texCoords[0]), 0);
 
+    //Set normal attributes
     glBindBuffer(GL_ARRAY_BUFFER, NB);
     glEnableVertexAttribArray(normalAttribLoc);
     glVertexAttribPointer(normalAttribLoc, 3, GL_FLOAT, GL_FALSE, sizeof(normals[0]), 0);
-
-    // Bind your VBO
-
-    // Set vertex attribute pointers to the load correct data. Update here to load the correct attributes.
 
 
     // If has texture, set up texture unit(s): update here for texture rendering

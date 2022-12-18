@@ -48,6 +48,8 @@ private:
 
     GLuint VB;
     GLuint IB;
+    GLuint NB;
+    GLuint TB;
 
     Camera* m_camera;
     
