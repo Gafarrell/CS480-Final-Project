@@ -1,7 +1,8 @@
 #include "asteroid_instancer.h"
 
-AsteroidInstancer::AsteroidInstancer(const char* vShader, const char* fShader, const char* fname, const char* tname, int asteroidCount) {
+AsteroidInstancer::AsteroidInstancer(const char* vShader, const char* fShader, const char* fname, const char* tname, int asteroidCount, float radius) {
 	this->asteroidCount = asteroidCount;
+	this->radius = radius;
 	models = new glm::mat4[asteroidCount];
 
 	instance_shader = new Shader(vShader, fShader);
@@ -135,7 +136,7 @@ void AsteroidInstancer::Render(double totalTime, glm::mat4 cameraView, glm::mat4
 	//get sun color
 	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	//get sun pos
-	glm::vec3 lightPos = glm::vec3(1.0f, 1.0f, 1.0f);
+	glm::vec3 lightPos = glm::vec3(0.0f, 0.0f, 0.0f);
 	glUniformMatrix3fv(glGetUniformLocation(instance_shader->getProgram(), "normMatrix"), 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(glm::mat3(m_proj * m_model)))));
 	//glUniformMatrix4fv(glGetUniformLocation(instance_shader->getProgram(), "modelMatrix"), 1, GL_FALSE, glm::value_ptr(m_model));
 	glUniform4f(glGetUniformLocation(instance_shader->getProgram(), "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);

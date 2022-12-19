@@ -6,7 +6,7 @@
 class AsteroidInstancer
 {
 public:
-	AsteroidInstancer(const char* vShader, const char* fShader, const char* fname, const char* tname, int asteroidCount);
+	AsteroidInstancer(const char* vShader, const char* fShader, const char* fname, const char* tname, int asteroidCount, float radius);
 	
 	void Render(double totalTime, glm::mat4 cameraView, glm::mat4 cameraProjection);
 
