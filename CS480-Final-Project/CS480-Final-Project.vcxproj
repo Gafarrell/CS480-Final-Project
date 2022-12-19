@@ -24,6 +24,8 @@
     <None Include="shaders\instanceFragShader.glsl" />
     <None Include="shaders\genericFragShader.glsl" />
     <None Include="shaders\genericVertShader.glsl" />
+    <None Include="shaders\pointFragShader.glsl" />
+    <None Include="shaders\pointVertShader.glsl" />
     <None Include="shaders\skyboxFragShader.glsl" />
     <None Include="shaders\skyboxVertShader.glsl" />
     <None Include="shaders\instanceVertShader.glsl" />

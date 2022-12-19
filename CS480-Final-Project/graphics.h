@@ -17,6 +17,8 @@ using namespace std;
 #define numVBOs 2;
 #define numIBs 2;
 
+#define SPECTATE_DISTANCE 1.5f
+
 
 class Graphics
 {
@@ -26,6 +28,7 @@ class Graphics
     bool Initialize(int width, int height);
     void HierarchicalUpdate2(double dt);
     void Render();
+    void spectate();
 
     Mesh* getController() { return m_controller; }
 

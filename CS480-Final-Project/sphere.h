@@ -1,3 +1,6 @@
+#ifndef SPHERE_H
+#define SPHERE_H
+
 #include "object.h"
 #include "Texture.h"
 #include "trig_functions.h"
@@ -8,12 +11,12 @@ class Sphere :
 public:
     Sphere();
 
-
     void Render(GLint positionAttribLoc, GLint colorAttribLoc);
     void Render(GLint positionAttribLoc, GLint colorAttribLoc, GLint normalAttribLoc, GLint tcAttribLoc, GLint hasTex);
 
     glm::mat4 GetModel() { return model; }
     void Update(glm::mat4 matModel);
+    void UpdateSpecModel(glm::mat4 specModel);
 
     Sphere(int prec);
     Sphere(int prec, const char* fname);
@@ -33,6 +36,7 @@ public:
     std::vector<float> getDistance() { return distance; }
     std::vector<float> getRotationSpeed() { return rotationSpeed; }
     std::vector<TrigFunction*> getOrbitalFunctions() { return orbitFunctions; }
+    glm::mat4 getSpectatorModel() { return spectatorModel; }
 
     void setScale(std::vector<float> scale) { this->scale = scale; }
     void setAngle(std::vector<float> angle) { this->angle = angle; }
@@ -40,12 +44,15 @@ public:
     void setOrbitDistance(std::vector<float> distance) { this->distance = distance; }
     void setRotationSpeed(std::vector<float> rotationSpeed) { this->rotationSpeed = rotationSpeed; }
     void setOrbitalFunctions(std::vector<TrigFunction*> orbitalFunctions) { this->orbitFunctions = orbitalFunctions; }
+    void vertRotateSpectator(float amt) { spectateVertRotation += amt; }
+    void horizRotateSpectator(float amt) { spectateHorizRotation += amt; }
     
     bool hasTex;
 
 private:
     glm::vec3 pivotLocation;
     glm::mat4 model;
+    glm::mat4 spectatorModel = glm::translate(glm::scale(glm::mat4(1), glm::vec3(1)), glm::vec3(0));
     std::vector<Vertex> Vertices;
     std::vector<unsigned int> Indices;
     GLuint VB;
@@ -80,6 +87,8 @@ private:
     std::vector<float> tvalues; // texture coordinates
     std::vector<float> nvalues; // normal vectors
 
- 
-
+    float spectateDistance = 0.5f;
+    float spectateHorizRotation = 0, spectateVertRotation = 0;
 };
+
+#endif /*SPHERE_H*/
