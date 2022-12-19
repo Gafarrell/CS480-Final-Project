@@ -71,8 +71,7 @@ void Engine::Run()
 
 void Engine::adjustZoom(float zoom) {
     if (m_focused)
-        cout << "Zooming." << endl;
-    //m_graphics->getController()->addZoom(zoom);
+        m_graphics->getController()->addZoom(zoom);
 }
 
 void Engine::ProcessInput()
@@ -112,6 +111,10 @@ void Engine::ProcessInput()
     }
     if (keyPressed(GLFW_KEY_E)){
         m_graphics->getController()->explore();
+    }
+
+    if (keyPressed(GLFW_KEY_R)) {
+        m_graphics->getController()->resetSpectatorView();
     }
 }
 

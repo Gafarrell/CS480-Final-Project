@@ -37,6 +37,9 @@ public:
     
     void setCamera(Camera* camera) { this->m_camera = camera; }
     void setUniformScale(float scale) { this->uniformScale = scale; }
+    void addZoom(float zoom) { if (spectateMode) m_camera->addZoom(zoom); }
+    void resetSpectatorView();
+
     glm::vec3 getPosition() { return shipPosition;}
 
     bool isSpectateMode() { return spectateMode; };
