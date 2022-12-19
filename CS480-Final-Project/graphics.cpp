@@ -308,9 +308,9 @@ bool Graphics::Initialize(int width, int height)
 	solarSystem.push_back(m_eris);
 
 	// Haley's Comet
-	m_halcomet = new Sphere(48, "assets\\Neptune.jpg");
+	m_halcomet = new Sphere(48, "assets\\Uranus.jpg");
 	m_halcomet->setAngle(vector<float>({ 6 }));
-	m_halcomet->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
+	m_halcomet->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new Cos(), new Sin() }));
 	m_halcomet->setOrbitDistance(vector<float>({ 30.0f,30.0f,30.0f }));
 	m_halcomet->setRotationSpeed(vector<float>({ 0.35f }));
 	m_halcomet->setScale(vector<float>({ 0.05f,0.05f,0.05f }));
