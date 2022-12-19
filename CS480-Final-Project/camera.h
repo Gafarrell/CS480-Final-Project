@@ -16,18 +16,17 @@ class Camera
 
     void setSpeed(glm::vec3 s) { speed = s; }
     void addSpeed(glm::vec3 s);
-    void addZoom(float zoom) { this->zoom += zoom; }
+    void addZoom(float zoom) { this->zoom -= zoom; }
 
     void setZoom(double zoom) { this->zoom = zoom; }
 
     void setPerspective(glm::vec3 cameraPosition, glm::vec3 cameraFront, glm::vec3 cameraUp);
 
-    void setForwardSpeed(float speed) { forwardSpeed = speed; }
-    void setHorizontalSpeed(float speed) { horizSpeed = speed; }
     void setVertSpeed(float speed) { vertSpeed = speed; }
 
     void setRotateDelta(float xd, float yd) { xDelta = xd; yDelta = yd; }
     void setRotationSpeed(float rotationSpeed) { this->rotationSpeed = rotationSpeed; }
+    void resetZoom() { this->zoom = 0; }
 
   
   private:

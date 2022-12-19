@@ -63,48 +63,74 @@ Mesh::~Mesh()
 
 void Mesh::Update(double dt)
 {
-	// Add velocity to position
-	glm::mat4 tmat = glm::translate(glm::mat4(1), (shipPosition += (speedScalar * direction * (float) dt)));
+	if (!spectateMode) {
+		// Add velocity to position
+		glm::vec3 forwardVector = glm::normalize(glm::vec3(model[2][0], model[2][1], model[2][2]));
+		glm::vec3 rightVector = glm::normalize(glm::vec3(model[0][0], model[0][1], model[0][2]));
 
-	// Rotate ship based on mouse offset
-	horizAngle += dt * xMouseDelta;
-    vertAngle -= dt * yMouseDelta;
+		glm::mat4 tmat = glm::translate(glm::mat4(1), (shipPosition += (forwardSpeed * forwardVector * (float)dt)));
 
-	xMouseDelta = yMouseDelta = 0;
+		// Rotate ship based on mouse offset
+		horizAngle += dt * xMouseDelta;
+		vertAngle -= dt * yMouseDelta;
 
-	vertAngle = glm::clamp(vertAngle, -3.1414f/2, 3.1414f/2);
-	horizAngle = horizAngle > (2*3.1415) ? horizAngle - (2*3.1415) : horizAngle < 0 ? horizAngle + (2*3.1415) : horizAngle;
+		xMouseDelta = yMouseDelta = 0;
 
-	glm::mat4 rmat = glm::rotate(glm::mat4(1), horizAngle, glm::vec3(0, 1, 0));
-	rmat *= glm::rotate(glm::mat4(1), vertAngle, glm::vec3(1, 0, 0));
+		vertAngle = glm::clamp(vertAngle, -3.1414f / 2, 3.1414f / 2);
+		horizAngle = horizAngle > (2 * 3.1415) ? horizAngle - (2 * 3.1415) : horizAngle < 0 ? horizAngle + (2 * 3.1415) : horizAngle;
 
-	glm::mat4 smat = glm::scale(glm::mat4(1), glm::vec3(uniformScale));
+		glm::mat4 rmat = glm::rotate(glm::mat4(1), horizAngle, glm::vec3(0, 1, 0));
+		rmat *= glm::rotate(glm::mat4(1), vertAngle, glm::vec3(1, 0, 0));
 
-	model = tmat * rmat * smat;
+		glm::mat4 smat = glm::scale(glm::mat4(1), glm::vec3(uniformScale));
+
+		model = tmat * rmat * smat;
+	}
+	else 
+	{
+		toSpectate->horizRotateSpectator(horizontalSpeed / 100);
+		toSpectate->vertRotateSpectator(forwardSpeed / 100);
+
+		model = glm::translate(toSpectate->getSpectatorModel(), glm::vec3(0, 0, (toSpectate->getScale()[0]*3)));
+		model *= glm::scale(glm::mat4(1), glm::vec3(uniformScale));
+
+		shipPosition = glm::vec3(model[3][0], model[3][1], model[3][2]);
+	}
 
 	updateCamera();
-	std::cout << "Ship Position: " << shipPosition.x << ", " << shipPosition.y << ", " << shipPosition.z << std::endl << std::endl;
 }
 
 void Mesh::updateCamera() {
-	glm::vec3 localBack = glm::vec3(
-		-model[2][0],
-		-model[2][1],
-		-model[2][2]
-	);
-	std::cout << "Local back: " << localBack.x << ", " << localBack.y << ", " << localBack.z << std::endl;
+	glm::vec3 localForward = glm::normalize(glm::vec3(
+		model[2][0],
+		model[2][1],
+		model[2][2]
+	));
 
-	glm::vec3 localUp = glm::vec3(
+	glm::vec3 localUp = glm::normalize(glm::vec3(
 		model[1][0],
 		model[1][1],
 		model[1][2]
-	);
+	));
 
-	// Ship rotates along the x
-	glm::vec3 thirdPersonPositionOffset = localBack * -thirdPersonOffsets.x;
-	thirdPersonPositionOffset += localUp * thirdPersonOffsets.y;
+	if (!spectateMode) {
 
-	m_camera->setPerspective(shipPosition + thirdPersonPositionOffset, shipPosition + (localUp*thirdPersonVerticalFocusOffset), glm::vec3(0, 1, 0));
+		// Ship rotates along the x
+		glm::vec3 thirdPersonPositionOffset = -localForward * -thirdPersonOffsets.x;
+		thirdPersonPositionOffset += localUp * thirdPersonOffsets.y;
+
+		m_camera->setPerspective(shipPosition + thirdPersonPositionOffset, shipPosition + (localUp * thirdPersonVerticalFocusOffset), localUp);
+	}
+	else {
+		glm::vec3 firstPersonPositionOffset = localUp * firstPersonOffsets.y;
+
+		glm::mat4 specModel = toSpectate->getSpectatorModel();
+		glm::vec3 focalPoint = glm::vec3(specModel[3][0], specModel[3][1], specModel[3][2]);
+
+		std::cout << "Focal point: " << focalPoint[0] << ", " << focalPoint[1] << ", " << focalPoint[2] << std::endl;
+
+		m_camera->setPerspective(shipPosition, focalPoint, -localUp);
+	}
 }
 
 glm::mat4 Mesh::GetModel()
@@ -248,4 +274,20 @@ bool Mesh::loadModelFromFile(const char* path) {
 
 
 	return true;
+}
+
+void Mesh::spectate(Sphere* toSpectate, float spectateDistance) {
+	this->toSpectate = toSpectate;
+	this->spectateMode = true;
+}
+
+void Mesh::resetSpectatorView() {
+	m_camera->resetZoom();
+	toSpectate->resetSpectatorModel();
+}
+
+void Mesh::explore() {
+	m_camera->resetZoom();
+	toSpectate->resetSpectatorModel();
+	this->spectateMode = false;
 }
