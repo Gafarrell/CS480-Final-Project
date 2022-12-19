@@ -43,6 +43,7 @@ class Graphics
     Shader* m_shader;
     Shader* skybox_shader;
     Shader* instance_shader;
+    Shader* sun_shader;
 
     GLint m_projectionMatrix;
     GLint m_viewMatrix;

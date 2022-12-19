@@ -56,6 +56,13 @@ bool Graphics::Initialize(int width, int height)
 		return false;
 	}
 
+	sun_shader = new Shader("shaders\\sunVertShader.txt", "shaders\\sunFragShader.txt");
+
+	if (sun_shader->getProgram() == 0) {
+		cout << "Unable to load sun shader." << endl;
+		return false;
+	}
+
 
 	// Starship
 	m_controller = new Mesh(glm::vec3(2.0f, 3.0f, -5.0f), "assets\\SpaceShip-1.obj", "assets\\SpaceShip-1.png");
@@ -73,7 +80,7 @@ bool Graphics::Initialize(int width, int height)
 	m_sun->setRotationSpeed(vector<float>({ 0.15f }));
 	m_sun->setScale(vector<float>({ 1,1,1 }));
 	m_sun->setSpeed(vector<float>({ 2,2,2 }));
-	solarSystem.push_back(m_sun);
+	//solarSystem.push_back(m_sun);
 
 	// Mercury
 	m_mercury = new Sphere(48, "assets\\Mercury.jpg");
@@ -465,6 +472,7 @@ void Graphics::Render()
 
 	m_asteroids->Render(totalTime, m_camera->GetView(), m_camera->GetProjection());
 
+	
 	// Start the generic shader program
 	m_shader->Enable();
 
@@ -476,6 +484,23 @@ void Graphics::Render()
 	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	//get sun pos
 	glm::vec3 lightPos = glm::vec3(1.0f,1.0f,1.0f);
+
+	sun_shader->Enable();
+	glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(m_sun->GetModel()));
+	glUniformMatrix4fv(m_projectionMatrix, 1, GL_FALSE, glm::value_ptr(m_camera->GetProjection()));
+	glUniformMatrix4fv(m_viewMatrix, 1, GL_FALSE, glm::value_ptr(m_camera->GetView()));
+
+	if (m_sun->hasTex) {
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, m_sun->getTextureID());
+		GLuint sampler = sun_shader->GetUniformLocation("sp");
+		if (sampler == INVALID_UNIFORM_LOCATION)
+		{
+			printf("Sampler Not found not found\n");
+		}
+		glUniform1i(sampler, 0);
+		m_sun->Render(m_positionAttrib, m_colorAttrib, m_normalAttrib, m_tcAttrib, m_hasTexture);
+	}
 
 	m_shader->Enable();
 

@@ -116,7 +116,8 @@
     </ClInclude>
     <ClInclude Include="Utils.h">
       <Filter>Header Files</Filter>
-    </ClInclude><ClInclude Include="asteroid_instancer.h">
+    </ClInclude>
+    <ClInclude Include="asteroid_instancer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
@@ -131,5 +132,7 @@
   <ItemGroup>
     <Text Include="shaders\pointFragShader.txt" />
     <Text Include="shaders\pointVertShader.txt" />
+    <Text Include="shaders\sunFragShader.txt" />
+    <Text Include="shaders\sunVertShader.txt" />
   </ItemGroup>
 </Project>
