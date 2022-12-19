@@ -281,6 +281,13 @@ void Mesh::spectate(Sphere* toSpectate, float spectateDistance) {
 	this->spectateMode = true;
 }
 
+void Mesh::resetSpectatorView() {
+	m_camera->resetZoom();
+	toSpectate->resetSpectatorModel();
+}
+
 void Mesh::explore() {
+	m_camera->resetZoom();
+	toSpectate->resetSpectatorModel();
 	this->spectateMode = false;
 }

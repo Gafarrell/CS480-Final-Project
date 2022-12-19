@@ -46,6 +46,8 @@ public:
     void setOrbitalFunctions(std::vector<TrigFunction*> orbitalFunctions) { this->orbitFunctions = orbitalFunctions; }
     void vertRotateSpectator(float amt) { spectateVertRotation += amt; }
     void horizRotateSpectator(float amt) { spectateHorizRotation += amt; }
+
+    void resetSpectatorModel() { spectateVertRotation = spectateHorizRotation = 0; }
     
     bool hasTex;
 
