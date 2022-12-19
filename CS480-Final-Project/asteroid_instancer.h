@@ -6,7 +6,7 @@
 class AsteroidInstancer
 {
 public:
-	AsteroidInstancer(const char* vShader, const char* fShader, const char* fname, const char* tname, int asteroidCount);
+	AsteroidInstancer(const char* vShader, const char* fShader, const char* fname, const char* tname, int asteroidCount, float radius);
 	
 	void Render(double totalTime, glm::mat4 cameraView, glm::mat4 cameraProjection);
 
@@ -33,7 +33,7 @@ private:
 	Shader *instance_shader;
 	GLint m_view, m_proj, m_model, timeFactor;
 	GLuint VB, IB, MB, vao;
-	GLint posAttrib, colAttrib, tcAttrib;
+	GLint posAttrib, colAttrib, tcAttrib, normAttrib;
 
 	float radius = 15.0f;
 	float offset = 0.5f;

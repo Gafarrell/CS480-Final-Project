@@ -56,6 +56,13 @@ bool Graphics::Initialize(int width, int height)
 		return false;
 	}
 
+	sun_shader = new Shader("shaders\\sunVertShader.txt", "shaders\\sunFragShader.txt");
+
+	if (sun_shader->getProgram() == 0) {
+		cout << "Unable to load sun shader." << endl;
+		return false;
+	}
+
 
 	// Starship
 	m_controller = new Mesh(glm::vec3(2.0f, 3.0f, -5.0f), "assets\\SpaceShip-1.obj", "assets\\SpaceShip-1.png");
@@ -73,13 +80,13 @@ bool Graphics::Initialize(int width, int height)
 	m_sun->setRotationSpeed(vector<float>({ 0.15f }));
 	m_sun->setScale(vector<float>({ 1,1,1 }));
 	m_sun->setSpeed(vector<float>({ 2,2,2 }));
-	solarSystem.push_back(m_sun);
+	//solarSystem.push_back(m_sun);
 
 	// Mercury
 	m_mercury = new Sphere(48, "assets\\Mercury.jpg");
-	m_mercury->setAngle(vector<float>({ 3 }));
+	m_mercury->setAngle(vector<float>({ 2.5 }));
 	m_mercury->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
-	m_mercury->setOrbitDistance(vector<float>({ 2.0f,2.0f,2.0f }));
+	m_mercury->setOrbitDistance(vector<float>({ 3.0f,3.0f,3.0f }));
 	m_mercury->setRotationSpeed(vector<float>({ 0.06f }));
 	m_mercury->setScale(vector<float>({ 0.1f,0.1f,0.1f }));
 	m_mercury->setSpeed(vector<float>({ 0.35f, 0.35f, 0.35f }));
@@ -89,7 +96,7 @@ bool Graphics::Initialize(int width, int height)
 	m_venus = new Sphere(48, "assets\\Venus.jpg");
 	m_venus->setAngle(vector<float>({ 3 }));
 	m_venus->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
-	m_venus->setOrbitDistance(vector<float>({ 4.0f,4.0f,4.0f }));
+	m_venus->setOrbitDistance(vector<float>({ 6.0f,6.0f,6.0f }));
 	m_venus->setRotationSpeed(vector<float>({ 0.03f }));
 	m_venus->setScale(vector<float>({ 0.25f,0.25f,0.25f }));
 	m_venus->setSpeed(vector<float>({ 0.25f, 0.25f, 0.25f }));
@@ -100,7 +107,7 @@ bool Graphics::Initialize(int width, int height)
 	m_earth = new Sphere(48, "assets\\2k_earth_daymap.jpg");
 	m_earth->setAngle(vector<float>({ 3 }));
 	m_earth->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
-	m_earth->setOrbitDistance(vector<float>({ 6.0f,6.0f,6.0f }));
+	m_earth->setOrbitDistance(vector<float>({ 9.0f,9.0f,9.0f }));
 	m_earth->setRotationSpeed(vector<float>({ 0.35f }));
 	m_earth->setScale(vector<float>({ 0.25f,0.25f,0.25f }));
 	m_earth->setSpeed(vector<float>({ 0.15f, 0.15f, 0.15f }));
@@ -120,7 +127,7 @@ bool Graphics::Initialize(int width, int height)
 	m_mars = new Sphere(48, "assets\\Mars.jpg");
 	m_mars->setAngle(vector<float>({ 3 }));
 	m_mars->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
-	m_mars->setOrbitDistance(vector<float>({ 8.0f,8.0f,8.0f }));
+	m_mars->setOrbitDistance(vector<float>({ 12.0f,12.0f,12.0f }));
 	m_mars->setRotationSpeed(vector<float>({ 0.35f }));
 	m_mars->setScale(vector<float>({ 0.18f,0.18f,0.18f }));
 	m_mars->setSpeed(vector<float>({ 0.08f, 0.08f, 0.08f }));
@@ -130,7 +137,7 @@ bool Graphics::Initialize(int width, int height)
 	m_ceres = new Sphere(48, "assets\\Ceres.jpg");
 	m_ceres->setAngle(vector<float>({ 3 }));
 	m_ceres->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
-	m_ceres->setOrbitDistance(vector<float>({ 10.0f,10.0f,10.0f }));
+	m_ceres->setOrbitDistance(vector<float>({ 14.5f,14.5f,14.5f }));
 	m_ceres->setRotationSpeed(vector<float>({ 0.35f }));
 	m_ceres->setScale(vector<float>({ 0.05f,0.05f,0.05f }));
 	m_ceres->setSpeed(vector<float>({ 0.07f, 0.07f, 0.07f }));
@@ -140,7 +147,7 @@ bool Graphics::Initialize(int width, int height)
 	m_jupiter = new Sphere(48, "assets\\Jupiter.jpg");
 	m_jupiter->setAngle(vector<float>({ 3 }));
 	m_jupiter->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
-	m_jupiter->setOrbitDistance(vector<float>({ 12.0f,12.0f,12.0f }));
+	m_jupiter->setOrbitDistance(vector<float>({ 17.0f,17.0f,17.0f }));
 	m_jupiter->setRotationSpeed(vector<float>({ 0.9f }));
 	m_jupiter->setScale(vector<float>({ 0.5f,0.5f,0.5f }));
 	m_jupiter->setSpeed(vector<float>({ 0.06f, 0.06f, 0.06f }));
@@ -150,7 +157,7 @@ bool Graphics::Initialize(int width, int height)
 	m_saturn = new Sphere(48, "assets\\Saturn.jpg");
 	m_saturn->setAngle(vector<float>({ 3 }));
 	m_saturn->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
-	m_saturn->setOrbitDistance(vector<float>({ 14.0f,14.0f,14.0f }));
+	m_saturn->setOrbitDistance(vector<float>({ 20.0f,20.0f,20.0f }));
 	m_saturn->setRotationSpeed(vector<float>({ 0.82f }));
 	m_saturn->setScale(vector<float>({ 0.4f,0.4f,0.4f }));
 	m_saturn->setSpeed(vector<float>({ 0.05f, 0.05f, 0.05f }));
@@ -160,7 +167,7 @@ bool Graphics::Initialize(int width, int height)
 	m_uranus = new Sphere(48, "assets\\Uranus.jpg");
 	m_uranus->setAngle(vector<float>({ 3 }));
 	m_uranus->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
-	m_uranus->setOrbitDistance(vector<float>({ 16.0f,16.0f,16.0f }));
+	m_uranus->setOrbitDistance(vector<float>({ 23.0f,23.0f,23.0f }));
 	m_uranus->setRotationSpeed(vector<float>({ 0.6f }));
 	m_uranus->setScale(vector<float>({ 0.3f,0.3f,0.3f }));
 	m_uranus->setSpeed(vector<float>({ 0.03f, 0.03f, 0.03f }));
@@ -170,7 +177,7 @@ bool Graphics::Initialize(int width, int height)
 	m_neptune = new Sphere(48, "assets\\Neptune.jpg");
 	m_neptune->setAngle(vector<float>({ 3 }));
 	m_neptune->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
-	m_neptune->setOrbitDistance(vector<float>({ 18.0f,18.0f,18.0f }));
+	m_neptune->setOrbitDistance(vector<float>({ 26.0f,26.0f,26.0f }));
 	m_neptune->setRotationSpeed(vector<float>({ 0.5f }));
 	m_neptune->setScale(vector<float>({ 0.3f,0.3f,0.3f }));
 	m_neptune->setSpeed(vector<float>({ 0.02f, 0.02f, 0.02f }));
@@ -178,9 +185,9 @@ bool Graphics::Initialize(int width, int height)
 
 	// Pluto
 	m_pluto = new Sphere(48, "assets\\Mercury.jpg");
-	m_pluto->setAngle(vector<float>({ 3 }));
+	m_pluto->setAngle(vector<float>({ 2 }));
 	m_pluto->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
-	m_pluto->setOrbitDistance(vector<float>({ 20.0f,20.0f,20.0f }));
+	m_pluto->setOrbitDistance(vector<float>({ 28.8f,28.8f,28.8f }));
 	m_pluto->setRotationSpeed(vector<float>({ 0.35f }));
 	m_pluto->setScale(vector<float>({ 0.05f,0.05f,0.05f }));
 	m_pluto->setSpeed(vector<float>({ 0.01f, 0.01f, 0.01f }));
@@ -190,7 +197,7 @@ bool Graphics::Initialize(int width, int height)
 	m_haumea = new Sphere(48, "assets\\Haumea.jpg");
 	m_haumea->setAngle(vector<float>({ 3 }));
 	m_haumea->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
-	m_haumea->setOrbitDistance(vector<float>({ 22.0f,22.0f,22.0f }));
+	m_haumea->setOrbitDistance(vector<float>({ 29.2f,29.2f,29.2f }));
 	m_haumea->setRotationSpeed(vector<float>({ 0.35f }));
 	m_haumea->setScale(vector<float>({ 0.05f,0.05f,0.05f }));
 	m_haumea->setSpeed(vector<float>({ 0.008f, 0.008f, 0.008f }));
@@ -200,7 +207,7 @@ bool Graphics::Initialize(int width, int height)
 	m_eris = new Sphere(48, "assets\\Eris.jpg");
 	m_eris->setAngle(vector<float>({ 3 }));
 	m_eris->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
-	m_eris->setOrbitDistance(vector<float>({ 24.0f,24.0f,24.0f }));
+	m_eris->setOrbitDistance(vector<float>({ 30.0f,30.0f,30.0f }));
 	m_eris->setRotationSpeed(vector<float>({ 0.35f }));
 	m_eris->setScale(vector<float>({ 0.05f,0.05f,0.05f }));
 	m_eris->setSpeed(vector<float>({ 0.006f, 0.006f, 0.006f }));
@@ -208,15 +215,16 @@ bool Graphics::Initialize(int width, int height)
 
 	// Haley's Comet
 	m_halcomet = new Sphere(48, "assets\\Neptune.jpg");
-	m_halcomet->setAngle(vector<float>({ 3 }));
+	m_halcomet->setAngle(vector<float>({ 6 }));
 	m_halcomet->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
-	m_halcomet->setOrbitDistance(vector<float>({ 26.0f,26.0f,26.0f }));
+	m_halcomet->setOrbitDistance(vector<float>({ 30.0f,30.0f,30.0f }));
 	m_halcomet->setRotationSpeed(vector<float>({ 0.35f }));
 	m_halcomet->setScale(vector<float>({ 0.05f,0.05f,0.05f }));
 	m_halcomet->setSpeed(vector<float>({ 0.006f, 0.006f, 0.006f }));
 	solarSystem.push_back(m_halcomet);
 
-	m_asteroids = new AsteroidInstancer("shaders\\instanceVertShader.glsl", "shaders\\instanceFragShader.glsl", "assets\\asteroid.obj", "assets\\asteroid.jpg", 700);
+	m_asteroids = new AsteroidInstancer("shaders\\instanceVertShader.glsl", "shaders\\instanceFragShader.glsl", "assets\\asteroid.obj", "assets\\asteroid.jpg", 700, 15.0f);
+	m_outer_asteroids = new AsteroidInstancer("shaders\\instanceVertShader.glsl", "shaders\\instanceFragShader.glsl", "assets\\asteroid.obj", "assets\\asteroid.jpg", 1000, 29.0f);
 
 	//enable depth testing
 	glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
@@ -449,7 +457,9 @@ void Graphics::HierarchicalUpdate2(double dt) {
 	modelStack.pop();
 	modelStack.pop();
 
+	//Asteroid Belts
 	m_asteroids->Update(dt);
+	m_outer_asteroids->Update(dt);
 
 	while (!modelStack.empty()) modelStack.pop();
 }
@@ -472,14 +482,21 @@ void Graphics::Render()
 	glClearColor(0.5, 0.2, 0.2, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	//Render skybox
 	skybox_shader->Enable();
 
 	skyBox->Render(m_camera->GetView(), m_camera->GetProjection());
 
+	//Render asteroids
 	m_asteroids->enableShader();
 
 	m_asteroids->Render(totalTime, m_camera->GetView(), m_camera->GetProjection());
 
+	m_outer_asteroids->enableShader();
+	
+	m_outer_asteroids->Render(totalTime, m_camera->GetView(), m_camera->GetProjection());
+
+	
 	// Start the generic shader program
 	m_shader->Enable();
 
@@ -490,7 +507,27 @@ void Graphics::Render()
 	//get sun color
 	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	//get sun pos
-	glm::vec3 lightPos = glm::vec3(0);
+	glm::vec3 lightPos = glm::vec3(0.0f,0.0f,0.0f);
+
+	//Render the Sun
+	sun_shader->Enable();
+	glUniformMatrix4fv(sun_shader->GetUniformLocation("projectionMatrix"), 1, GL_FALSE, glm::value_ptr(m_camera->GetProjection()));
+	glUniformMatrix4fv(sun_shader->GetUniformLocation("viewMatrix"), 1, GL_FALSE, glm::value_ptr(m_camera->GetView()));
+
+	if (m_sun != NULL) {
+		glUniformMatrix4fv(sun_shader->GetUniformLocation("modelMatrix"), 1, GL_FALSE, glm::value_ptr(m_sun->GetModel()));
+		if (m_sun->hasTex) {
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, m_sun->getTextureID());
+			GLuint sampler = m_shader->GetUniformLocation("sp");
+			if (sampler == INVALID_UNIFORM_LOCATION)
+			{
+				printf("Sampler Not found not found\n");
+			}
+			glUniform1i(sampler, 0);
+			m_sun->Render(m_positionAttrib, m_colorAttrib, m_normalAttrib, m_tcAttrib, m_hasTexture);
+		}
+	}
 
 	m_shader->Enable();
 

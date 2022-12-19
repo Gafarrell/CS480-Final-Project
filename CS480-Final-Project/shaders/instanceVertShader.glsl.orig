@@ -10,9 +10,12 @@ uniform mat4 viewMatrix;
 uniform mat4 originMatrix;
 uniform bool hasTC;
 uniform sampler2D sp;
+<<<<<<< HEAD
+=======
 uniform float tf;
 uniform int totalCount;
 uniform mat3 normMatrix;
+>>>>>>> main
 
 out vec4 varyingColor;
 out vec3 Normal;
