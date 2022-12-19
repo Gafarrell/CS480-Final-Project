@@ -116,6 +116,7 @@ void AsteroidInstancer::getShaderLocs() {
 	posAttrib = 0;
 	colAttrib = 1;
 	tcAttrib = 2;
+	//normAttrib = 3;
 
 	m_view = instance_shader->GetUniformLocation("viewMatrix");
 	m_proj = instance_shader->GetUniformLocation("projectionMatrix");
@@ -130,6 +131,17 @@ void AsteroidInstancer::Render(double totalTime, glm::mat4 cameraView, glm::mat4
 	glUniformMatrix4fv(m_proj, 1, GL_FALSE, glm::value_ptr(cameraProjection));
 	glUniformMatrix4fv(m_model, 1, GL_FALSE, glm::value_ptr(originPoint));
 
+
+	//get sun color
+	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	//get sun pos
+	glm::vec3 lightPos = glm::vec3(1.0f, 1.0f, 1.0f);
+	glUniformMatrix3fv(glGetUniformLocation(instance_shader->getProgram(), "normMatrix"), 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(glm::mat3(m_proj * m_model)))));
+	//glUniformMatrix4fv(glGetUniformLocation(instance_shader->getProgram(), "modelMatrix"), 1, GL_FALSE, glm::value_ptr(m_model));
+	glUniform4f(glGetUniformLocation(instance_shader->getProgram(), "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
+	glUniform3f(glGetUniformLocation(instance_shader->getProgram(), "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+
+
 	glUniform1f(timeFactor, (float) totalTime);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VB);
@@ -140,6 +152,7 @@ void AsteroidInstancer::Render(double totalTime, glm::mat4 cameraView, glm::mat4
 	glEnableVertexAttribArray(posAttrib);
 	glEnableVertexAttribArray(colAttrib);
 	glEnableVertexAttribArray(tcAttrib);
+	//glEnableVertexAttribArray(normAttrib);
 
 	// Set vertex attribute pointers to the load correct data
 	glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);

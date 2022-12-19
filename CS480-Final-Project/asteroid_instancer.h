@@ -33,7 +33,7 @@ private:
 	Shader *instance_shader;
 	GLint m_view, m_proj, m_model, timeFactor;
 	GLuint VB, IB, MB, vao;
-	GLint posAttrib, colAttrib, tcAttrib;
+	GLint posAttrib, colAttrib, tcAttrib, normAttrib;
 
 	float radius = 15.0f;
 	float offset = 0.5f;

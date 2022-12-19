@@ -12,13 +12,20 @@ uniform bool hasTC;
 uniform sampler2D sp;
 uniform float tf;
 uniform int totalCount;
+uniform mat3 normMatrix;
 
 out vec4 varyingColor;
+out vec3 Normal;
+out vec3 varPos;
 
 void main(void)
 {
+
+	varPos = (projectionMatrix * originMatrix * vec4(v_position,1)).xyz;
+
 	vec4 v = vec4(v_position, 1.0);
 	gl_Position = (projectionMatrix * viewMatrix * originMatrix * instanceMatrix) * v;
 
 	varyingColor = texture(sp, v_tc);
+	Normal = normMatrix * v_color;
 }
