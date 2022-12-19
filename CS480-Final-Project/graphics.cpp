@@ -204,6 +204,27 @@ bool Graphics::Initialize(int width, int height)
 	m_saturn->setSpeed(vector<float>({ 0.05f, 0.05f, 0.05f }));
 	solarSystem.push_back(m_saturn);
 
+	//Saturn moons
+	//Titan
+	m_titan = new Sphere(48, "assets\\titan.jfif");
+	m_titan->setAngle(vector<float>({ 3 }));
+	m_titan->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
+	m_titan->setOrbitDistance(vector<float>({ 1.5,1.5,1.5 }));
+	m_titan->setRotationSpeed(vector<float>({ 0.5f }));
+	m_titan->setScale(vector<float>({ 0.05f,0.05f,0.05f }));
+	m_titan->setSpeed(vector<float>({ .45f,.45f,.45f }));
+	solarSystem.push_back(m_titan);
+
+	//Iapteus
+	m_iapteus = new Sphere(48, "assets\\iapteus.jfif");
+	m_iapteus->setAngle(vector<float>({ 3 }));
+	m_iapteus->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
+	m_iapteus->setOrbitDistance(vector<float>({ 1.75,1.75,1.75 }));
+	m_iapteus->setRotationSpeed(vector<float>({ 0.3f }));
+	m_iapteus->setScale(vector<float>({ 0.05f,0.05f,0.05f }));
+	m_iapteus->setSpeed(vector<float>({ .25f,.25f,.25f }));
+	solarSystem.push_back(m_iapteus);
+
 	// Uranus
 	m_uranus = new Sphere(48, "assets\\Uranus.jpg");
 	m_uranus->setAngle(vector<float>({ 3 }));
@@ -214,6 +235,27 @@ bool Graphics::Initialize(int width, int height)
 	m_uranus->setSpeed(vector<float>({ 0.03f, 0.03f, 0.03f }));
 	solarSystem.push_back(m_uranus);
 
+	//Uranus moons
+	//Oberon
+	m_oberon = new Sphere(48, "assets\\oberon.jfif");
+	m_oberon->setAngle(vector<float>({ 3 }));
+	m_oberon->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
+	m_oberon->setOrbitDistance(vector<float>({ 1.5,1.5,1.5 }));
+	m_oberon->setRotationSpeed(vector<float>({ 0.3f }));
+	m_oberon->setScale(vector<float>({ 0.05f,0.05f,0.05f }));
+	m_oberon->setSpeed(vector<float>({ .55f,.55f,.55f }));
+	solarSystem.push_back(m_oberon);
+
+	//Ariel
+	m_ariel = new Sphere(48, "assets\\ariel.jfif");
+	m_ariel->setAngle(vector<float>({ 3 }));
+	m_ariel->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
+	m_ariel->setOrbitDistance(vector<float>({ 1.75,1.75,1.75 }));
+	m_ariel->setRotationSpeed(vector<float>({ 0.5f }));
+	m_ariel->setScale(vector<float>({ 0.05f,0.05f,0.05f }));
+	m_ariel->setSpeed(vector<float>({ .35f,.35f,.35f }));
+	solarSystem.push_back(m_ariel);
+
 	// Neptune
 	m_neptune = new Sphere(48, "assets\\Neptune.jpg");
 	m_neptune->setAngle(vector<float>({ 3 }));
@@ -223,6 +265,17 @@ bool Graphics::Initialize(int width, int height)
 	m_neptune->setScale(vector<float>({ 0.3f,0.3f,0.3f }));
 	m_neptune->setSpeed(vector<float>({ 0.02f, 0.02f, 0.02f }));
 	solarSystem.push_back(m_neptune);
+
+	//Nepture moon
+	//Triton
+	m_triton = new Sphere(48, "assets\\triton.jfif");
+	m_triton->setAngle(vector<float>({ 3 }));
+	m_triton->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
+	m_triton->setOrbitDistance(vector<float>({ 1.75,1.75,1.75 }));
+	m_triton->setRotationSpeed(vector<float>({ 0.3f }));
+	m_triton->setScale(vector<float>({ 0.05f,0.05f,0.05f }));
+	m_triton->setSpeed(vector<float>({ .25f,.25f,.25f }));
+	solarSystem.push_back(m_triton);
 
 	// Pluto
 	m_pluto = new Sphere(48, "assets\\Mercury.jpg");
@@ -398,6 +451,7 @@ void Graphics::HierarchicalUpdate2(double dt) {
 	m_jupiter->Update(modelStack.top());
 
 	modelStack.pop();
+
 	//Lo transform
 	ComputeTransforms(totalTime, m_lo->getOrbitalFunctions(), m_lo->getSpeed(), m_lo->getDistance(), m_lo->getRotationSpeed(), glm::vec3(0, 1, 0), m_lo->getScale(), tmat, rmat, smat);
 	modelStack.push(modelStack.top());
@@ -471,6 +525,36 @@ void Graphics::HierarchicalUpdate2(double dt) {
 	m_saturn->Update(modelStack.top());
 
 	modelStack.pop();
+
+	//Titan transform
+	ComputeTransforms(totalTime, m_titan->getOrbitalFunctions(), m_titan->getSpeed(), m_titan->getDistance(), m_titan->getRotationSpeed(), glm::vec3(0, 1, 0), m_titan->getScale(), tmat, rmat, smat);
+	modelStack.push(modelStack.top());
+
+	modelStack.top() *= tmat;
+	m_titan->UpdateSpecModel(modelStack.top());
+	modelStack.push(modelStack.top());
+	modelStack.top() *= rmat;
+	modelStack.top() *= smat;
+
+	m_titan->Update(modelStack.top());
+
+	modelStack.pop();
+	modelStack.pop();
+
+	//Iapteus transform
+	ComputeTransforms(totalTime, m_iapteus->getOrbitalFunctions(), m_iapteus->getSpeed(), m_iapteus->getDistance(), m_iapteus->getRotationSpeed(), glm::vec3(0, 1, 0), m_iapteus->getScale(), tmat, rmat, smat);
+	modelStack.push(modelStack.top());
+
+	modelStack.top() *= tmat;
+	m_iapteus->UpdateSpecModel(modelStack.top());
+	modelStack.push(modelStack.top());
+	modelStack.top() *= rmat;
+	modelStack.top() *= smat;
+
+	m_iapteus->Update(modelStack.top());
+
+	modelStack.pop();
+	modelStack.pop();
 	modelStack.pop();
 
 	//Uranus transform
@@ -485,6 +569,36 @@ void Graphics::HierarchicalUpdate2(double dt) {
 	m_uranus->Update(modelStack.top());
 
 	modelStack.pop();
+
+	//Ariel transform
+	ComputeTransforms(totalTime, m_ariel->getOrbitalFunctions(), m_ariel->getSpeed(), m_ariel->getDistance(), m_ariel->getRotationSpeed(), glm::vec3(0, 1, 0), m_ariel->getScale(), tmat, rmat, smat);
+	modelStack.push(modelStack.top());
+
+	modelStack.top() *= tmat;
+	m_ariel->UpdateSpecModel(modelStack.top());
+	modelStack.push(modelStack.top());
+	modelStack.top() *= rmat;
+	modelStack.top() *= smat;
+
+	m_ariel->Update(modelStack.top());
+
+	modelStack.pop();
+	modelStack.pop();
+
+	//Oberon transform
+	ComputeTransforms(totalTime, m_oberon->getOrbitalFunctions(), m_oberon->getSpeed(), m_oberon->getDistance(), m_oberon->getRotationSpeed(), glm::vec3(0, 1, 0), m_oberon->getScale(), tmat, rmat, smat);
+	modelStack.push(modelStack.top());
+
+	modelStack.top() *= tmat;
+	m_oberon->UpdateSpecModel(modelStack.top());
+	modelStack.push(modelStack.top());
+	modelStack.top() *= rmat;
+	modelStack.top() *= smat;
+
+	m_oberon->Update(modelStack.top());
+
+	modelStack.pop();
+	modelStack.pop();
 	modelStack.pop();
 
 	//Nepture transform
@@ -498,6 +612,21 @@ void Graphics::HierarchicalUpdate2(double dt) {
 
 	m_neptune->Update(modelStack.top());
 
+	modelStack.pop();
+
+	//Triton transform
+	ComputeTransforms(totalTime, m_triton->getOrbitalFunctions(), m_triton->getSpeed(), m_triton->getDistance(), m_triton->getRotationSpeed(), glm::vec3(0, 1, 0), m_triton->getScale(), tmat, rmat, smat);
+	modelStack.push(modelStack.top());
+
+	modelStack.top() *= tmat;
+	m_triton->UpdateSpecModel(modelStack.top());
+	modelStack.push(modelStack.top());
+	modelStack.top() *= rmat;
+	modelStack.top() *= smat;
+
+	m_triton->Update(modelStack.top());
+
+	modelStack.pop();
 	modelStack.pop();
 	modelStack.pop();
 

@@ -80,6 +80,11 @@ class Graphics
     Sphere* m_europa;
     Sphere* m_ganymede;
     Sphere* m_callisto;
+    Sphere* m_titan;
+    Sphere* m_iapteus;
+    Sphere* m_ariel;
+    Sphere* m_oberon;
+    Sphere* m_triton;
 
     AsteroidInstancer* m_asteroids;
     AsteroidInstancer* m_outer_asteroids;
