@@ -76,6 +76,10 @@ class Graphics
     Sphere* m_haumea;
     Sphere* m_eris;
     Sphere* m_halcomet;
+    Sphere* m_lo;
+    Sphere* m_europa;
+    Sphere* m_ganymede;
+    Sphere* m_callisto;
 
     AsteroidInstancer* m_asteroids;
     AsteroidInstancer* m_outer_asteroids;

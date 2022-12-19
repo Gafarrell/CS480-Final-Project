@@ -153,6 +153,47 @@ bool Graphics::Initialize(int width, int height)
 	m_jupiter->setSpeed(vector<float>({ 0.06f, 0.06f, 0.06f }));
 	solarSystem.push_back(m_jupiter);
 
+	//Jupiter moons
+	//Lo
+	m_lo = new Sphere(48, "assets\\Lo.jpg");
+	m_lo->setAngle(vector<float>({ 3 }));
+	m_lo->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
+	m_lo->setOrbitDistance(vector<float>({ 1.,1.,1. }));
+	m_lo->setRotationSpeed(vector<float>({ 0.3f }));
+	m_lo->setScale(vector<float>({ 0.05f,0.05f,0.05f }));
+	m_lo->setSpeed(vector<float>({ .25f,.25f,.25f }));
+	solarSystem.push_back(m_lo);
+
+	//Europa
+	m_europa = new Sphere(48, "assets\\europa.jpg");
+	m_europa->setAngle(vector<float>({ 3 }));
+	m_europa->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
+	m_europa->setOrbitDistance(vector<float>({ 1.25,1.25,1.25 }));
+	m_europa->setRotationSpeed(vector<float>({ 0.3f }));
+	m_europa->setScale(vector<float>({ 0.05f,0.05f,0.05f }));
+	m_europa->setSpeed(vector<float>({ .2f,.2f,.2f }));
+	solarSystem.push_back(m_europa);
+
+	//Ganymede
+	m_ganymede = new Sphere(48, "assets\\ganymede.jfif");
+	m_ganymede->setAngle(vector<float>({ 3 }));
+	m_ganymede->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
+	m_ganymede->setOrbitDistance(vector<float>({ 1.37,1.37,1.37 }));
+	m_ganymede->setRotationSpeed(vector<float>({ 0.3f }));
+	m_ganymede->setScale(vector<float>({ 0.05f,0.05f,0.05f }));
+	m_ganymede->setSpeed(vector<float>({ .15f,.15f,.15f }));
+	solarSystem.push_back(m_ganymede);
+
+	//Callisto
+	m_callisto = new Sphere(48, "assets\\callisto.jpg");
+	m_callisto->setAngle(vector<float>({ 3 }));
+	m_callisto->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
+	m_callisto->setOrbitDistance(vector<float>({ 1.75,1.75,1.75 }));
+	m_callisto->setRotationSpeed(vector<float>({ 0.3f }));
+	m_callisto->setScale(vector<float>({ 0.05f,0.05f,0.05f }));
+	m_callisto->setSpeed(vector<float>({ .1f,.1f,.1f }));
+	solarSystem.push_back(m_callisto);
+
 	// Saturn
 	m_saturn = new Sphere(48, "assets\\Saturn.jpg");
 	m_saturn->setAngle(vector<float>({ 3 }));
@@ -357,6 +398,65 @@ void Graphics::HierarchicalUpdate2(double dt) {
 	m_jupiter->Update(modelStack.top());
 
 	modelStack.pop();
+	//Lo transform
+	ComputeTransforms(totalTime, m_lo->getOrbitalFunctions(), m_lo->getSpeed(), m_lo->getDistance(), m_lo->getRotationSpeed(), glm::vec3(0, 1, 0), m_lo->getScale(), tmat, rmat, smat);
+	modelStack.push(modelStack.top());
+
+	modelStack.top() *= tmat;
+	m_lo->UpdateSpecModel(modelStack.top());
+	modelStack.push(modelStack.top());
+	modelStack.top() *= rmat;
+	modelStack.top() *= smat;
+
+	m_lo->Update(modelStack.top());
+
+	modelStack.pop();
+	modelStack.pop();
+
+	//Europa transform
+	ComputeTransforms(totalTime, m_europa->getOrbitalFunctions(), m_europa->getSpeed(), m_europa->getDistance(), m_europa->getRotationSpeed(), glm::vec3(0, 1, 0), m_europa->getScale(), tmat, rmat, smat);
+	modelStack.push(modelStack.top());
+
+	modelStack.top() *= tmat;
+	m_europa->UpdateSpecModel(modelStack.top());
+	modelStack.push(modelStack.top());
+	modelStack.top() *= rmat;
+	modelStack.top() *= smat;
+
+	m_europa->Update(modelStack.top());
+
+	modelStack.pop();
+	modelStack.pop();
+
+	//Ganymede transform
+	ComputeTransforms(totalTime, m_ganymede->getOrbitalFunctions(), m_ganymede->getSpeed(), m_ganymede->getDistance(), m_ganymede->getRotationSpeed(), glm::vec3(0, 1, 0), m_ganymede->getScale(), tmat, rmat, smat);
+	modelStack.push(modelStack.top());
+
+	modelStack.top() *= tmat;
+	m_ganymede->UpdateSpecModel(modelStack.top());
+	modelStack.push(modelStack.top());
+	modelStack.top() *= rmat;
+	modelStack.top() *= smat;
+
+	m_ganymede->Update(modelStack.top());
+
+	modelStack.pop();
+	modelStack.pop();
+
+	//Callisto transform
+	ComputeTransforms(totalTime, m_callisto->getOrbitalFunctions(), m_callisto->getSpeed(), m_callisto->getDistance(), m_callisto->getRotationSpeed(), glm::vec3(0, 1, 0), m_callisto->getScale(), tmat, rmat, smat);
+	modelStack.push(modelStack.top());
+
+	modelStack.top() *= tmat;
+	m_callisto->UpdateSpecModel(modelStack.top());
+	modelStack.push(modelStack.top());
+	modelStack.top() *= rmat;
+	modelStack.top() *= smat;
+
+	m_callisto->Update(modelStack.top());
+
+	modelStack.pop();
+	modelStack.pop();
 	modelStack.pop();
 
 	//Saturn transform
@@ -496,14 +596,6 @@ void Graphics::Render()
 	
 	m_outer_asteroids->Render(totalTime, m_camera->GetView(), m_camera->GetProjection());
 
-	
-	// Start the generic shader program
-	m_shader->Enable();
-
-	// Send in the projection and view to the shader (stay the same while camera intrinsic(perspective) and extrinsic (view) parameters are the same
-	glUniformMatrix4fv(m_projectionMatrix, 1, GL_FALSE, glm::value_ptr(m_camera->GetProjection()));
-	glUniformMatrix4fv(m_viewMatrix, 1, GL_FALSE, glm::value_ptr(m_camera->GetView()));
-
 	//get sun color
 	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	//get sun pos
@@ -513,6 +605,7 @@ void Graphics::Render()
 	sun_shader->Enable();
 	glUniformMatrix4fv(sun_shader->GetUniformLocation("projectionMatrix"), 1, GL_FALSE, glm::value_ptr(m_camera->GetProjection()));
 	glUniformMatrix4fv(sun_shader->GetUniformLocation("viewMatrix"), 1, GL_FALSE, glm::value_ptr(m_camera->GetView()));
+
 
 	if (m_sun != NULL) {
 		glUniformMatrix4fv(sun_shader->GetUniformLocation("modelMatrix"), 1, GL_FALSE, glm::value_ptr(m_sun->GetModel()));
@@ -529,7 +622,12 @@ void Graphics::Render()
 		}
 	}
 
+	// Start the generic shader program
 	m_shader->Enable();
+
+	// Send in the projection and view to the shader (stay the same while camera intrinsic(perspective) and extrinsic (view) parameters are the same
+	glUniformMatrix4fv(m_projectionMatrix, 1, GL_FALSE, glm::value_ptr(m_camera->GetProjection()));
+	glUniformMatrix4fv(m_viewMatrix, 1, GL_FALSE, glm::value_ptr(m_camera->GetView()));
 
 
 	// Render starship
