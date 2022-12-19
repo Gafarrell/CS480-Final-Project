@@ -138,7 +138,6 @@ void AsteroidInstancer::Render(double totalTime, glm::mat4 cameraView, glm::mat4
 	//get sun pos
 	glm::vec3 lightPos = glm::vec3(0.0f, 0.0f, 0.0f);
 	glUniformMatrix3fv(glGetUniformLocation(instance_shader->getProgram(), "normMatrix"), 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(glm::mat3(m_proj * m_model)))));
-	//glUniformMatrix4fv(glGetUniformLocation(instance_shader->getProgram(), "modelMatrix"), 1, GL_FALSE, glm::value_ptr(m_model));
 	glUniform4f(glGetUniformLocation(instance_shader->getProgram(), "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
 	glUniform3f(glGetUniformLocation(instance_shader->getProgram(), "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 
@@ -153,7 +152,6 @@ void AsteroidInstancer::Render(double totalTime, glm::mat4 cameraView, glm::mat4
 	glEnableVertexAttribArray(posAttrib);
 	glEnableVertexAttribArray(colAttrib);
 	glEnableVertexAttribArray(tcAttrib);
-	//glEnableVertexAttribArray(normAttrib);
 
 	// Set vertex attribute pointers to the load correct data
 	glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);

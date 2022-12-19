@@ -64,8 +64,6 @@
     <ResourceCompile Include="CS480-Final-Project.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="shaders\pointFragShader.txt" />
-    <Text Include="shaders\pointVertShader.txt" />
     <Text Include="shaders\sunFragShader.txt" />
     <Text Include="shaders\sunVertShader.txt" />
   </ItemGroup>
