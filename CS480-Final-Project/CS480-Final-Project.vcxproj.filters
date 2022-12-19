@@ -35,6 +35,12 @@
     <None Include="shaders\instanceVertShader.glsl">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="shaders\pointFragShader.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shaders\pointVertShader.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="camera.cpp">
@@ -116,7 +122,8 @@
     </ClInclude>
     <ClInclude Include="Utils.h">
       <Filter>Header Files</Filter>
-    </ClInclude><ClInclude Include="asteroid_instancer.h">
+    </ClInclude>
+    <ClInclude Include="asteroid_instancer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">

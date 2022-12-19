@@ -10,8 +10,6 @@ uniform mat4 viewMatrix;
 uniform mat4 originMatrix;
 uniform bool hasTC;
 uniform sampler2D sp;
-uniform float tf;
-uniform int totalCount;
 
 out vec4 varyingColor;
 

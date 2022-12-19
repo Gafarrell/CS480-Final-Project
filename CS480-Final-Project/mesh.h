@@ -6,6 +6,7 @@
 #include "Texture.h"
 #include "trig_functions.h"
 #include "camera.h"
+#include "sphere.h"
 
 class Mesh
 {
@@ -18,6 +19,8 @@ public:
     void Update(double dt);
     void Render(GLint posAttrib, GLint colAttrib);
     void Render(GLint positionAttribLoc, GLint colorAttribLoc, GLint normalAttribLoc, GLint tcAttribLoc, GLint hasTex);
+    void spectate(Sphere* toSpectate, float spectateDistance);
+    void explore();
 
     glm::mat4 GetModel();
 
@@ -26,23 +29,26 @@ public:
 
     void setTranslation(glm::vec3 translation) { this->shipPosition = translation; }
 
-    void setSpeed(float speed) { this->speedScalar = speed; }
+    void setForwardSpeed(float speed) { this->forwardSpeed = speed; }
+    void setHorizontalSpeed(float speed) { this->horizontalSpeed = speed; }
 
     void setDirection(glm::vec3 direction) { this->direction = direction; }
     void setRotateDeltas(double xDelta, double yDelta) { this->xMouseDelta = xDelta; this->yMouseDelta = yDelta; }
     
     void setCamera(Camera* camera) { this->m_camera = camera; }
     void setUniformScale(float scale) { this->uniformScale = scale; }
+    glm::vec3 getPosition() { return shipPosition;}
+
+    bool isSpectateMode() { return spectateMode; };
 
     bool hasTex;
     GLuint getTextureID() { return m_texture->getTextureID(); }
-
-
 
 private:
     double xMouseDelta = 0, yMouseDelta = 0;
     glm::vec3 pivotLocation;
     glm::mat4 model;
+    glm::mat4 spectatorModel;
     std::vector<Vertex> Vertices;
     std::vector<unsigned int> Indices;
 
@@ -52,19 +58,22 @@ private:
     GLuint TB;
 
     Camera* m_camera;
+    Sphere* toSpectate;
+    float spectateDistance = 0.005f;
     
     glm::vec3 shipPosition = glm::vec3(0, -0.25,-1);
     glm::vec3 direction = glm::vec3(0, 0, 0);
 
-    glm::vec2 thirdPersonOffsets = glm::vec2(-200, 50);
-    glm::vec3 firstPersonOffset = glm::vec3(0), firstPersonFocus = glm::vec3(0);
+    glm::vec2 thirdPersonOffsets = glm::vec2(-2.5f, 1);
+    glm::vec2 firstPersonOffsets = glm::vec2(-3, -0.000015f );
 
-    float speedScalar = 1.f;
-    float thirdPersonVerticalFocusOffset = 25.f;
+    float forwardSpeed = 0.0f, horizontalSpeed = 0.0f;
+    float thirdPersonVerticalFocusOffset = 0.5f;
 
     float uniformScale = 0.005f;
     float horizAngle = 0.f;
     float vertAngle = 0;
+    bool spectateMode = false;
 
     Texture* m_texture;
 

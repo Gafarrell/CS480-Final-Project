@@ -153,9 +153,13 @@ void Sphere::setupModelMatrix(glm::vec3 pivot, float angle, float scale) {
 }
 
 void Sphere::Update(glm::mat4 matModel) {
-
     model = matModel;
+}
 
+void Sphere::UpdateSpecModel(glm::mat4 specModel) {
+    this->spectatorModel = specModel;
+    spectatorModel *= glm::rotate(glm::mat4(1), spectateHorizRotation, glm::vec3(0, 1, 0));
+    spectatorModel *= glm::rotate(glm::mat4(1), spectateVertRotation, glm::vec3(1, 0, 0));
 }
 
 float Sphere::toRadians(float degrees) { return (degrees * 2.0f * 3.14159f) / 360.0f; }

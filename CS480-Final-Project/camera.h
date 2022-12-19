@@ -22,8 +22,6 @@ class Camera
 
     void setPerspective(glm::vec3 cameraPosition, glm::vec3 cameraFront, glm::vec3 cameraUp);
 
-    void setForwardSpeed(float speed) { forwardSpeed = speed; }
-    void setHorizontalSpeed(float speed) { horizSpeed = speed; }
     void setVertSpeed(float speed) { vertSpeed = speed; }
 
     void setRotateDelta(float xd, float yd) { xDelta = xd; yDelta = yd; }

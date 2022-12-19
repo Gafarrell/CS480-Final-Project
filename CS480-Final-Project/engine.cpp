@@ -10,69 +10,69 @@ Engine::Engine(const char* name, int width, int height)
     if (engine == nullptr) engine = this;
   m_WINDOW_NAME = name;
   m_WINDOW_WIDTH = width*2;
-  m_WINDOW_HEIGHT = height*1.5;
+m_WINDOW_HEIGHT = height * 1.5;
 
 }
 
 Engine::~Engine()
 {
-  delete m_window;
-  delete m_graphics;
-  m_window = NULL;
-  m_graphics = NULL;
+    delete m_window;
+    delete m_graphics;
+    m_window = NULL;
+    m_graphics = NULL;
 }
 
 bool Engine::Initialize()
 {
-  // Start a window
-  m_window = new Window(m_WINDOW_NAME, &m_WINDOW_WIDTH, &m_WINDOW_HEIGHT);
-  if(!m_window->Initialize())
-  {
-    printf("The window failed to initialize.\n");
-    return false;
-  }
+    // Start a window
+    m_window = new Window(m_WINDOW_NAME, &m_WINDOW_WIDTH, &m_WINDOW_HEIGHT);
+    if (!m_window->Initialize())
+    {
+        printf("The window failed to initialize.\n");
+        return false;
+    }
 
-  // Start the graphics
-  m_graphics = new Graphics();
-  if(!m_graphics->Initialize(m_WINDOW_WIDTH, m_WINDOW_HEIGHT))
-  {
-    printf("The graphics failed to initialize.\n");
-    return false;
-  }
+    // Start the graphics
+    m_graphics = new Graphics();
+    if (!m_graphics->Initialize(m_WINDOW_WIDTH, m_WINDOW_HEIGHT))
+    {
+        printf("The graphics failed to initialize.\n");
+        return false;
+    }
 
-  glfwSetWindowFocusCallback(m_window->getWindow(), windowFocusCallback);
-  glfwSetInputMode(m_window->getWindow(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-  glfwSetCursorPos(m_window->getWindow(), m_WINDOW_WIDTH / 2, m_WINDOW_HEIGHT / 2);
-  glfwSetScrollCallback(m_window->getWindow(), scroll_wheel_callback);
+    glfwSetWindowFocusCallback(m_window->getWindow(), windowFocusCallback);
+    glfwSetInputMode(m_window->getWindow(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+    glfwSetCursorPos(m_window->getWindow(), m_WINDOW_WIDTH / 2, m_WINDOW_HEIGHT / 2);
+    glfwSetScrollCallback(m_window->getWindow(), scroll_wheel_callback);
 
-  // No errors
-  return true;
+    // No errors
+    return true;
 }
 
 void Engine::Run()
 {
-  m_running = true;
+    m_running = true;
 
-  double lastTimeStamp = 0;
+    double lastTimeStamp = 0;
 
 
-  while (!glfwWindowShouldClose(m_window->getWindow()))
-  {
-      double dt = glfwGetTime() - lastTimeStamp;
-      lastTimeStamp = glfwGetTime();
+    while (!glfwWindowShouldClose(m_window->getWindow()))
+    {
+        double dt = glfwGetTime() - lastTimeStamp;
+        lastTimeStamp = glfwGetTime();
 
-      ProcessInput();
-      Display(m_window->getWindow(), dt);
-      glfwPollEvents();
-  }
-  m_running = false;
+        ProcessInput();
+        Display(m_window->getWindow(), dt);
+        glfwPollEvents();
+    }
+    m_running = false;
 
 }
 
 void Engine::adjustZoom(float zoom) {
     if (m_focused)
         cout << "Zooming." << endl;
-        //m_graphics->getController()->addZoom(zoom);
+    //m_graphics->getController()->addZoom(zoom);
 }
 
 void Engine::ProcessInput()
@@ -80,27 +80,22 @@ void Engine::ProcessInput()
     if (glfwGetKey(m_window->getWindow(), GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(m_window->getWindow(), true);
 
-    glm::vec3 meshDirection = glm::vec3(0);
+    float forwardSpeed = 0.f, horizontalSpeed = 0.f;
 
     // Forward backward
     if (keyPressed(GLFW_KEY_W))
-        meshDirection.z += 1;
+        forwardSpeed += SHIP_FORWARD_SPEED;
     if (keyPressed(GLFW_KEY_S))
-        meshDirection.z -= 1;
+        forwardSpeed -= SHIP_FORWARD_SPEED;
 
     // Left Right
     if (keyPressed(GLFW_KEY_A))
-        meshDirection.x -= 1;
+        horizontalSpeed -= SHIP_HORIZONTAL_SPEED;
     if (keyPressed(GLFW_KEY_D))
-        meshDirection.x += 1;
-    
-    // Up down
-    if (keyPressed(GLFW_KEY_SPACE))
-        meshDirection.y += 1;
-    if (keyPressed(GLFW_KEY_LEFT_SHIFT))
-        meshDirection.y -=1;
+        horizontalSpeed += SHIP_HORIZONTAL_SPEED;
 
-    m_graphics->getController()->setDirection(meshDirection);
+    m_graphics->getController()->setForwardSpeed(forwardSpeed);
+    m_graphics->getController()->setHorizontalSpeed(horizontalSpeed);
 
     if (m_focused) {
         double xPos, yPos;
@@ -110,6 +105,13 @@ void Engine::ProcessInput()
         m_graphics->getController()->setRotateDeltas(xDelta, yDelta);
 
         glfwSetCursorPos(m_window->getWindow(), m_WINDOW_WIDTH / 2, m_WINDOW_HEIGHT / 2);
+    }
+
+    if (keyPressed(GLFW_KEY_O)) {
+        m_graphics->spectate();
+    }
+    if (keyPressed(GLFW_KEY_E)){
+        m_graphics->getController()->explore();
     }
 }
 

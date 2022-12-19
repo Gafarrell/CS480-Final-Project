@@ -244,6 +244,7 @@ void Graphics::HierarchicalUpdate2(double dt) {
 	modelStack.push(modelStack.top());
 
 	modelStack.top() *= tmat;
+	m_sun->UpdateSpecModel(modelStack.top());
 	modelStack.push(modelStack.top());
 	modelStack.top() *= rmat * smat;
 
@@ -256,6 +257,7 @@ void Graphics::HierarchicalUpdate2(double dt) {
 	modelStack.push(modelStack.top());
 
 	modelStack.top() *= tmat;
+	m_mercury->UpdateSpecModel(modelStack.top());
 	modelStack.push(modelStack.top());
 	modelStack.top() *= rmat * smat;
 
@@ -269,6 +271,7 @@ void Graphics::HierarchicalUpdate2(double dt) {
 	modelStack.push(modelStack.top());
 
 	modelStack.top() *= tmat;
+	m_venus->UpdateSpecModel(modelStack.top());
 	modelStack.push(modelStack.top());
 	modelStack.top() *= rmat * smat;
 
@@ -282,6 +285,7 @@ void Graphics::HierarchicalUpdate2(double dt) {
 	modelStack.push(modelStack.top());
 
 	modelStack.top() *= tmat;
+	m_earth->UpdateSpecModel(modelStack.top());
 	modelStack.push(modelStack.top());
 	modelStack.top() *= rmat * smat;
 
@@ -294,6 +298,7 @@ void Graphics::HierarchicalUpdate2(double dt) {
 	modelStack.push(modelStack.top());
 
 	modelStack.top() *= tmat;
+	m_moon->UpdateSpecModel(modelStack.top());
 	modelStack.push(modelStack.top());
 	modelStack.top() *= rmat;
 	modelStack.top() *= smat;
@@ -309,6 +314,7 @@ void Graphics::HierarchicalUpdate2(double dt) {
 	modelStack.push(modelStack.top());
 
 	modelStack.top() *= tmat;
+	m_mars->UpdateSpecModel(modelStack.top());
 	modelStack.push(modelStack.top());
 	modelStack.top() *= rmat * smat;
 
@@ -322,6 +328,7 @@ void Graphics::HierarchicalUpdate2(double dt) {
 	modelStack.push(modelStack.top());
 
 	modelStack.top() *= tmat;
+	m_ceres->UpdateSpecModel(modelStack.top());
 	modelStack.push(modelStack.top());
 	modelStack.top() *= rmat * smat;
 
@@ -335,6 +342,7 @@ void Graphics::HierarchicalUpdate2(double dt) {
 	modelStack.push(modelStack.top());
 
 	modelStack.top() *= tmat;
+	m_jupiter->UpdateSpecModel(modelStack.top());
 	modelStack.push(modelStack.top());
 	modelStack.top() *= rmat * smat;
 
@@ -348,6 +356,7 @@ void Graphics::HierarchicalUpdate2(double dt) {
 	modelStack.push(modelStack.top());
 
 	modelStack.top() *= tmat;
+	m_saturn->UpdateSpecModel(modelStack.top());
 	modelStack.push(modelStack.top());
 	modelStack.top() *= rmat * smat;
 
@@ -361,6 +370,7 @@ void Graphics::HierarchicalUpdate2(double dt) {
 	modelStack.push(modelStack.top());
 
 	modelStack.top() *= tmat;
+	m_uranus->UpdateSpecModel(modelStack.top());
 	modelStack.push(modelStack.top());
 	modelStack.top() *= rmat * smat;
 
@@ -374,6 +384,7 @@ void Graphics::HierarchicalUpdate2(double dt) {
 	modelStack.push(modelStack.top());
 
 	modelStack.top() *= tmat;
+	m_neptune->UpdateSpecModel(modelStack.top());
 	modelStack.push(modelStack.top());
 	modelStack.top() *= rmat * smat;
 
@@ -387,6 +398,7 @@ void Graphics::HierarchicalUpdate2(double dt) {
 	modelStack.push(modelStack.top());
 
 	modelStack.top() *= tmat;
+	m_pluto->UpdateSpecModel(modelStack.top());
 	modelStack.push(modelStack.top());
 	modelStack.top() *= rmat * smat;
 
@@ -400,6 +412,7 @@ void Graphics::HierarchicalUpdate2(double dt) {
 	modelStack.push(modelStack.top());
 
 	modelStack.top() *= tmat;
+	m_haumea->UpdateSpecModel(modelStack.top());
 	modelStack.push(modelStack.top());
 	modelStack.top() *= rmat * smat;
 
@@ -413,6 +426,7 @@ void Graphics::HierarchicalUpdate2(double dt) {
 	modelStack.push(modelStack.top());
 
 	modelStack.top() *= tmat;
+	m_eris->UpdateSpecModel(modelStack.top());
 	modelStack.push(modelStack.top());
 	modelStack.top() *= rmat * smat;
 
@@ -426,6 +440,7 @@ void Graphics::HierarchicalUpdate2(double dt) {
 	modelStack.push(modelStack.top());
 
 	modelStack.top() *= tmat;
+	m_halcomet->UpdateSpecModel(modelStack.top());
 	modelStack.push(modelStack.top());
 	modelStack.top() *= rmat * smat;
 
@@ -481,7 +496,7 @@ void Graphics::Render()
 
 
 	// Render starship
-	if (m_controller != NULL) {
+	if (m_controller != NULL && !m_controller->isSpectateMode()) {
 		glUniform1i(m_hasTexture, false);
 		glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(m_controller->GetModel()));
 		if (m_controller->hasTex) {
@@ -639,5 +654,27 @@ std::string Graphics::ErrorString(GLenum error)
 	{
 		return "None";
 	}
+}
+
+void Graphics::spectate() {
+	if (m_controller->isSpectateMode()) return;
+	Sphere* spectate = m_sun;
+	glm::vec3 ship = m_controller->getPosition();
+	glm::vec3 smallest = ship;
+	
+	for (int i = 1; i < solarSystem.size(); i++) {
+		glm::mat4 planetModel = solarSystem[i]->GetModel();
+		glm::vec3 planetPosition = glm::vec3(planetModel[3][0], planetModel[3][1], planetModel[3][2]);
+
+		glm::vec3 distance = planetPosition - ship;
+
+		if (glm::length(distance) < glm::length(smallest)) {
+			spectate = solarSystem[i];
+			smallest = distance;
+		}
+		std::cout << "Distance: " << glm::length(distance) << endl;
+	}
+
+	m_controller->spectate(spectate, 1.5f);
 }
 
