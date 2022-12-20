@@ -12,6 +12,7 @@ Graphics::~Graphics()
 
 }
 
+//Initialize the graphics, setup shaders, setup planets
 bool Graphics::Initialize(int width, int height)
 {
 	// Used for the linux OS
@@ -341,6 +342,7 @@ bool Graphics::Initialize(int width, int height)
 	return true;
 }
 
+//Update the position of all objects
 void Graphics::HierarchicalUpdate2(double dt) {
 
 
@@ -718,7 +720,7 @@ void Graphics::HierarchicalUpdate2(double dt) {
 	while (!modelStack.empty()) modelStack.pop();
 }
 
-
+//Compute the transform of the objects
 void Graphics::ComputeTransforms(double dt, std::vector<TrigFunction*> orbitFunctions, std::vector<float> speed, std::vector<float> dist,
 	std::vector<float> rotSpeed, glm::vec3 rotVector, std::vector<float> scale,
 	glm::mat4& tmat, glm::mat4& rmat, glm::mat4& smat) 
@@ -730,6 +732,7 @@ void Graphics::ComputeTransforms(double dt, std::vector<TrigFunction*> orbitFunc
 	smat = glm::scale(glm::vec3(scale[0], scale[1], scale[2]));
 }
 
+//Render all objects in the scene
 void Graphics::Render()
 {
 	////clear the screen
@@ -869,7 +872,7 @@ void Graphics::Render()
 	}
 }
 
-
+//Get shader variables locations
 bool Graphics::collectShPrLocs() {
 	bool anyProblem = true;
 	// Locate the projection matrix in the shader
@@ -937,6 +940,7 @@ bool Graphics::collectShPrLocs() {
 	return anyProblem;
 }
 
+//Print OpenGL errors
 std::string Graphics::ErrorString(GLenum error)
 {
 	if (error == GL_INVALID_ENUM)
@@ -969,6 +973,7 @@ std::string Graphics::ErrorString(GLenum error)
 	}
 }
 
+//Spectator mode 
 void Graphics::spectate() {
 	if (m_controller->isSpectateMode()) return;
 	Sphere* spectate = m_sun;

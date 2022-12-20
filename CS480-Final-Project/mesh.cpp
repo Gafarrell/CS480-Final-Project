@@ -1,5 +1,6 @@
 #include "mesh.h"
 
+//Constructor
 Mesh::Mesh()
 {
 	// Vertex Set Up
@@ -16,6 +17,7 @@ Mesh::Mesh()
 
 }
 
+//Constructor
 Mesh::Mesh(glm::vec3 pivot, const char* fname)
 {
 	// Vertex Set Up
@@ -33,6 +35,7 @@ Mesh::Mesh(glm::vec3 pivot, const char* fname)
 	hasTex = false;
 }
 
+//Constructor
 Mesh::Mesh(glm::vec3 pivot, const char* fname, const char* tname)
 {
 	// Vertex Set Up
@@ -55,12 +58,14 @@ Mesh::Mesh(glm::vec3 pivot, const char* fname, const char* tname)
 		hasTex = false;
 }
 
+//Destructor
 Mesh::~Mesh()
 {
 	Vertices.clear();
 	Indices.clear();
 }
 
+//Update the starship matix
 void Mesh::Update(double dt)
 {
 	if (!spectateMode) {
@@ -100,6 +105,7 @@ void Mesh::Update(double dt)
 	updateCamera();
 }
 
+//Update the camera view
 void Mesh::updateCamera() {
 	glm::vec3 localForward = glm::normalize(glm::vec3(
 		model[2][0],
@@ -133,11 +139,13 @@ void Mesh::updateCamera() {
 	}
 }
 
+//Return the ship model matrix
 glm::mat4 Mesh::GetModel()
 {
 	return model;
 }
 
+//Render the ship
 void Mesh::Render(GLint posAttribLoc, GLint colAttribLoc)
 {
 
@@ -165,6 +173,7 @@ void Mesh::Render(GLint posAttribLoc, GLint colAttribLoc)
 	glDisableVertexAttribArray(colAttribLoc);
 }
 
+//Render the ship
 void Mesh::Render(GLint posAttribLoc, GLint colAttribLoc, GLint normalAttribLoc, GLint tcAttribLoc, GLint hasTextureLoc)
 {
 	glBindVertexArray(vao);
@@ -208,7 +217,7 @@ void Mesh::Render(GLint posAttribLoc, GLint colAttribLoc, GLint normalAttribLoc,
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-
+//Initialize buffers for the vertices and indices
 bool Mesh::InitBuffers() {
 
 	// For OpenGL 3
@@ -227,6 +236,7 @@ bool Mesh::InitBuffers() {
 	return true;
 }
 
+//Load the model from file
 bool Mesh::loadModelFromFile(const char* path) {
 	Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate);
@@ -276,12 +286,14 @@ bool Mesh::loadModelFromFile(const char* path) {
 	return true;
 }
 
+//Change mode to spectate
 void Mesh::spectate(Sphere* toSpectate, float spectateDistance) {
 	this->toSpectate = toSpectate;
 	m_camera->spectate();
 	this->spectateMode = true;
 }
 
+//Reset the camera view
 void Mesh::resetSpectatorView() {
 	if (spectateMode) {
 		m_camera->resetZoom();
@@ -289,6 +301,7 @@ void Mesh::resetSpectatorView() {
 	}
 }
 
+//Change mode to explore
 void Mesh::explore() {
 	if (spectateMode) {
 		m_camera->noSpectate();

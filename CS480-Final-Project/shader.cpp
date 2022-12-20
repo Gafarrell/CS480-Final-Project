@@ -1,11 +1,13 @@
 #include "shader.h"
 #include "Utils.h"
 
+//Constructor
 Shader::Shader(const char* vShaderFile, const char* fShaderFile)
 {
     m_shaderProg = Utils::createShaderProgram(vShaderFile, fShaderFile);
 }
 
+//Destructor
 Shader::~Shader()
 {
   for (std::vector<GLuint>::iterator it = m_shaderObjList.begin() ; it != m_shaderObjList.end() ; it++)
@@ -20,6 +22,7 @@ Shader::~Shader()
   }
 }
 
+//Initialize the shader
 bool Shader::Initialize()
 {
   return true;
@@ -33,12 +36,13 @@ bool Shader::Finalize()
   return true;
 }
 
+//Tell OpenGL to use this shader
 void Shader::Enable()
 {
     glUseProgram(m_shaderProg);
 }
 
-
+//Get location of uniform
 GLint Shader::GetUniformLocation(const char* pUniformName)
 {
     GLuint Location = glGetUniformLocation(m_shaderProg, pUniformName);
@@ -50,6 +54,7 @@ GLint Shader::GetUniformLocation(const char* pUniformName)
     return Location;
 }
 
+//Get location of attribute
 GLint Shader::GetAttribLocation(const char* pAttribName)
 {
     GLuint Location = glGetAttribLocation(m_shaderProg, pAttribName);

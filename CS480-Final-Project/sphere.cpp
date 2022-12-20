@@ -1,5 +1,6 @@
 #include "sphere.h"
 
+//Constuctor
 Sphere::Sphere()
 {
     init(20);
@@ -8,6 +9,7 @@ Sphere::Sphere()
     //setupModelMatrix(glm::vec3(0., 0., 0.), 0., 1.);
 }
 
+//Constuctor
 Sphere::Sphere(int prec) { // prec is precision, or number of slices
 
     init(prec);
@@ -17,6 +19,7 @@ Sphere::Sphere(int prec) { // prec is precision, or number of slices
     hasTex = false;
 }
 
+//Constructor
 Sphere::Sphere(int prec, const char* fname) { // prec is precision, or number of slices
 
     init(prec);
@@ -32,7 +35,7 @@ Sphere::Sphere(int prec, const char* fname) { // prec is precision, or number of
         hasTex = false;
 }
 
-
+//Render the sphere
 void Sphere::Render(GLint positionAttribLoc, GLint colorAttribLoc)
 {
     glBindVertexArray(vao);
@@ -59,6 +62,7 @@ void Sphere::Render(GLint positionAttribLoc, GLint colorAttribLoc)
     //glDisableVertexAttribArray(normalAttribLoc);
 }
 
+//Render the sphere
 void Sphere::Render(GLint posAttribLoc, GLint colAttribLoc, GLint normalAttribLoc, GLint tcAttribLoc, GLint hasTextureLoc)
 {
     //Bind VAO
@@ -103,7 +107,7 @@ void Sphere::Render(GLint posAttribLoc, GLint colAttribLoc, GLint normalAttribLo
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-
+//Setup the vertices, indices, texcoords, normals
 void Sphere::setupVertices() {
 
     std::vector<int> ind = getIndices();
@@ -122,7 +126,7 @@ void Sphere::setupVertices() {
     }
 }
 
-
+//Setup buffers for vertices, indices, texcoords, normals
 void Sphere::setupBuffers() {
     // For OpenGL 3
     glGenVertexArrays(1, &vao);
@@ -145,6 +149,7 @@ void Sphere::setupBuffers() {
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indices.size(), &indices[0], GL_STATIC_DRAW);
 }
 
+//Setup the model matrix
 void Sphere::setupModelMatrix(glm::vec3 pivot, float angle, float scale) {
     pivotLocation = pivot;
     model = glm::translate(glm::mat4(1.0f), pivotLocation);
@@ -152,18 +157,22 @@ void Sphere::setupModelMatrix(glm::vec3 pivot, float angle, float scale) {
     model *= glm::scale(glm::vec3(scale, scale, scale));
 }
 
+//Update the model matrix
 void Sphere::Update(glm::mat4 matModel) {
     model = matModel;
 }
 
+//Update the spectator matrix
 void Sphere::UpdateSpecModel(glm::mat4 specModel) {
     this->spectatorModel = specModel;
     spectatorModel *= glm::rotate(glm::mat4(1), spectateHorizRotation, glm::vec3(0, 1, 0));
     spectatorModel *= glm::rotate(glm::mat4(1), spectateVertRotation, glm::vec3(1, 0, 0));
 }
 
+//Convert degrees to radians
 float Sphere::toRadians(float degrees) { return (degrees * 2.0f * 3.14159f) / 360.0f; }
 
+//Initialize the sphere object
 void Sphere::init(int prec) {
     numVertices = (prec + 1) * (prec + 1);
     numIndices = prec * prec * 6;

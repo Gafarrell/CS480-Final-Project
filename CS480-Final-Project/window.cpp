@@ -2,6 +2,7 @@
 
 using namespace std;
 
+//Constuctor
 Window::Window(const char* name, int* width, int* height)
 {
   gWindow = NULL;
@@ -27,6 +28,7 @@ Window::Window(const char* name, int* width, int* height)
   this->Initialize();
 }
 
+//Destructor
 Window::~Window()
 {
 
@@ -35,6 +37,7 @@ Window::~Window()
   glfwTerminate();
 }
 
+//Initialize the window
 bool Window::Initialize()
 {
     // Start SDL
@@ -47,6 +50,7 @@ bool Window::Initialize()
     return true;
 }
 
+//Swap the window buffers
 void Window::Swap()
 {
     glfwSwapBuffers(gWindow);

@@ -1,5 +1,6 @@
 #include "skybox.h"
 
+//Consturctor
 SkyBox::SkyBox(const char* dirName, int w, int h) {
 	sectionW = w / 4;
 	sectionH = h / 3;
@@ -9,10 +10,12 @@ SkyBox::SkyBox(const char* dirName, int w, int h) {
 	InitBuffers();
 }
 
+//Load the cube map
 unsigned int SkyBox::loadCubemap(const char* dirName) {
 	return Utils::loadCubeMap(dirName);
 }
 
+//Setup the vertices and indices
 void SkyBox::setupVerticies() {
 	Vertices = {
   {{1.0f, -1.0f, -1.0f}, {0.0f, 0.0f, 0.0f}, {1.,0.}},
@@ -47,7 +50,7 @@ void SkyBox::setupVerticies() {
 	}
 }
 
-
+//Initialize the shader
 bool SkyBox::InitShader() {
 	m_position = shader->GetUniformLocation("v_matrix");
 	m_projection = shader->GetUniformLocation("p_matrix");
@@ -55,7 +58,7 @@ bool SkyBox::InitShader() {
 }
 
 
-
+//Setup the buffers for vertices
 bool SkyBox::InitBuffers() 
 {
 
@@ -72,6 +75,7 @@ bool SkyBox::InitBuffers()
 	return true;
 }
 
+//Render the skybox
 void SkyBox::Render(glm::mat4 vMat, glm::mat4 pMat)
 {
 	vMat *= glm::translate(glm::mat4(1), -glm::vec3(vMat[3][0], vMat[3][1], vMat[3][2]));

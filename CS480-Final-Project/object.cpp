@@ -1,5 +1,6 @@
 #include "object.h"
 
+//Constructor
 Object::Object()
 {
 	// Vertex Set Up
@@ -17,6 +18,7 @@ Object::Object()
 
 }
 
+//Constructor
 Object::Object(glm::vec3 pivot)
 {
 	// Vertex Set Up
@@ -33,23 +35,27 @@ Object::Object(glm::vec3 pivot)
 	}
 }
 
+//Destructor
 Object::~Object()
 {
 	Vertices.clear();
 	Indices.clear();
 }
 
+//Update the model matrix
 void Object::Update(glm::mat4 inmodel)
 {
 	model = inmodel;
 
 }
 
+//Return model matrix
 glm::mat4 Object::GetModel()
 {
 	return model;
 }
 
+//Render the object
 void Object::Render(GLint posAttribLoc, GLint colAttribLoc)
 {
 
@@ -77,7 +83,7 @@ void Object::Render(GLint posAttribLoc, GLint colAttribLoc)
 	glDisableVertexAttribArray(colAttribLoc);
 }
 
-
+//Initialize buffers for vertices and indices
 bool Object::InitBuffers() {
 
 	// For OpenGL 3
@@ -95,6 +101,7 @@ bool Object::InitBuffers() {
 	return true;
 }
 
+//Set up the vertices and indices
 void Object::setupVerticies() {
 	Vertices = {
   {{1.0f, -1.0f, -1.0f}, {0.0f, 0.0f, 0.0f}, {1.,0.}},

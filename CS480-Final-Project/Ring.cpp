@@ -5,6 +5,7 @@
 #include "Ring.h"
 using namespace std;
 
+//Constructor
 Ring::Ring() {
 	prec = 48;
 	inner = 0.5f;
@@ -12,6 +13,7 @@ Ring::Ring() {
 	init();
 }
 
+//Constructor
 Ring::Ring(float in, float out, int precIn, const char* fname) {
 	prec = precIn;
 	inner = in;
@@ -27,6 +29,7 @@ Ring::Ring(float in, float out, int precIn, const char* fname) {
 		hasTex = false;
 }
 
+//Render the object
 void Ring::Render(GLint posAttribLoc, GLint colAttribLoc, GLint normalAttribLoc, GLint tcAttribLoc, GLint hasTextureLoc)
 {
 	//Bind VAO
@@ -70,8 +73,10 @@ void Ring::Render(GLint posAttribLoc, GLint colAttribLoc, GLint normalAttribLoc,
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
+//Convert degrees to radians
 float Ring::toRadians(float degrees) { return (degrees * 2.0f * 3.14159f) / 360.0f; }
 
+//Initialize the vertices, indices, texcoords, and normals
 void Ring::init() {
 	numVertices = (prec + 1) * (prec + 1);
 	numIndices = prec * prec * 6;
@@ -131,6 +136,7 @@ void Ring::init() {
 	}
 }
 
+//Setup the vertices
 void Ring::setupVertices() {
 	std::vector<int> ind = getIndices();
 	std::vector<glm::vec3> vert = getVertices();
@@ -163,6 +169,7 @@ void Ring::setupVertices() {
 	
 }
 
+//Setup the buffer form vertices, indices, texcoords, normals
 void Ring::setupBuffers() {
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
@@ -184,6 +191,7 @@ void Ring::setupBuffers() {
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indices.size(), &indices[0], GL_STATIC_DRAW);
 }
 
+//Setup the model matix
 void Ring::setupModelMatrix(glm::vec3 pivot, float angle, float scale) {
 	pivotLocation = pivot;
 	model = glm::translate(glm::mat4(1.0f), pivotLocation);
@@ -191,6 +199,7 @@ void Ring::setupModelMatrix(glm::vec3 pivot, float angle, float scale) {
 	model *= glm::scale(glm::vec3(scale, scale, scale));
 }
 
+//Update the model matrix
 void Ring::Update(glm::mat4 matModel) {
 	model = matModel;
 }
