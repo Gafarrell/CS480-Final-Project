@@ -309,12 +309,14 @@ bool Graphics::Initialize(int width, int height)
 
 	// Haley's Comet
 	m_halcomet = new Sphere(48, "assets\\Uranus.jpg");
-	m_halcomet->setAngle(vector<float>({ 6 }));
-	m_halcomet->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new Cos(), new Sin() }));
-	m_halcomet->setOrbitDistance(vector<float>({ 30.0f,30.0f,30.0f }));
+	m_halcomet->setAngle(vector<float>({ 5 }));
+	m_halcomet->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new Cos(), new Cos() }));
+	m_halcomet->setOrbitDistance(vector<float>({ 30.0f,3.5f,3.0f }));
 	m_halcomet->setRotationSpeed(vector<float>({ 0.35f }));
 	m_halcomet->setScale(vector<float>({ 0.05f,0.05f,0.05f }));
-	m_halcomet->setSpeed(vector<float>({ 0.006f, 0.006f, 0.006f }));
+	//m_halcomet->setSpeed(vector<float>({ 0.006f, 0.006f, 0.006f }));
+	m_halcomet->setSpeed(vector<float>({ 0.15, 0.15f, 0.15f }));
+
 	solarSystem.push_back(m_halcomet);
 
 	//Asteroid Belts
