@@ -29,11 +29,12 @@ public:
 
     void setTranslation(glm::vec3 translation) { this->shipPosition = translation; }
 
-    void setForwardSpeed(float speed) { this->forwardSpeed = speed; }
-    void setHorizontalSpeed(float speed) { this->horizontalSpeed = speed; }
+    void addForwardSpeed(float speed) { this->forwardSpeed = spectateMode ? speed*10 : forwardSpeed + speed; }
+    void addHorizontalSpeed(float speed) { this->horizontalSpeed = spectateMode ? speed*10 : horizontalSpeed + speed; }
+    void brakes() { this->forwardSpeed = this->horizontalSpeed = 0; }
 
     void setDirection(glm::vec3 direction) { this->direction = direction; }
-    void setRotateDeltas(double xDelta, double yDelta) { this->xMouseDelta = xDelta; this->yMouseDelta = yDelta; }
+    void setRotateDeltas(double xDelta, double yDelta) { this->xMouseDelta = xDelta; this->yMouseDelta = yDelta; m_camera->setRotateDelta(xDelta, yDelta); }
     
     void setCamera(Camera* camera) { this->m_camera = camera; }
     void setUniformScale(float scale) { this->uniformScale = scale; }

@@ -853,6 +853,7 @@ void Graphics::Render()
 			glUniform3f(m_shader->GetUniformLocation("lightPos"), lightPos.x, lightPos.y, lightPos.z);
 
 			glUniform1i(sampler, 0);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 			m_saturn_ring->Render(m_positionAttrib, m_colorAttrib, m_normalAttrib, m_tcAttrib, m_hasTexture);
 
 		}
