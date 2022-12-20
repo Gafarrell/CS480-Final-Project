@@ -314,7 +314,6 @@ bool Graphics::Initialize(int width, int height)
 	m_halcomet->setOrbitDistance(vector<float>({ 30.0f,3.5f,3.0f }));
 	m_halcomet->setRotationSpeed(vector<float>({ 0.35f }));
 	m_halcomet->setScale(vector<float>({ 0.05f,0.05f,0.05f }));
-	//m_halcomet->setSpeed(vector<float>({ 0.006f, 0.006f, 0.006f }));
 	m_halcomet->setSpeed(vector<float>({ 0.15, 0.15f, 0.15f }));
 
 	solarSystem.push_back(m_halcomet);
@@ -703,8 +702,6 @@ void Graphics::HierarchicalUpdate2(double dt) {
 	modelStack.push(modelStack.top());
 
 	modelStack.top() *= tmat;
-	/*m_saturn_ring->UpdateSpecModel(modelStack.top());
-	modelStack.push(modelStack.top());*/
 	modelStack.top() *= rmat * smat;
 
 	m_saturn_ring->Update(modelStack.top());
@@ -810,7 +807,6 @@ void Graphics::Render()
 	}
 
 	// Rendering algorithm for solar system.
-	// Implementing later.
 	for (int i = 0; i < solarSystem.size(); i++) {
 		Sphere* object = solarSystem[i];
 
