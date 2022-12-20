@@ -42,6 +42,7 @@
     <ClCompile Include="skybox.cpp" />
     <ClCompile Include="sphere.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="Ring.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="window.cpp" />
   </ItemGroup>
@@ -58,6 +59,7 @@
     <ClInclude Include="skybox.h" />
     <ClInclude Include="sphere.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="Ring.h" />
     <ClInclude Include="trig_functions.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="window.h" />
@@ -66,8 +68,6 @@
     <ResourceCompile Include="CS480-Final-Project.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="shaders\pointFragShader.txt" />
-    <Text Include="shaders\pointVertShader.txt" />
     <Text Include="shaders\sunFragShader.txt" />
     <Text Include="shaders\sunVertShader.txt" />
   </ItemGroup>

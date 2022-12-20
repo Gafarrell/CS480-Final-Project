@@ -13,6 +13,7 @@ using namespace std;
 #include "mesh.h"
 #include "skybox.h"
 #include "asteroid_instancer.h"
+#include "Ring.h"
 
 #define numVBOs 2;
 #define numIBs 2;
@@ -76,6 +77,17 @@ class Graphics
     Sphere* m_haumea;
     Sphere* m_eris;
     Sphere* m_halcomet;
+    Sphere* m_lo;
+    Sphere* m_europa;
+    Sphere* m_ganymede;
+    Sphere* m_callisto;
+    Sphere* m_titan;
+    Sphere* m_iapteus;
+    Sphere* m_ariel;
+    Sphere* m_oberon;
+    Sphere* m_triton;
+
+    Ring* m_saturn_ring;
 
     AsteroidInstancer* m_asteroids;
     AsteroidInstancer* m_outer_asteroids;

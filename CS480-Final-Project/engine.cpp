@@ -83,18 +83,22 @@ void Engine::ProcessInput()
 
     // Forward backward
     if (keyPressed(GLFW_KEY_W))
-        forwardSpeed += SHIP_FORWARD_SPEED;
+        forwardSpeed += this->forwardSpeed;
     if (keyPressed(GLFW_KEY_S))
-        forwardSpeed -= SHIP_FORWARD_SPEED;
+        forwardSpeed -= this->forwardSpeed;
 
     // Left Right
     if (keyPressed(GLFW_KEY_A))
-        horizontalSpeed -= SHIP_HORIZONTAL_SPEED;
+        horizontalSpeed -= this->horizontalSpeed;
     if (keyPressed(GLFW_KEY_D))
-        horizontalSpeed += SHIP_HORIZONTAL_SPEED;
+        horizontalSpeed += this->horizontalSpeed;
 
-    m_graphics->getController()->setForwardSpeed(forwardSpeed);
-    m_graphics->getController()->setHorizontalSpeed(horizontalSpeed);
+    m_graphics->getController()->addForwardSpeed(forwardSpeed);
+    m_graphics->getController()->addHorizontalSpeed(horizontalSpeed);
+
+    if (keyPressed(GLFW_KEY_B)) {
+        m_graphics->getController()->brakes();
+    }
 
     if (m_focused) {
         double xPos, yPos;

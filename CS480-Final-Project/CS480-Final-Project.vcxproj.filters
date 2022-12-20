@@ -82,6 +82,9 @@
     <ClCompile Include="asteroid_instancer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Ring.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -129,6 +132,9 @@
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Ring.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="CS480-Final-Project.rc">
@@ -136,8 +142,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="shaders\pointFragShader.txt" />
-    <Text Include="shaders\pointVertShader.txt" />
     <Text Include="shaders\sunFragShader.txt" />
     <Text Include="shaders\sunVertShader.txt" />
   </ItemGroup>

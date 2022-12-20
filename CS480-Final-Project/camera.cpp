@@ -42,16 +42,47 @@ glm::mat4 Camera::GetView()
 
 void Camera::update(double dt)
 {
-	view = glm::lookAt(
-		cameraPos, // Move camera
-		cameraFront, // Adjust focused coordinate
-		cameraUp
-	);
+	if (spectatorMode) {
+		horizAngle += rotationSpeed * dt * xDelta;
+		vertAngle += rotationSpeed * dt * yDelta;
 
-	projection = glm::perspective(glm::radians(40.f + (float) zoom),
-		float(windowWidth) / float(windowHeight),
-		0.01f,
-		100.0f);
+		xDelta = yDelta = 0;
+
+		cameraFront = glm::vec3(
+			cos(vertAngle) * sin(horizAngle),
+			sin(vertAngle),
+			cos(vertAngle) * cos(horizAngle)
+		);
+
+		cameraUp = glm::vec3(
+			cos(vertAngle + (3.1415 / 4)) * sin(horizAngle),
+			sin(vertAngle + (3.1415 / 4)),
+			cos(vertAngle + (3.1415 / 4)) * cos(horizAngle)
+		);
+
+		projection = glm::perspective((float)glm::radians(40.f + (float) zoom),
+			float(windowWidth) / float(windowHeight),
+			0.01f,
+			100.0f);
+
+		view = glm::lookAt(
+			cameraPos, // Move camera
+			cameraPos + cameraFront, // Adjust focused coordinate
+			cameraUp
+		);
+	}
+	else {
+		view = glm::lookAt(
+			cameraPos, // Move camera
+			cameraFront, // Adjust focused coordinate
+			cameraUp
+		);
+
+		projection = glm::perspective(glm::radians(40.f + (float)zoom),
+			float(windowWidth) / float(windowHeight),
+			0.01f,
+			100.0f);
+	}{}
 }
 
 void Camera::setPerspective(glm::vec3 cameraPosition, glm::vec3 cameraFront, glm::vec3 cameraUp) {

@@ -6,9 +6,6 @@
 #include "window.h"
 #include "graphics.h"
 
-#define SHIP_FORWARD_SPEED 1;
-#define SHIP_HORIZONTAL_SPEED 1;
-
 static void cursorPositionCallBack(GLFWwindow*, double xpos, double ypos);
 
 class Engine
@@ -36,6 +33,7 @@ class Engine
     int m_WINDOW_HEIGHT;
     bool m_FULLSCREEN;
 
+    float forwardSpeed = 0.05, horizontalSpeed = 0.025f;
 
     Graphics *m_graphics;
 

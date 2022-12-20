@@ -33,5 +33,5 @@ void main(void)
 	float specular = specAmount * specularLight;
 
 
-	color = varyingColor * lightColor * (diffuse + ambient + specular);
+	color = varyingColor  * (diffuse + ambient + specular);
 }
