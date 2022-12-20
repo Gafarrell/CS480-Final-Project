@@ -5,6 +5,7 @@ Engine* engine = nullptr;
 static void windowFocusCallback(GLFWwindow* window, int focused);
 static void scroll_wheel_callback(GLFWwindow* window, double scrollX, double scrollY);
 
+//Constructor
 Engine::Engine(const char* name, int width, int height)
 {
     if (engine == nullptr) engine = this;
@@ -14,6 +15,7 @@ m_WINDOW_HEIGHT = height * 1.5;
 
 }
 
+//Destructor
 Engine::~Engine()
 {
     delete m_window;
@@ -22,6 +24,7 @@ Engine::~Engine()
     m_graphics = NULL;
 }
 
+//Initialize the engine
 bool Engine::Initialize()
 {
     // Start a window
@@ -49,6 +52,7 @@ bool Engine::Initialize()
     return true;
 }
 
+//Loop until the window closes
 void Engine::Run()
 {
     m_running = true;
@@ -69,11 +73,13 @@ void Engine::Run()
 
 }
 
+//Adjust camera zoom
 void Engine::adjustZoom(float zoom) {
     if (m_focused)
         m_graphics->getController()->addZoom(zoom);
 }
 
+//Process the inputs form the keyboard and mouse
 void Engine::ProcessInput()
 {
     if (glfwGetKey(m_window->getWindow(), GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -118,20 +124,24 @@ void Engine::ProcessInput()
     }
 }
 
+//Return if key was pressed
 bool Engine::keyPressed(int key) {
     return glfwGetKey(m_window->getWindow(), key) == GLFW_PRESS;
 }
 
+//Return the time
 unsigned int Engine::getDT()
 {
     return glfwGetTime();
 }
 
+//Return time in milliseconds
 long long Engine::GetCurrentTimeMillis()
 {
     return (long long) glfwGetTime();
 }
 
+//Render the scene
 void Engine::Display(GLFWwindow* window, double time) {
 
     m_graphics->Render();
@@ -139,6 +149,7 @@ void Engine::Display(GLFWwindow* window, double time) {
     m_graphics->HierarchicalUpdate2(time);
 }
 
+//Set camera focus
 void Engine::setFocused(bool focused) {
     if (focused) {
         glfwSetCursorPos(m_window->getWindow(), m_WINDOW_WIDTH / 2, m_WINDOW_HEIGHT / 2);
@@ -149,6 +160,7 @@ void Engine::setFocused(bool focused) {
     }
 }
 
+//Set focused variable
 static void windowFocusCallback(GLFWwindow* window, int focused) {
     if (focused)
         engine->setFocused(true);
@@ -156,6 +168,7 @@ static void windowFocusCallback(GLFWwindow* window, int focused) {
         engine->setFocused(false);
 }
 
+//Set zoom based on scroll wheel
 static void scroll_wheel_callback(GLFWwindow* window, double scrollX, double scrollY) {
     engine->adjustZoom(scrollY);
 }

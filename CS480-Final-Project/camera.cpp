@@ -1,15 +1,18 @@
 #include "camera.h"
 
+//Constructor
 Camera::Camera()
 {
 
 }
 
+//Destructor
 Camera::~Camera()
 {
 
 }
 
+//Initialize the camera
 bool Camera::Initialize(int w, int h)
 {
   //--Init the view and projection matrices
@@ -30,16 +33,19 @@ bool Camera::Initialize(int w, int h)
   return true;
 }
 
+//Return projection matrix
 glm::mat4 Camera::GetProjection()
 {
   return projection;
 }
 
+//Return view matrix
 glm::mat4 Camera::GetView()
 {
   return view;
 }
 
+//Update the camera position
 void Camera::update(double dt)
 {
 	view = glm::lookAt(
@@ -54,12 +60,14 @@ void Camera::update(double dt)
 		100.0f);
 }
 
+//Set the camera perspective
 void Camera::setPerspective(glm::vec3 cameraPosition, glm::vec3 cameraFront, glm::vec3 cameraUp) {
 	this->cameraPos = cameraPosition;
 	this->cameraFront = cameraFront;
 	this->cameraUp = cameraUp;
 }
 
+//Move the camera
 void Camera::addSpeed(glm::vec3 s) {
 	speed += s;
 	if (speed != glm::vec3(0))

@@ -1,5 +1,6 @@
 #include "asteroid_instancer.h"
 
+//Constructor
 AsteroidInstancer::AsteroidInstancer(const char* vShader, const char* fShader, const char* fname, const char* tname, int asteroidCount, float radius) {
 	this->asteroidCount = asteroidCount;
 	this->radius = radius;
@@ -15,6 +16,7 @@ AsteroidInstancer::AsteroidInstancer(const char* vShader, const char* fShader, c
 		printf("Some buffers not initialized!");
 }
 
+//Set up buffers for the vertex, index and matrix data
 bool AsteroidInstancer::InitBuffers() {
 	// For OpenGL 3
 	glGenVertexArrays(1, &vao);
@@ -35,10 +37,12 @@ bool AsteroidInstancer::InitBuffers() {
 	return true;
 }
 
+//Update the asteroid matrix
 void AsteroidInstancer::Update(double dt) {
 	originPoint = glm::rotate(originPoint, (float) dt * 0.005f, glm::vec3(0, 1, 0));
 }
 
+//Load the asteroid model from file
 bool AsteroidInstancer::loadModelFromFile(const char* path) {
 	Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate);
@@ -85,6 +89,7 @@ bool AsteroidInstancer::loadModelFromFile(const char* path) {
 	return true;
 }
 
+//Generate the asteroid models
 void AsteroidInstancer::generateModels() {
 	originPoint = glm::translate(glm::mat4(1), glm::vec3(0));
 	srand(glfwGetTime());
@@ -113,6 +118,7 @@ void AsteroidInstancer::generateModels() {
 	}
 }
 
+//Get shader varible locations
 void AsteroidInstancer::getShaderLocs() {
 	posAttrib = 0;
 	colAttrib = 1;
@@ -126,6 +132,7 @@ void AsteroidInstancer::getShaderLocs() {
 	timeFactor = instance_shader->GetUniformLocation("tf");
 }
 
+//Render the asteroids
 void AsteroidInstancer::Render(double totalTime, glm::mat4 cameraView, glm::mat4 cameraProjection) {
 
 	glUniformMatrix4fv(m_view, 1, GL_FALSE, glm::value_ptr(cameraView));

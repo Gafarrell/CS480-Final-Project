@@ -1,10 +1,12 @@
 #include "graphics.h"
 
+// Constructor
 Graphics::Graphics()
 {
 
 }
 
+//Destructor
 Graphics::~Graphics()
 {
 
