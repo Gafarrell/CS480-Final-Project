@@ -278,16 +278,22 @@ bool Mesh::loadModelFromFile(const char* path) {
 
 void Mesh::spectate(Sphere* toSpectate, float spectateDistance) {
 	this->toSpectate = toSpectate;
+	m_camera->spectate();
 	this->spectateMode = true;
 }
 
 void Mesh::resetSpectatorView() {
-	m_camera->resetZoom();
-	toSpectate->resetSpectatorModel();
+	if (spectateMode) {
+		m_camera->resetZoom();
+		toSpectate->resetSpectatorModel();
+	}
 }
 
 void Mesh::explore() {
-	m_camera->resetZoom();
-	toSpectate->resetSpectatorModel();
-	this->spectateMode = false;
+	if (spectateMode) {
+		m_camera->noSpectate();
+		m_camera->resetZoom();
+		toSpectate->resetSpectatorModel();
+		this->spectateMode = false;
+	}
 }

@@ -65,7 +65,6 @@ void Ring::Render(GLint posAttribLoc, GLint colAttribLoc, GLint normalAttribLoc,
 
 	// Disable vertex arrays
 	glDisableVertexAttribArray(posAttribLoc);
-	glDisableVertexAttribArray(colAttribLoc);
 	glDisableVertexAttribArray(tcAttribLoc);
 	glDisableVertexAttribArray(normalAttribLoc);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
