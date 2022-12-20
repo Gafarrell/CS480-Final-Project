@@ -322,13 +322,13 @@ bool Graphics::Initialize(int width, int height)
 	m_outer_asteroids = new AsteroidInstancer("shaders\\instanceVertShader.glsl", "shaders\\instanceFragShader.glsl", "assets\\asteroid.obj", "assets\\asteroid.jpg", 1000, 29.0f);
 	
 	//Rings
-	m_saturn_ring = new Ring(.5,.2,48,"assets\\SaturnRing.jpg");
+	m_saturn_ring = new Ring(.60,1,48,"assets\\Saturn.jpg");
 	m_saturn_ring->setAngle(vector<float>({ 3 }));
-	m_saturn_ring->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new Cos(), new Sin() }));
-	m_saturn_ring->setOrbitDistance(vector<float>({ 5.0f,5.0f,5.0f }));
+	m_saturn_ring->setOrbitalFunctions(std::vector<TrigFunction*>({ new Sin(), new None(), new Cos() }));
+	m_saturn_ring->setOrbitDistance(vector<float>({ 20.0f,20.0f,20.0f }));
 	m_saturn_ring->setRotationSpeed(vector<float>({ 0.35f }));
-	m_saturn_ring->setScale(vector<float>({ 1.f,1.f,1.f }));
-	m_saturn_ring->setSpeed(vector<float>({ 0.006f, 0.006f, 0.006f }));
+	m_saturn_ring->setScale(vector<float>({ 1.5f,0.f,1.5f }));
+	m_saturn_ring->setSpeed(vector<float>({ 0.05f, 0.05f, 0.05f }));
 
 	//enable depth testing
 	glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
